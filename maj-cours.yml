@@ -1,0 +1,50 @@
+name: Mise à jour des cours
+
+on:
+  schedule:
+    # Du lundi au vendredi à 22:17 UTC, après la clôture de Wall Street.
+    - cron: "17 22 * * 1-5"
+  # Recalcul immédiat dès qu'une position ou un réglage change via l'admin.
+  push:
+    branches: [main]
+    paths:
+      - "data/portfolio.json"
+      - "data/site.json"
+  # Bouton « Run workflow » dans l'onglet Actions.
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: maj-cours
+  cancel-in-progress: false
+
+jobs:
+  maj:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Installer les dépendances
+        run: pip install -r scripts/requirements.txt
+
+      - name: Recalculer le portefeuille
+        run: python scripts/maj_marche.py
+
+      - name: Publier data/marche.json
+        run: |
+          git config user.name "maj-cours[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/marche.json
+          if git diff --cached --quiet; then
+            echo "Aucun changement."
+          else
+            git commit -m "Cours au $(date -u +%Y-%m-%d)"
+            git pull --rebase
+            git push
+          fi

@@ -1,0 +1,129 @@
+# Configuration de l'interface d'administration (Pages CMS : https://app.pagescms.org)
+# Chaque enregistrement dans l'interface crée un commit horodaté dans le dépôt GitHub.
+media: false
+
+content:
+  # ------------------------------------------------------------------ #
+  - name: portefeuille
+    label: Positions
+    type: file
+    path: data/portfolio.json
+    format: json
+    fields:
+      - name: exemple
+        label: Données d'exemple (affiche le bandeau « Données d'exemple »)
+        type: boolean
+      - name: positions
+        label: Positions
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{nom} · {ticker} · {statut}"
+        fields:
+          - { name: ticker, label: "Ticker Yahoo Finance (ex. CSU.TO, HLMA.L, MSFT, NOVO-B.CO)", type: string, required: true }
+          - { name: nom, label: Société, type: string, required: true }
+          - { name: pays, label: "Pays (code ISO : US, GB, DE…)", type: string }
+          - { name: secteur, label: Secteur, type: string }
+          - name: archetype
+            label: Archétype
+            type: select
+            options:
+              values: [Franchise asset-light, Acquéreur en série, Distributeur / réseau, Marques & medtech, Services B2B]
+          - name: devise
+            label: "Devise de cotation (GBX = pence, actions cotées à Londres)"
+            type: select
+            options:
+              values: [EUR, USD, CAD, GBX, GBP, CHF, SEK, DKK, NOK, JPY]
+          - name: date_entree
+            label: Date d'exécution
+            type: date
+            options:
+              format: yyyy-MM-dd
+          - { name: cours_entree, label: "Cours d'entrée (clôture du jour d'exécution, en devise de cotation)", type: number }
+          - { name: poids_cible, label: "Poids initial (% du capital)", type: number }
+          - { name: prix_entree_theorique, label: "Prix d'entrée théorique (valeur intrinsèque)", type: number }
+          - { name: methode_valo, label: Méthode de valorisation, type: string }
+          - { name: gem_moat, label: "Gem – Moat & pricing power (1 à 5)", type: number }
+          - { name: gem_management, label: "Gem – Management & gouvernance (1 à 5)", type: number }
+          - { name: gem_macro, label: "Gem – Overlay macro (1 à 5)", type: number }
+          - { name: gem_risques, label: "Gem – Red flags & risques (1 à 5)", type: number }
+          - { name: momentum_valide, label: Momentum confirmé, type: boolean }
+          - { name: these, label: Thèse (5 lignes environ), type: text }
+          - { name: catalyseurs, label: Catalyseurs, type: string, list: true }
+          - { name: invalidation, label: La thèse est invalidée si…, type: string, list: true }
+          - name: statut
+            label: Statut
+            type: select
+            options:
+              values: [ouverte, cloturee]
+          - name: date_sortie
+            label: Date de sortie (si clôturée)
+            type: date
+            options:
+              format: yyyy-MM-dd
+          - { name: cours_sortie, label: Cours de sortie (si clôturée), type: number }
+          - { name: motif_sortie, label: Motif de sortie, type: text }
+          - { name: note_url, label: "Lien vers la note de recherche (PDF, facultatif)", type: string }
+
+  # ------------------------------------------------------------------ #
+  - name: journal
+    label: Journal des décisions
+    type: file
+    path: data/journal.json
+    format: json
+    fields:
+      - name: exemple
+        label: Données d'exemple
+        type: boolean
+      - name: entrees
+        label: Entrées du journal
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{date} · {type} · {titre}"
+        fields:
+          - name: date
+            label: Date
+            type: date
+            options:
+              format: yyyy-MM-dd
+          - name: type
+            label: Type
+            type: select
+            options:
+              values: [Entrée, Renforcement, Allègement, Sortie, Écarté, Note]
+          - { name: ticker, label: Ticker (facultatif), type: string }
+          - { name: titre, label: Titre, type: string }
+          - { name: texte, label: Texte, type: text }
+
+  # ------------------------------------------------------------------ #
+  - name: site
+    label: Profil et réglages
+    type: file
+    path: data/site.json
+    format: json
+    fields:
+      - { name: nom, label: Nom, type: string }
+      - { name: titre, label: Titre, type: string }
+      - { name: accroche, label: Accroche (bandeau), type: text }
+      - { name: presentation, label: Présentation (page À propos), type: text }
+      - { name: email, label: E-mail, type: string }
+      - { name: linkedin, label: URL LinkedIn, type: string }
+      - { name: cv_url, label: URL du CV (PDF), type: string }
+      - { name: depot_github, label: "Dépôt GitHub (ex. matthieu/portefeuille-garp)", type: string }
+      - { name: goatcounter, label: "Code GoatCounter (ex. matthieu)", type: string }
+      - name: date_lancement
+        label: Date de lancement du portefeuille
+        type: date
+        options:
+          format: yyyy-MM-dd
+      - { name: capital_initial, label: Capital fictif initial, type: number }
+      - { name: devise_portefeuille, label: Devise du portefeuille, type: string }
+      - { name: frais_transaction_pct, label: Frais par transaction (%), type: number }
+      - { name: benchmark_ticker, label: "Ticker Yahoo du benchmark (coté dans la devise du portefeuille)", type: string }
+      - { name: benchmark_nom, label: Nom du benchmark, type: string }
+      - { name: seuil_gem, label: Seuil Gem (/20), type: number }
+      - { name: marge_securite_min_pct, label: Marge de sécurité minimale (%), type: number }
+      - { name: piliers_gem, label: Noms des 4 piliers Gem, type: string, list: true }

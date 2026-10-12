@@ -1,0 +1,25 @@
+{
+  "nom": "Matthieu Lochey",
+  "titre": "Analyste actions — Quality Growth / GARP",
+  "accroche": "Un portefeuille modèle construit et suivi en conditions réelles, en appliquant mécaniquement une stratégie de sélection de compounders de qualité achetés avec une marge de sécurité.",
+  "presentation": "Analyste actions de formation, je travaille sur la valorisation de sociétés cotées européennes (DCF, comparables boursiers, multiples de transactions) et je rédige des notes de recherche longues. Ce site présente la stratégie que j'ai conçue et la façon dont je l'applique, décision par décision.",
+  "email": "matthieulochey@gmail.com",
+  "linkedin": "",
+  "cv_url": "",
+  "depot_github": "",
+  "goatcounter": "",
+  "date_lancement": "2026-07-01",
+  "capital_initial": 100000,
+  "devise_portefeuille": "EUR",
+  "frais_transaction_pct": 0.1,
+  "benchmark_ticker": "IWDA.AS",
+  "benchmark_nom": "iShares Core MSCI World (EUR)",
+  "seuil_gem": 14,
+  "marge_securite_min_pct": 15,
+  "piliers_gem": [
+    "Moat & pricing power",
+    "Management & gouvernance",
+    "Overlay macro",
+    "Red flags & risques"
+  ]
+}

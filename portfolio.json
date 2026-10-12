@@ -1,0 +1,389 @@
+{
+  "exemple": true,
+  "positions": [
+    {
+      "ticker": "CSU.TO",
+      "nom": "Constellation Software",
+      "pays": "CA",
+      "secteur": "Logiciels verticaux",
+      "archetype": "Acquéreur en série",
+      "devise": "CAD",
+      "date_entree": "2026-07-02",
+      "cours_entree": 4480,
+      "poids_cible": 5,
+      "prix_entree_theorique": 5531.0,
+      "methode_valo": "DCF trois phases (scénario explicite, fade, terminal normatif) recoupé par les multiples historiques",
+      "gem_moat": 5,
+      "gem_management": 5,
+      "gem_macro": 4,
+      "gem_risques": 4,
+      "momentum_valide": true,
+      "these": "Consolidateur de logiciels métiers de niche (VMS) : des centaines de petites positions dominantes, des coûts de transfert très élevés et une allocation du capital disciplinée, avec des seuils de rentabilité imposés à chaque acquisition.",
+      "catalyseurs": [
+        "Poursuite du rythme de déploiement du capital à rendement élevé",
+        "Montée en puissance des spin-offs et des grandes acquisitions"
+      ],
+      "invalidation": [
+        "Rendement des nouvelles acquisitions durablement sous le coût du capital",
+        "Départ de la culture de décentralisation après la transition de direction"
+      ],
+      "statut": "ouverte",
+      "date_sortie": "",
+      "cours_sortie": 0,
+      "motif_sortie": "",
+      "note_url": ""
+    },
+    {
+      "ticker": "HLMA.L",
+      "nom": "Halma",
+      "pays": "GB",
+      "secteur": "Technologies de sécurité",
+      "archetype": "Marques & medtech",
+      "devise": "GBX",
+      "date_entree": "2026-07-08",
+      "cours_entree": 3150,
+      "poids_cible": 5,
+      "prix_entree_theorique": 3795.0,
+      "methode_valo": "DCF trois phases (scénario explicite, fade, terminal normatif) recoupé par les multiples historiques",
+      "gem_moat": 4,
+      "gem_management": 5,
+      "gem_macro": 4,
+      "gem_risques": 4,
+      "momentum_valide": true,
+      "these": "Groupe décentralisé de PME technologiques leaders sur des niches réglementées (sécurité, environnement, santé). La demande est portée par la réglementation et la croissance combine organique et acquisitions ciblées.",
+      "catalyseurs": [
+        "Accélération de la croissance organique en santé",
+        "Expansion de la marge opérationnelle vers le haut de la fourchette historique"
+      ],
+      "invalidation": [
+        "Croissance organique inférieure à 5 % sur deux exercices",
+        "Dégradation du ROTIC sous 12 %"
+      ],
+      "statut": "ouverte",
+      "date_sortie": "",
+      "cours_sortie": 0,
+      "motif_sortie": "",
+      "note_url": ""
+    },
+    {
+      "ticker": "DPLM.L",
+      "nom": "Diploma",
+      "pays": "GB",
+      "secteur": "Distribution à valeur ajoutée",
+      "archetype": "Distributeur / réseau",
+      "devise": "GBX",
+      "date_entree": "2026-07-15",
+      "cours_entree": 4920,
+      "poids_cible": 5,
+      "prix_entree_theorique": 6000.0,
+      "methode_valo": "DCF trois phases (scénario explicite, fade, terminal normatif) recoupé par les multiples historiques",
+      "gem_moat": 4,
+      "gem_management": 4,
+      "gem_macro": 4,
+      "gem_risques": 4,
+      "momentum_valide": true,
+      "these": "Distributeur de composants techniques à faible valeur unitaire mais critiques pour le client. Le service et la disponibilité priment sur le prix, ce qui soutient des marges brutes élevées et un pricing power régulier.",
+      "catalyseurs": [
+        "Intégration d'acquisitions récentes et synergies",
+        "Reprise des volumes industriels"
+      ],
+      "invalidation": [
+        "Marge opérationnelle ajustée sous 18 %",
+        "Acquisitions financées au-delà de 2,5x dette nette / EBITDA"
+      ],
+      "statut": "ouverte",
+      "date_sortie": "",
+      "cours_sortie": 0,
+      "motif_sortie": "",
+      "note_url": ""
+    },
+    {
+      "ticker": "LIFCO-B.ST",
+      "nom": "Lifco",
+      "pays": "SE",
+      "secteur": "Conglomérat de niches",
+      "archetype": "Acquéreur en série",
+      "devise": "SEK",
+      "date_entree": "2026-07-22",
+      "cours_entree": 332,
+      "poids_cible": 5,
+      "prix_entree_theorique": 415.0,
+      "methode_valo": "DCF trois phases (scénario explicite, fade, terminal normatif) recoupé par les multiples historiques",
+      "gem_moat": 4,
+      "gem_management": 5,
+      "gem_macro": 4,
+      "gem_risques": 4,
+      "momentum_valide": true,
+      "these": "Holding suédoise qui acquiert des PME rentables et leur laisse leur autonomie. Le modèle privilégie la marge EBITA et le rendement du capital plutôt que la taille.",
+      "catalyseurs": [
+        "Pipeline d'acquisitions dans le dentaire et les systèmes",
+        "Résilience des marges en cas de ralentissement"
+      ],
+      "invalidation": [
+        "Multiple payé à l'acquisition en hausse durable",
+        "Rendement du capital employé en baisse sur trois exercices"
+      ],
+      "statut": "ouverte",
+      "date_sortie": "",
+      "cours_sortie": 0,
+      "motif_sortie": "",
+      "note_url": ""
+    },
+    {
+      "ticker": "6861.T",
+      "nom": "Keyence",
+      "pays": "JP",
+      "secteur": "Automatisation industrielle",
+      "archetype": "Marques & medtech",
+      "devise": "JPY",
+      "date_entree": "2026-08-03",
+      "cours_entree": 61200,
+      "poids_cible": 5,
+      "prix_entree_theorique": 77468.0,
+      "methode_valo": "DCF trois phases (scénario explicite, fade, terminal normatif) recoupé par les multiples historiques",
+      "gem_moat": 5,
+      "gem_management": 4,
+      "gem_macro": 3,
+      "gem_risques": 4,
+      "momentum_valide": true,
+      "these": "Fabricant sans usine de capteurs et de systèmes de vision, avec une force de vente directe très qualifiée qui conçoit des solutions sur mesure. Les marges opérationnelles figurent parmi les plus élevées de l'industrie mondiale.",
+      "catalyseurs": [
+        "Rebond du cycle d'investissement industriel",
+        "Progression des ventes hors Japon"
+      ],
+      "invalidation": [
+        "Contraction de la marge opérationnelle sous 45 %",
+        "Perte de parts de marché face aux acteurs chinois"
+      ],
+      "statut": "ouverte",
+      "date_sortie": "",
+      "cours_sortie": 0,
+      "motif_sortie": "",
+      "note_url": ""
+    },
+    {
+      "ticker": "MSFT",
+      "nom": "Microsoft",
+      "pays": "US",
+      "secteur": "Logiciels & cloud",
+      "archetype": "Franchise asset-light",
+      "devise": "USD",
+      "date_entree": "2026-08-12",
+      "cours_entree": 478,
+      "poids_cible": 5,
+      "prix_entree_theorique": 569.0,
+      "methode_valo": "DCF trois phases (scénario explicite, fade, terminal normatif) recoupé par les multiples historiques",
+      "gem_moat": 5,
+      "gem_management": 4,
+      "gem_macro": 4,
+      "gem_risques": 4,
+      "momentum_valide": true,
+      "these": "Plateforme logicielle et cloud au cœur des systèmes d'information des entreprises. Les coûts de transfert, l'effet d'écosystème et la monétisation de l'IA soutiennent une croissance à deux chiffres.",
+      "catalyseurs": [
+        "Croissance d'Azure et monétisation des offres IA",
+        "Discipline sur les investissements dans les centres de données"
+      ],
+      "invalidation": [
+        "Intensité capitalistique durablement supérieure au FCF généré",
+        "Décélération d'Azure sous 15 % sur deux trimestres"
+      ],
+      "statut": "ouverte",
+      "date_sortie": "",
+      "cours_sortie": 0,
+      "motif_sortie": "",
+      "note_url": ""
+    },
+    {
+      "ticker": "FAST",
+      "nom": "Fastenal",
+      "pays": "US",
+      "secteur": "Distribution industrielle",
+      "archetype": "Distributeur / réseau",
+      "devise": "USD",
+      "date_entree": "2026-08-20",
+      "cours_entree": 41.8,
+      "poids_cible": 5,
+      "prix_entree_theorique": 50.36,
+      "methode_valo": "DCF trois phases (scénario explicite, fade, terminal normatif) recoupé par les multiples historiques",
+      "gem_moat": 4,
+      "gem_management": 5,
+      "gem_macro": 3,
+      "gem_risques": 4,
+      "momentum_valide": true,
+      "these": "Distributeur de fournitures industrielles intégré directement chez ses clients (sites dédiés, distributeurs automatiques). Ce modèle crée une relation récurrente difficile à déloger.",
+      "catalyseurs": [
+        "Déploiement des solutions sur site et des distributeurs",
+        "Reprise de la production industrielle américaine"
+      ],
+      "invalidation": [
+        "Marge brute sous 44 % de façon durable",
+        "Ralentissement des signatures de sites dédiés"
+      ],
+      "statut": "ouverte",
+      "date_sortie": "",
+      "cours_sortie": 0,
+      "motif_sortie": "",
+      "note_url": ""
+    },
+    {
+      "ticker": "GWW",
+      "nom": "W.W. Grainger",
+      "pays": "US",
+      "secteur": "Distribution MRO",
+      "archetype": "Distributeur / réseau",
+      "devise": "USD",
+      "date_entree": "2026-08-27",
+      "cours_entree": 1045,
+      "poids_cible": 5,
+      "prix_entree_theorique": 1244.0,
+      "methode_valo": "DCF trois phases (scénario explicite, fade, terminal normatif) recoupé par les multiples historiques",
+      "gem_moat": 4,
+      "gem_management": 4,
+      "gem_macro": 3,
+      "gem_risques": 4,
+      "momentum_valide": true,
+      "these": "Leader de la distribution MRO en Amérique du Nord, combinant un modèle à forte intensité de service et une plateforme en ligne à coût bas (Endless Assortment).",
+      "catalyseurs": [
+        "Gains de parts de marché dans le segment High-Touch",
+        "Expansion de la marge du segment Endless Assortment"
+      ],
+      "invalidation": [
+        "Croissance inférieure au marché MRO sur quatre trimestres",
+        "Pression durable sur la marge brute"
+      ],
+      "statut": "ouverte",
+      "date_sortie": "",
+      "cours_sortie": 0,
+      "motif_sortie": "",
+      "note_url": ""
+    },
+    {
+      "ticker": "ROP",
+      "nom": "Roper Technologies",
+      "pays": "US",
+      "secteur": "Logiciels verticaux",
+      "archetype": "Acquéreur en série",
+      "devise": "USD",
+      "date_entree": "2026-09-03",
+      "cours_entree": 538,
+      "poids_cible": 5,
+      "prix_entree_theorique": 656.0,
+      "methode_valo": "DCF trois phases (scénario explicite, fade, terminal normatif) recoupé par les multiples historiques",
+      "gem_moat": 4,
+      "gem_management": 4,
+      "gem_macro": 4,
+      "gem_risques": 3,
+      "momentum_valide": true,
+      "these": "Portefeuille de logiciels de niche à forte récurrence, financé par la cession des activités industrielles. Le groupe réinvestit son FCF dans des acquisitions de logiciels verticaux.",
+      "catalyseurs": [
+        "Accélération organique des logiciels",
+        "Déploiement du bilan en acquisitions"
+      ],
+      "invalidation": [
+        "Rendement sur capital investi des acquisitions en baisse",
+        "Levier supérieur à 3,0x dette nette / EBITDA"
+      ],
+      "statut": "ouverte",
+      "date_sortie": "",
+      "cours_sortie": 0,
+      "motif_sortie": "",
+      "note_url": ""
+    },
+    {
+      "ticker": "COLO-B.CO",
+      "nom": "Coloplast",
+      "pays": "DK",
+      "secteur": "Dispositifs médicaux",
+      "archetype": "Marques & medtech",
+      "devise": "DKK",
+      "date_entree": "2026-09-10",
+      "cours_entree": 652,
+      "poids_cible": 5,
+      "prix_entree_theorique": 786.0,
+      "methode_valo": "DCF trois phases (scénario explicite, fade, terminal normatif) recoupé par les multiples historiques",
+      "gem_moat": 4,
+      "gem_management": 4,
+      "gem_macro": 4,
+      "gem_risques": 3,
+      "momentum_valide": true,
+      "these": "Leader des consommables de stomie et de continence, avec une base de patients très fidèle. La croissance organique est régulière, portée par le vieillissement de la population.",
+      "catalyseurs": [
+        "Redressement de la division soins des plaies",
+        "Reprise de la croissance en Chine"
+      ],
+      "invalidation": [
+        "Marge EBIT sous 26 % hors effet de change",
+        "Pression réglementaire sur les prix de remboursement"
+      ],
+      "statut": "ouverte",
+      "date_sortie": "",
+      "cours_sortie": 0,
+      "motif_sortie": "",
+      "note_url": ""
+    },
+    {
+      "ticker": "NOVO-B.CO",
+      "nom": "Novo Nordisk",
+      "pays": "DK",
+      "secteur": "Pharmacie",
+      "archetype": "Marques & medtech",
+      "devise": "DKK",
+      "date_entree": "2026-09-17",
+      "cours_entree": 402,
+      "poids_cible": 5,
+      "prix_entree_theorique": 529.0,
+      "methode_valo": "DCF trois phases (scénario explicite, fade, terminal normatif) recoupé par les multiples historiques",
+      "gem_moat": 4,
+      "gem_management": 4,
+      "gem_macro": 4,
+      "gem_risques": 3,
+      "momentum_valide": true,
+      "these": "Leader mondial du diabète et de l'obésité. La valorisation a fortement corrigé alors que la franchise GLP-1 conserve une position de premier plan et une capacité de production rare.",
+      "catalyseurs": [
+        "Lancement des nouvelles formulations orales",
+        "Expansion des capacités de production"
+      ],
+      "invalidation": [
+        "Perte de parts de marché durable sur le segment obésité",
+        "Baisse des prix nets plus rapide que la croissance des volumes"
+      ],
+      "statut": "ouverte",
+      "date_sortie": "",
+      "cours_sortie": 0,
+      "motif_sortie": "",
+      "note_url": ""
+    },
+    {
+      "ticker": "ADYEN.AS",
+      "nom": "Adyen",
+      "pays": "NL",
+      "secteur": "Infrastructure de paiement",
+      "archetype": "Franchise asset-light",
+      "devise": "EUR",
+      "date_entree": "2026-07-03",
+      "cours_entree": 1420,
+      "poids_cible": 5,
+      "prix_entree_theorique": 1732.0,
+      "methode_valo": "DCF trois phases (scénario explicite, fade, terminal normatif) recoupé par les multiples historiques",
+      "gem_moat": 5,
+      "gem_management": 5,
+      "gem_macro": 3,
+      "gem_risques": 4,
+      "momentum_valide": true,
+      "these": "Plateforme de paiement unifiée, développée en interne, pour grands marchands internationaux. Le modèle est très rentable grâce à une base technologique unique.",
+      "catalyseurs": [
+        "Gains de volumes auprès des grands marchands",
+        "Levier opérationnel"
+      ],
+      "invalidation": [
+        "Croissance du revenu net sous 20 %",
+        "Marge EBITDA sous 50 %"
+      ],
+      "statut": "cloturee",
+      "date_sortie": "2026-09-24",
+      "cours_sortie": 1640,
+      "motif_sortie": "Cours supérieur à la valeur intrinsèque estimée : la marge de sécurité est consommée. Sortie selon la règle de valorisation.",
+      "note_url": ""
+    }
+  ]
+}

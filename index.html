@@ -1,0 +1,874 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Portefeuille modèle GARP</title>
+<meta name="description" content="Portefeuille modèle Quality Growth / GARP : positions, journal des décisions, backtest et méthodologie.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Literata:opsz,wght@7..72,400;7..72,500&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap">
+<style>
+/* Layout : dossier de recherche. Bandeau d'identité, onglets façon intercalaires,
+   tableaux denses à chiffres tabulaires, fiche valeur en tiroir latéral. */
+:root {
+  --bg: #f5f6f8;
+  --surface: #ffffff;
+  --ink: #141c29;
+  --muted: #5a6475;
+  --line: #dde1e8;
+  --line-strong: #c3c9d3;
+  --accent: #3140a6;
+  --accent-soft: #e8eaf8;
+  --pos: #187647;
+  --neg: #b3202d;
+  --warn: #9a6500;
+  --chart-bench: #9aa3b2;
+  --shadow: 0 18px 50px rgba(20, 28, 41, .18);
+
+  --f-display: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --f-ui: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --f-prose: "Literata", Georgia, "Times New Roman", serif;
+  --f-data: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --s-xs: .75rem; --s-sm: .8125rem; --s-base: .9375rem; --s-md: 1.0625rem;
+  --s-lg: 1.375rem; --s-xl: 1.875rem; --s-xxl: clamp(2rem, 4.5vw, 2.875rem);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e131a; --surface: #151c26; --ink: #e5e9ef; --muted: #96a0af;
+    --line: #253041; --line-strong: #344155; --accent: #93a0ff; --accent-soft: #1e2647;
+    --pos: #4cc38a; --neg: #ff6b76; --warn: #e2b04a; --chart-bench: #5d6879;
+    --shadow: 0 18px 50px rgba(0, 0, 0, .5);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e131a; --surface: #151c26; --ink: #e5e9ef; --muted: #96a0af;
+  --line: #253041; --line-strong: #344155; --accent: #93a0ff; --accent-soft: #1e2647;
+  --pos: #4cc38a; --neg: #ff6b76; --warn: #e2b04a; --chart-bench: #5d6879;
+  --shadow: 0 18px 50px rgba(0, 0, 0, .5);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 400 var(--s-base)/1.55 var(--f-ui);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-underline-offset: 2px; }
+a:focus-visible, button:focus-visible, [tabindex]:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px;
+}
+.wrap { max-width: 1140px; margin: 0 auto; padding-inline: 20px; }
+.num, td.n, .mono { font-family: var(--f-data); font-variant-numeric: tabular-nums; }
+.pos { color: var(--pos); } .neg { color: var(--neg); }
+.muted { color: var(--muted); }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; }
+.eyebrow {
+  font: 600 var(--s-xs)/1.2 var(--f-ui); letter-spacing: .09em; text-transform: uppercase; color: var(--muted);
+}
+
+/* ---- Bandeau ---- */
+.masthead { padding-block: 40px 0; border-bottom: 1px solid var(--line); background: var(--surface); }
+.masthead-grid { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 32px; align-items: end; }
+.masthead h1 { font-size: var(--s-xxl); font-weight: 700; letter-spacing: -.02em; line-height: 1.05; margin-top: 10px; }
+.masthead .role { font-size: var(--s-md); color: var(--muted); margin-top: 6px; }
+.masthead .pitch { font-family: var(--f-prose); font-size: var(--s-md); max-width: 62ch; margin: 18px 0 0; }
+.vl-card { border-left: 1px solid var(--line); padding-left: 28px; min-width: 230px; }
+.vl-card .big { font: 500 2.25rem/1 var(--f-data); letter-spacing: -.02em; margin: 8px 0 6px; }
+.vl-card .vs { font-size: var(--s-sm); color: var(--muted); }
+.vl-card .vs b { font-weight: 500; font-family: var(--f-data); }
+.vl-card .asof { font-size: var(--s-xs); color: var(--muted); margin-top: 10px; }
+.tag-fictif {
+  display: inline-flex; gap: 6px; align-items: center; border: 1px solid var(--line-strong);
+  border-radius: 999px; padding: 3px 10px; font-size: var(--s-xs); color: var(--muted); font-weight: 500;
+}
+.tag-fictif::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+nav.tabs { display: flex; gap: 4px; margin-top: 32px; overflow-x: auto; scrollbar-width: none; }
+nav.tabs::-webkit-scrollbar { display: none; }
+nav.tabs a {
+  flex: none; text-decoration: none; color: var(--muted); font-weight: 500; font-size: var(--s-base);
+  padding: 10px 16px 12px; border: 1px solid transparent; border-bottom: 0; border-radius: 8px 8px 0 0;
+  margin-bottom: -1px;
+}
+nav.tabs a:hover { color: var(--ink); }
+nav.tabs a[aria-current="page"] { color: var(--ink); background: var(--bg); border-color: var(--line); }
+
+.demo-banner {
+  background: var(--accent-soft); color: var(--ink); font-size: var(--s-sm);
+  padding-block: 9px; border-bottom: 1px solid var(--line);
+}
+.demo-banner b { font-weight: 600; }
+
+main { padding-block: 36px 64px; }
+section.view { display: grid; gap: 40px; }
+.sec-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
+.sec-head h2 { font-size: var(--s-lg); font-weight: 600; letter-spacing: -.01em; }
+.sec-head p { margin: 0; color: var(--muted); font-size: var(--s-sm); }
+.lede { font-family: var(--f-prose); font-size: var(--s-md); max-width: 68ch; margin: 0; }
+
+/* ---- Indicateurs ---- */
+.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+.kpi { padding: 18px 20px; display: grid; gap: 6px; align-content: start; }
+.kpi + .kpi { border-left: 1px solid var(--line); }
+.kpi .v { font: 500 1.625rem/1.1 var(--f-data); letter-spacing: -.01em; }
+.kpi .d { font-size: var(--s-sm); color: var(--muted); }
+
+/* ---- Graphiques ---- */
+.chart-box { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 18px 10px; }
+.legend { display: flex; gap: 18px; flex-wrap: wrap; font-size: var(--s-sm); color: var(--muted); margin-bottom: 8px; }
+.legend span { display: inline-flex; align-items: center; gap: 7px; }
+.legend i { width: 18px; height: 2px; background: var(--accent); display: inline-block; }
+.legend i.b { background: var(--chart-bench); }
+.chart { position: relative; width: 100%; }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.chart .grid line { stroke: var(--line); stroke-width: 1; }
+.chart .axis text { fill: var(--muted); font: 400 11px var(--f-data); }
+.chart .l-main { fill: none; stroke: var(--accent); stroke-width: 2; }
+.chart .l-bench { fill: none; stroke: var(--chart-bench); stroke-width: 1.5; }
+.chart .a-main { fill: var(--accent); opacity: .08; }
+.chart .base { stroke: var(--line-strong); stroke-dasharray: 3 3; }
+.chart .dot { fill: var(--accent); }
+.chart .cursor { stroke: var(--line-strong); }
+.chart .bar-s { fill: var(--accent); } .chart .bar-b { fill: var(--chart-bench); }
+.tip {
+  position: absolute; pointer-events: none; background: var(--surface); border: 1px solid var(--line-strong);
+  border-radius: 6px; padding: 7px 10px; font-size: var(--s-xs); box-shadow: var(--shadow); white-space: nowrap;
+  font-family: var(--f-data); transform: translate(-50%, -110%);
+}
+
+/* ---- Tableaux ---- */
+.table-scroll { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+table { width: 100%; border-collapse: collapse; font-size: var(--s-sm); }
+th { text-align: left; font-weight: 600; font-size: var(--s-xs); letter-spacing: .05em; text-transform: uppercase; color: var(--muted); padding: 11px 14px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+td { padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+tr:last-child td { border-bottom: 0; }
+th.n, td.n { text-align: right; white-space: nowrap; }
+tbody tr.clickable { cursor: pointer; }
+tbody tr.clickable:hover { background: var(--accent-soft); }
+.co { display: grid; gap: 2px; min-width: 190px; }
+.co b { font-weight: 600; font-size: var(--s-base); }
+.co small { color: var(--muted); font-size: var(--s-xs); }
+.tk { font-family: var(--f-data); font-size: var(--s-xs); color: var(--muted); }
+.sub { display: block; font-size: var(--s-xs); color: var(--muted); }
+
+.gem { display: inline-grid; grid-template-columns: repeat(4, 7px); gap: 2px; align-items: end; height: 20px; margin-right: 8px; vertical-align: middle; }
+.gem i { display: block; background: var(--accent); border-radius: 1px; }
+.checks { display: inline-flex; gap: 4px; }
+.check {
+  width: 20px; height: 20px; border-radius: 50%; display: inline-grid; place-items: center;
+  font-size: 11px; font-weight: 700; border: 1px solid var(--pos); color: var(--pos);
+}
+.check.ko { border-color: var(--neg); color: var(--neg); }
+.rule-note { font-size: var(--s-xs); color: var(--muted); margin-top: 10px; display: flex; gap: 14px; flex-wrap: wrap; }
+
+/* ---- Journal ---- */
+.filters { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip {
+  font: 500 var(--s-sm)/1 var(--f-ui); padding: 8px 13px; border-radius: 999px; border: 1px solid var(--line-strong);
+  background: var(--surface); color: var(--ink); cursor: pointer;
+}
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.timeline { display: grid; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+.month { padding: 14px 20px 6px; font-weight: 600; font-size: var(--s-xs); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border-top: 1px solid var(--line); }
+.month:first-child { border-top: 0; }
+.entry { display: grid; grid-template-columns: 92px 96px minmax(0, 1fr); gap: 16px; padding: 14px 20px; }
+.entry + .entry { border-top: 1px dashed var(--line); }
+.entry .date { font-family: var(--f-data); font-size: var(--s-sm); color: var(--muted); padding-top: 2px; }
+.type { justify-self: start; font-size: var(--s-xs); font-weight: 600; padding: 3px 9px; border-radius: 4px; border: 1px solid var(--line-strong); color: var(--muted); height: fit-content; }
+.type.t-entree { background: var(--accent); color: var(--surface); border-color: var(--accent); }
+.type.t-sortie { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+.type.t-ecarte { border-style: dashed; }
+.entry h3 { font-size: var(--s-base); font-weight: 600; }
+.entry h3 .tk { margin-left: 6px; font-weight: 400; }
+.entry p { margin: 4px 0 0; font-family: var(--f-prose); font-size: var(--s-base); max-width: 72ch; }
+.entry button.linkish { background: none; border: 0; padding: 0; font: inherit; color: var(--accent); cursor: pointer; text-decoration: underline; text-underline-offset: 2px; font-size: var(--s-sm); margin-top: 6px; }
+.proof { font-size: var(--s-sm); color: var(--muted); }
+
+/* ---- Backtest & méthode ---- */
+.callout { border: 1px solid var(--line); border-left: 3px solid var(--accent); background: var(--surface); padding: 16px 20px; border-radius: 4px 10px 10px 4px; }
+.callout p { margin: 6px 0 0; font-family: var(--f-prose); max-width: 75ch; }
+.two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; }
+ul.plain, ol.plain { margin: 0; padding-left: 1.2em; display: grid; gap: 8px; font-family: var(--f-prose); max-width: 72ch; }
+ul.plain li::marker { color: var(--muted); }
+.limits { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px 22px; }
+.limits h2 { font-size: var(--s-lg); font-weight: 600; margin-bottom: 4px; }
+.limits > p { margin: 0 0 14px; color: var(--muted); font-size: var(--s-sm); }
+.sens td.best { font-weight: 600; }
+
+.steps { display: grid; gap: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+.step { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 18px; padding: 22px 24px; }
+.step + .step { border-top: 1px solid var(--line); }
+.step .no { font: 500 var(--s-xl)/1 var(--f-data); color: var(--accent); }
+.step h3 { font-size: var(--s-md); font-weight: 600; }
+.step p { margin: 6px 0 0; font-family: var(--f-prose); max-width: 70ch; }
+.thresholds { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; margin-top: 14px; }
+.thr { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+.thr .k { font-size: var(--s-xs); color: var(--muted); }
+.thr .v { font: 500 var(--s-md) var(--f-data); }
+.pillars { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 14px; }
+.pillar { border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; }
+.pillar b { font-weight: 600; display: block; margin-bottom: 4px; }
+.pillar span { font-size: var(--s-sm); color: var(--muted); }
+
+.about { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 32px; }
+.contact { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px 22px; display: grid; gap: 14px; align-content: start; }
+.contact .row { display: grid; gap: 4px; }
+.copy-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.copy-row .mono { user-select: all; font-size: var(--s-sm); overflow-wrap: anywhere; }
+.btn {
+  font: 500 var(--s-sm)/1 var(--f-ui); padding: 8px 12px; border-radius: 6px; border: 1px solid var(--line-strong);
+  background: var(--surface); color: var(--ink); cursor: pointer; text-decoration: none; display: inline-flex; gap: 6px; align-items: center;
+}
+.btn:hover { border-color: var(--ink); }
+.disclaimer { font-size: var(--s-sm); color: var(--muted); max-width: 80ch; }
+
+footer { border-top: 1px solid var(--line); padding-block: 22px 40px; font-size: var(--s-xs); color: var(--muted); }
+footer p { margin: 0; max-width: 95ch; }
+
+/* ---- Fiche valeur ---- */
+.backdrop { position: fixed; inset: 0; background: rgba(10, 14, 20, .38); z-index: 20; }
+.drawer {
+  position: fixed; top: 0; right: 0; bottom: 0; width: min(620px, 100%); z-index: 21;
+  background: var(--bg); box-shadow: var(--shadow); overflow-y: auto;
+  padding: calc(env(safe-area-inset-top, 0px) + 22px) 26px calc(env(safe-area-inset-bottom, 0px) + 40px);
+  display: grid; gap: 26px; align-content: start; grid-auto-rows: max-content;
+}
+.drawer-head { display: flex; justify-content: space-between; gap: 16px; align-items: start; }
+.drawer-head h2 { font-size: var(--s-xl); font-weight: 700; letter-spacing: -.015em; }
+.drawer-head .meta { color: var(--muted); font-size: var(--s-sm); margin-top: 4px; }
+.close { flex: none; width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); font-size: 18px; cursor: pointer; }
+.facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.fact { background: var(--surface); padding: 12px 14px; display: grid; gap: 3px; }
+.fact .k { font-size: var(--s-xs); color: var(--muted); }
+.fact .v { font: 500 var(--s-md) var(--f-data); }
+.block h3 { font-size: var(--s-xs); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+.block p { margin: 0; font-family: var(--f-prose); font-size: var(--s-md); }
+.scale { position: relative; height: 54px; margin: 8px 6px 4px; }
+.scale .track { position: absolute; left: 0; right: 0; top: 24px; height: 6px; border-radius: 3px; background: var(--line); }
+.scale .zone { position: absolute; top: 24px; height: 6px; background: var(--pos); opacity: .35; border-radius: 3px 0 0 3px; }
+.scale .mk { position: absolute; top: 0; transform: translateX(-50%); display: grid; justify-items: center; gap: 4px; font-size: 11px; font-family: var(--f-data); white-space: nowrap; }
+.scale .mk i { width: 2px; height: 30px; background: var(--ink); display: block; }
+.scale .mk.th i { background: var(--muted); }
+.scale .mk.lbl-below { top: 22px; }
+.scale .mk.lbl-below i { height: 12px; }
+.scale-caption { font-size: var(--s-sm); color: var(--muted); margin-top: 6px; }
+.gem-rows { display: grid; gap: 8px; }
+.gem-row { display: grid; grid-template-columns: minmax(0, 1fr) 120px 34px; gap: 12px; align-items: center; font-size: var(--s-sm); }
+.gem-row .bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; }
+.gem-row .bar i { height: 8px; border-radius: 2px; background: var(--line); }
+.gem-row .bar i.on { background: var(--accent); }
+.gem-total { display: flex; justify-content: space-between; border-top: 1px solid var(--line); padding-top: 8px; margin-top: 2px; font-weight: 600; font-size: var(--s-sm); }
+.invalid li::marker { content: "✕  "; color: var(--neg); }
+.exit { border: 1px solid var(--line-strong); border-radius: 8px; padding: 12px 14px; background: var(--surface); }
+
+.empty { padding: 28px; text-align: center; color: var(--muted); background: var(--surface); border: 1px dashed var(--line-strong); border-radius: 10px; }
+.err { padding: 18px; border: 1px solid var(--neg); color: var(--neg); border-radius: 10px; background: var(--surface); }
+
+@media (max-width: 900px) {
+  .masthead-grid { grid-template-columns: 1fr; }
+  .vl-card { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); padding-top: 18px; }
+  .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .kpi:nth-child(3) { border-left: 0; }
+  .kpi:nth-child(n+3) { border-top: 1px solid var(--line); }
+  .two, .about { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .wrap { padding-inline: 16px; }
+  .masthead { padding-block: 26px 0; }
+  .entry { grid-template-columns: 1fr; gap: 6px; }
+  .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pillars { grid-template-columns: 1fr; }
+  .step { grid-template-columns: 1fr; gap: 8px; }
+  .drawer { padding-inline: 18px; }
+  .gem-row { grid-template-columns: minmax(0, 1fr) 90px 30px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .drawer { animation: slide .22s ease-out; }
+  @keyframes slide { from { transform: translateX(24px); opacity: .6; } to { transform: none; opacity: 1; } }
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="masthead-grid">
+      <div>
+        <span class="tag-fictif">Portefeuille modèle · capital fictif</span>
+        <h1 id="nom">Portefeuille modèle</h1>
+        <div class="role" id="role"></div>
+        <p class="pitch" id="pitch"></p>
+      </div>
+      <div class="vl-card" id="vlcard" aria-live="polite"></div>
+    </div>
+    <nav class="tabs" aria-label="Sections">
+      <a href="#portefeuille" data-view="portefeuille">Portefeuille</a>
+      <a href="#journal" data-view="journal">Journal des décisions</a>
+      <a href="#backtest" data-view="backtest">Backtest</a>
+      <a href="#methode" data-view="methode">Méthode</a>
+      <a href="#apropos" data-view="apropos">À propos</a>
+    </nav>
+  </div>
+</header>
+<div class="demo-banner" id="demo" hidden><div class="wrap"><b>Données d'exemple.</b> <span id="demo-txt"></span></div></div>
+
+<main class="wrap">
+  <section class="view" id="v-portefeuille"></section>
+  <section class="view" id="v-journal" hidden></section>
+  <section class="view" id="v-backtest" hidden></section>
+  <section class="view" id="v-methode" hidden></section>
+  <section class="view" id="v-apropos" hidden></section>
+</main>
+
+<footer>
+  <div class="wrap"><p id="footer-txt"></p></div>
+</footer>
+
+<div class="backdrop" id="backdrop" hidden></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="fiche-titre" hidden></aside>
+
+<script>
+(() => {
+"use strict";
+
+/* ------------------------------------------------------------------ */
+/* Données                                                             */
+/* ------------------------------------------------------------------ */
+const FICHIERS = ["site", "portfolio", "journal", "marche", "backtest"];
+const D = {};
+
+const nf = (d = 0) => new Intl.NumberFormat("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d });
+const fmt = (v, d = 0) => (v == null || isNaN(v)) ? "—" : nf(d).format(v);
+const pct = (v, d = 1, signe = true) => (v == null || isNaN(v)) ? "—" : (signe && v > 0 ? "+" : "") + nf(d).format(v) + " %";
+const cls = v => v > 0 ? "pos" : v < 0 ? "neg" : "";
+const dfr = s => { if (!s) return "—"; const [y, m, d] = s.split("-"); return `${d}/${m}/${y}`; };
+const MOIS = ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const devise = d => d === "GBX" ? "p" : d;
+const prix = (v, d) => {
+  if (v == null || isNaN(v)) return "—";
+  const dec = v >= 1000 ? 0 : v >= 100 ? 1 : 2;
+  return fmt(v, dec) + " " + devise(d);
+};
+const slug = t => String(t).replace(/[^A-Za-z0-9._~-]/g, "_");
+
+function gemTotal(p) { return [p.gem_moat, p.gem_management, p.gem_macro, p.gem_risques].reduce((a, b) => a + (+b || 0), 0); }
+function marge(p) { return p.prix_entree_theorique ? (1 - p.cours_entree / p.prix_entree_theorique) * 100 : null; }
+function regles(p) {
+  const s = D.site;
+  return [
+    { ok: (marge(p) ?? -1) >= s.marge_securite_min_pct - 1e-9, lbl: `Marge de sécurité ≥ ${s.marge_securite_min_pct} %` },
+    { ok: gemTotal(p) >= s.seuil_gem, lbl: `Score Gem ≥ ${s.seuil_gem}/20` },
+    { ok: !!p.momentum_valide, lbl: "Momentum confirmé" },
+  ];
+}
+const mk = p => (D.marche.positions || {})[p.ticker] || {};
+
+/* ------------------------------------------------------------------ */
+/* Graphique linéaire                                                  */
+/* ------------------------------------------------------------------ */
+function niceTicks(min, max, n = 5) {
+  const span = max - min || 1, step0 = span / n, mag = Math.pow(10, Math.floor(Math.log10(step0)));
+  const step = [1, 2, 2.5, 5, 10].map(m => m * mag).find(s => s >= step0);
+  const t = []; for (let v = Math.ceil(min / step) * step; v <= max + 1e-9; v += step) t.push(+v.toFixed(6));
+  return t;
+}
+function lineChart(el, dates, main, bench, opts = {}) {
+  const draw = () => {
+    const W = Math.max(300, el.clientWidth), H = opts.h || (W < 520 ? 220 : 280);
+    const m = { t: 12, r: 14, b: 28, l: 44 };
+    const all = main.concat(bench).filter(v => v != null);
+    let lo = Math.min(...all, 100), hi = Math.max(...all, 100);
+    const pad = (hi - lo) * .08 || 1; lo -= pad; hi += pad;
+    const ticks = niceTicks(lo, hi, 5); lo = Math.min(lo, ticks[0]); hi = Math.max(hi, ticks[ticks.length - 1]);
+    const n = dates.length, x = i => m.l + (n < 2 ? 0 : i / (n - 1)) * (W - m.l - m.r);
+    const y = v => m.t + (1 - (v - lo) / (hi - lo)) * (H - m.t - m.b);
+    const path = arr => arr.map((v, i) => (i ? "L" : "M") + x(i).toFixed(1) + "," + y(v).toFixed(1)).join("");
+    // repères de dates : début de mois (ou d'année si la série est longue)
+    const longue = n > 0 && (new Date(dates[n - 1]) - new Date(dates[0])) > 3 * 365 * 864e5;
+    const xt = []; let prev = "";
+    dates.forEach((d, i) => { const k = longue ? d.slice(0, 4) : d.slice(0, 7); if (k !== prev) { xt.push([i, k]); prev = k; } });
+    const every = Math.ceil(xt.length / Math.max(2, Math.floor((W - 60) / 70)));
+    const xlab = k => longue ? k : MOIS[+k.slice(5, 7) - 1].slice(0, 4).replace(/\.$/, "") + (k.slice(5, 7) === "01" ? " " + k.slice(2, 4) : "");
+    let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(opts.label || "Graphique")}">`;
+    s += `<g class="grid">${ticks.map(t => `<line x1="${m.l}" x2="${W - m.r}" y1="${y(t)}" y2="${y(t)}"/>`).join("")}</g>`;
+    s += `<g class="axis">${ticks.map(t => `<text x="${m.l - 8}" y="${y(t) + 4}" text-anchor="end">${fmt(t, 0)}</text>`).join("")}`;
+    s += xt.filter((_, j) => j % every === 0).map(([i, k]) => `<text x="${x(i)}" y="${H - 8}" text-anchor="middle">${xlab(k)}</text>`).join("") + `</g>`;
+    s += `<line class="base" x1="${m.l}" x2="${W - m.r}" y1="${y(100)}" y2="${y(100)}"/>`;
+    if (main.length) s += `<path class="a-main" d="${path(main)}L${x(n - 1)},${y(lo)}L${x(0)},${y(lo)}Z"/>`;
+    if (bench.length) s += `<path class="l-bench" d="${path(bench)}"/>`;
+    if (main.length) s += `<path class="l-main" d="${path(main)}"/><circle class="dot" cx="${x(n - 1)}" cy="${y(main[n - 1])}" r="3.5"/>`;
+    s += `<line class="cursor" id="cur" y1="${m.t}" y2="${H - m.b}" x1="-10" x2="-10"/>`;
+    s += `<rect x="${m.l}" y="0" width="${W - m.l - m.r}" height="${H}" fill="transparent"/></svg><div class="tip" hidden></div>`;
+    el.innerHTML = s;
+    const svg = el.querySelector("svg"), tip = el.querySelector(".tip"), cur = el.querySelector("#cur");
+    const move = ev => {
+      const r = svg.getBoundingClientRect(), px = (ev.clientX - r.left) * (W / r.width);
+      const i = Math.max(0, Math.min(n - 1, Math.round((px - m.l) / (W - m.l - m.r) * (n - 1))));
+      cur.setAttribute("x1", x(i)); cur.setAttribute("x2", x(i));
+      tip.hidden = false;
+      tip.style.left = (x(i) / W * r.width) + "px"; tip.style.top = (y(main[i] ?? bench[i]) / H * r.height) + "px";
+      tip.innerHTML = `${dfr(dates[i])}<br>${esc(opts.nMain || "Portefeuille")} ${fmt(main[i], 1)}` + (bench.length ? `<br>${esc(opts.nBench || "Benchmark")} ${fmt(bench[i], 1)}` : "");
+    };
+    svg.addEventListener("pointermove", move);
+    svg.addEventListener("pointerleave", () => { tip.hidden = true; cur.setAttribute("x1", -10); cur.setAttribute("x2", -10); });
+  };
+  draw();
+  let raf; new ResizeObserver(() => { cancelAnimationFrame(raf); raf = requestAnimationFrame(draw); }).observe(el);
+}
+function barChart(el, rows) {
+  const draw = () => {
+    const W = Math.max(300, el.clientWidth), H = W < 520 ? 200 : 240, m = { t: 12, r: 10, b: 26, l: 40 };
+    const vals = rows.flatMap(r => [r.strategie_pct, r.benchmark_pct]);
+    const ticks = niceTicks(Math.min(0, ...vals), Math.max(0, ...vals), 4);
+    const lo = Math.min(ticks[0], ...vals), hi = Math.max(ticks[ticks.length - 1], ...vals);
+    const y = v => m.t + (1 - (v - lo) / (hi - lo)) * (H - m.t - m.b);
+    const bw = (W - m.l - m.r) / rows.length, w = Math.min(14, bw * .32);
+    let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Performances annuelles">`;
+    s += `<g class="grid">${ticks.map(t => `<line x1="${m.l}" x2="${W - m.r}" y1="${y(t)}" y2="${y(t)}"/>`).join("")}</g><g class="axis">`;
+    s += ticks.map(t => `<text x="${m.l - 8}" y="${y(t) + 4}" text-anchor="end">${fmt(t, 0)}</text>`).join("");
+    s += rows.map((r, i) => `<text x="${m.l + bw * i + bw / 2}" y="${H - 8}" text-anchor="middle">${W < 520 ? "’" + String(r.annee).slice(2) : r.annee}</text>`).join("") + "</g>";
+    rows.forEach((r, i) => {
+      const cx = m.l + bw * i + bw / 2;
+      [["bar-s", r.strategie_pct, cx - w - 1], ["bar-b", r.benchmark_pct, cx + 1]].forEach(([c, v, x0]) => {
+        const y0 = y(Math.max(0, v)), h = Math.abs(y(v) - y(0));
+        s += `<rect class="${c}" x="${x0}" y="${y0}" width="${w}" height="${Math.max(h, 1)}" rx="1"><title>${r.annee} : ${pct(v)}</title></rect>`;
+      });
+    });
+    s += `<line class="base" x1="${m.l}" x2="${W - m.r}" y1="${y(0)}" y2="${y(0)}" style="stroke-dasharray:none"/></svg>`;
+    el.innerHTML = s;
+  };
+  draw();
+  let raf; new ResizeObserver(() => { cancelAnimationFrame(raf); raf = requestAnimationFrame(draw); }).observe(el);
+}
+
+/* ------------------------------------------------------------------ */
+/* En-tête                                                             */
+/* ------------------------------------------------------------------ */
+function renderHeader() {
+  const s = D.site, sy = D.marche.synthese || {};
+  document.getElementById("nom").textContent = s.nom;
+  document.getElementById("role").textContent = s.titre;
+  document.getElementById("pitch").textContent = s.accroche;
+  const ecart = sy.perf_pct != null && sy.perf_benchmark_pct != null ? sy.perf_pct - sy.perf_benchmark_pct : null;
+  document.getElementById("vlcard").innerHTML = `
+    <div class="eyebrow">Depuis le lancement · ${dfr(s.date_lancement)}</div>
+    <div class="big ${cls(sy.perf_pct)}">${pct(sy.perf_pct, 2)}</div>
+    <div class="vs">${esc(s.benchmark_nom)} <b>${pct(sy.perf_benchmark_pct, 2)}</b></div>
+    <div class="vs">Écart <b class="${cls(ecart)}">${ecart == null ? "—" : (ecart > 0 ? "+" : "") + fmt(ecart, 2) + " pt"}</b></div>
+    <div class="asof">Cours au ${dfr(D.marche.maj)}, mis à jour automatiquement</div>`;
+  const demo = [D.portfolio, D.journal, D.marche, D.backtest].some(x => x && x.exemple);
+  if (demo) {
+    document.getElementById("demo").hidden = false;
+    document.getElementById("demo-txt").textContent = "Positions, cours et backtest sont fictifs et servent à illustrer la présentation. Ils seront remplacés avant la mise en ligne.";
+  }
+  document.getElementById("footer-txt").textContent =
+    `Portefeuille modèle fictif, à vocation pédagogique. L'auteur ne détient aucune des positions présentées. Ce site ne constitue ni un conseil en investissement, ni une recommandation d'achat ou de vente, ni une sollicitation. Les performances passées, réelles ou simulées, ne préjugent pas des performances futures. Opinions personnelles de l'auteur, qui n'engagent aucun employeur. © ${new Date().getFullYear()} ${s.nom}.`;
+  document.title = `${s.nom} · Portefeuille modèle`;
+}
+
+/* ------------------------------------------------------------------ */
+/* Portefeuille                                                        */
+/* ------------------------------------------------------------------ */
+function gemMini(p) {
+  const g = [p.gem_moat, p.gem_management, p.gem_macro, p.gem_risques];
+  return `<span class="gem" aria-hidden="true">${g.map(v => `<i style="height:${(v / 5) * 100}%"></i>`).join("")}</span>`;
+}
+function renderPortefeuille() {
+  const s = D.site, sy = D.marche.synthese || {}, c = D.marche.courbe || {};
+  const pos = D.portfolio.positions || [];
+  const ouvertes = pos.filter(p => p.statut !== "cloturee").sort((a, b) => (mk(b).poids_actuel_pct || 0) - (mk(a).poids_actuel_pct || 0));
+  const closes = pos.filter(p => p.statut === "cloturee");
+  const moy = arr => arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : null;
+  const mosMoy = moy(pos.map(marge).filter(v => v != null));
+  const gemMoy = moy(pos.map(gemTotal));
+  const v = document.getElementById("v-portefeuille");
+
+  const row = p => {
+    const m = mk(p), r = regles(p);
+    return `<tr class="clickable" tabindex="0" data-fiche="${esc(p.ticker)}" aria-label="Ouvrir la fiche ${esc(p.nom)}">
+      <td><div class="co"><b>${esc(p.nom)}</b><small><span class="tk">${esc(p.ticker)}</span> · ${esc(p.pays)} · ${esc(p.secteur)}</small></div></td>
+      <td class="n">${dfr(m.jour_execution || p.date_entree)}<span class="sub num">${prix(m.cours_execution ?? p.cours_entree, p.devise)}</span></td>
+      <td class="n">${p.statut === "cloturee" ? `${dfr(m.jour_sortie || p.date_sortie)}<span class="sub num">${prix(m.cours_sortie_marche ?? p.cours_sortie, p.devise)}</span>` : `<span class="num">${prix(m.cours_actuel, p.devise)}</span>`}</td>
+      <td class="n"><span class="num ${cls(m.perf_locale_pct)}">${pct(m.perf_locale_pct)}</span><span class="sub num">${pct(m.perf_base_pct)} en ${esc(s.devise_portefeuille)}</span></td>
+      ${p.statut === "cloturee" ? `<td class="n num ${cls(m.contribution_pct)}">${pct(m.contribution_pct, 2)}</td>` : `<td class="n num">${fmt(m.poids_actuel_pct, 1)} %</td>`}
+      <td class="n num">${fmt(marge(p), 0)} %</td>
+      <td class="n" style="white-space:nowrap">${gemMini(p)}<span class="num">${gemTotal(p)}</span></td>
+      <td><span class="checks">${r.map(x => `<span class="check ${x.ok ? "" : "ko"}" title="${esc(x.lbl)}">${x.ok ? "✓" : "✕"}</span>`).join("")}</span></td>
+    </tr>`;
+  };
+  const head = (closed) => `<thead><tr>
+      <th>Société</th><th class="n">Exécution</th><th class="n">${closed ? "Sortie" : "Cours"}</th><th class="n">Performance</th>
+      <th class="n">${closed ? "Contribution" : "Poids"}</th><th class="n" title="Décote du cours d'entrée sur le prix d'entrée théorique">Marge sécu.</th>
+      <th class="n">Gem /20</th><th>Règles</th></tr></thead>`;
+
+  v.innerHTML = `
+    <div class="kpis">
+      <div class="kpi"><span class="eyebrow">Valeur liquidative</span><span class="v num">${fmt(sy.valeur, 0)} €</span><span class="d">pour ${fmt(s.capital_initial, 0)} € de capital fictif</span></div>
+      <div class="kpi"><span class="eyebrow">Lignes</span><span class="v num">${ouvertes.length}</span><span class="d">${fmt(sy.cash_pct, 1)} % de liquidités · cible 12 à 18 lignes</span></div>
+      <div class="kpi"><span class="eyebrow">Marge de sécurité à l'entrée</span><span class="v num">${fmt(mosMoy, 1)} %</span><span class="d">moyenne, minimum requis ${s.marge_securite_min_pct} %</span></div>
+      <div class="kpi"><span class="eyebrow">Score Gem moyen</span><span class="v num">${fmt(gemMoy, 1)}/20</span><span class="d">seuil d'entrée ${s.seuil_gem}/20</span></div>
+    </div>
+
+    <div>
+      <div class="sec-head"><h2>Performance comparée</h2><p>Base 100 au ${dfr(s.date_lancement)}, dividendes réinvestis, frais de ${fmt(s.frais_transaction_pct, 2)} % inclus</p></div>
+      <div class="chart-box">
+        <div class="legend"><span><i></i>Portefeuille modèle</span><span><i class="b"></i>${esc(s.benchmark_nom)}</span></div>
+        <div class="chart" id="ch-vl"></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="sec-head"><h2>Positions ouvertes</h2><p>Cliquez sur une ligne pour lire la thèse</p></div>
+      ${ouvertes.length ? `<div class="table-scroll"><table>${head(false)}<tbody>${ouvertes.map(row).join("")}</tbody></table></div>` : `<div class="empty">Aucune position ouverte pour le moment.</div>`}
+      <div class="rule-note">
+        <span>Chaque ligne est vérifiée automatiquement contre les trois conditions d'entrée :</span>
+        <span>① marge de sécurité ≥ ${s.marge_securite_min_pct} %</span><span>② score Gem ≥ ${s.seuil_gem}/20</span><span>③ momentum confirmé</span>
+      </div>
+      <p class="rule-note">Le cours d'exécution est la clôture réelle du jour d'exécution, relevée automatiquement, et non un cours saisi à la main.</p>
+    </div>
+
+    ${closes.length ? `<div>
+      <div class="sec-head"><h2>Positions clôturées</h2><p>Performance entre l'exécution et la sortie</p></div>
+      <div class="table-scroll"><table>${head(true)}<tbody>${closes.map(row).join("")}</tbody></table></div>
+    </div>` : ""}`;
+
+  if (c.dates && c.dates.length > 1) lineChart(document.getElementById("ch-vl"), c.dates, c.portefeuille, c.benchmark, { label: "Valeur liquidative comparée au benchmark", nBench: "Benchmark" });
+  else document.getElementById("ch-vl").innerHTML = `<div class="empty">La courbe apparaîtra après la première mise à jour des cours.</div>`;
+}
+
+/* ------------------------------------------------------------------ */
+/* Fiche valeur                                                        */
+/* ------------------------------------------------------------------ */
+let dernierFocus = null;
+function ouvrirFiche(ticker, pousser = true) {
+  const p = (D.portfolio.positions || []).find(x => x.ticker === ticker);
+  if (!p) return;
+  const s = D.site, m = mk(p), r = regles(p), g = gemTotal(p);
+  const notes = [p.gem_moat, p.gem_management, p.gem_macro, p.gem_risques];
+  const exec = m.cours_execution ?? p.cours_entree, th = p.prix_entree_theorique, seuil = th * (1 - s.marge_securite_min_pct / 100);
+  const hi = Math.max(th, exec, m.cours_actuel || 0) * 1.06, lo = Math.min(exec, m.cours_actuel || exec, seuil) * .9;
+  const xp = v => ((v - lo) / (hi - lo) * 100).toFixed(2) + "%";
+  const hist = (D.journal.entrees || []).filter(e => e.ticker === p.ticker).sort((a, b) => a.date.localeCompare(b.date));
+  const dr = document.getElementById("drawer");
+  dr.innerHTML = `
+    <div class="drawer-head">
+      <div><span class="eyebrow">${p.statut === "cloturee" ? "Position clôturée" : "En portefeuille"} · ${esc(p.archetype)}</span>
+        <h2 id="fiche-titre">${esc(p.nom)}</h2>
+        <div class="meta"><span class="tk">${esc(p.ticker)}</span> · ${esc(p.pays)} · ${esc(p.secteur)}</div></div>
+      <button class="close" id="close" aria-label="Fermer la fiche">×</button>
+    </div>
+    <div class="facts">
+      <div class="fact"><span class="k">Exécution</span><span class="v">${prix(exec, p.devise)}</span><span class="k">${dfr(m.jour_execution || p.date_entree)}</span></div>
+      <div class="fact"><span class="k">${p.statut === "cloturee" ? "Sortie" : "Cours actuel"}</span><span class="v">${prix(p.statut === "cloturee" ? (m.cours_sortie_marche ?? p.cours_sortie) : m.cours_actuel, p.devise)}</span><span class="k">${dfr(p.statut === "cloturee" ? (m.jour_sortie || p.date_sortie) : D.marche.maj)}</span></div>
+      <div class="fact"><span class="k">Performance</span><span class="v ${cls(m.perf_locale_pct)}">${pct(m.perf_locale_pct)}</span><span class="k">${pct(m.perf_base_pct)} en ${esc(s.devise_portefeuille)}</span></div>
+      <div class="fact"><span class="k">Prix d'entrée théorique</span><span class="v">${prix(th, p.devise)}</span></div>
+      <div class="fact"><span class="k">Marge de sécurité</span><span class="v">${fmt(marge(p), 1)} %</span></div>
+      <div class="fact"><span class="k">${p.statut === "cloturee" ? "Contribution" : "Poids actuel"}</span><span class="v">${p.statut === "cloturee" ? pct(m.contribution_pct, 2) : fmt(m.poids_actuel_pct, 1) + " %"}</span></div>
+    </div>
+
+    ${p.statut === "cloturee" && p.motif_sortie ? `<div class="block"><h3>Motif de sortie</h3><div class="exit"><p>${esc(p.motif_sortie)}</p></div></div>` : ""}
+
+    <div class="block"><h3>Thèse</h3><p>${esc(p.these)}</p></div>
+
+    <div class="block"><h3>Valorisation et marge de sécurité</h3>
+      <div class="scale" aria-hidden="true">
+        <div class="track"></div>
+        <div class="zone" style="left:0;width:${xp(seuil)}"></div>
+        <div class="mk th" style="left:${xp(th)}"><span>Théorique</span><i></i></div>
+        <div class="mk" style="left:${xp(exec)}"><span>Entrée</span><i></i></div>
+        <div class="mk th lbl-below" style="left:${xp(seuil)}"><i></i><span>−${s.marge_securite_min_pct} %</span></div>
+      </div>
+      <p class="scale-caption">Zone verte : cours compatibles avec la règle d'entrée (≤ ${fmt(1 - s.marge_securite_min_pct / 100, 2)} × prix théorique, soit ${prix(seuil, p.devise)}). ${esc(p.methode_valo || "")}.</p>
+    </div>
+
+    <div class="block"><h3>Gem framework</h3>
+      <div class="gem-rows">
+        ${s.piliers_gem.map((nom, i) => `<div class="gem-row"><span>${esc(nom)}</span><span class="bar">${[1,2,3,4,5].map(k => `<i class="${k <= notes[i] ? "on" : ""}"></i>`).join("")}</span><span class="num">${notes[i]}/5</span></div>`).join("")}
+        <div class="gem-total"><span>Total</span><span class="num">${g}/20</span></div>
+      </div>
+    </div>
+
+    <div class="block"><h3>Conditions d'entrée</h3>
+      <div class="gem-rows">${r.map(x => `<div class="gem-row" style="grid-template-columns:24px minmax(0,1fr)"><span class="check ${x.ok ? "" : "ko"}">${x.ok ? "✓" : "✕"}</span><span>${esc(x.lbl)}</span></div>`).join("")}</div>
+    </div>
+
+    ${(p.catalyseurs || []).length ? `<div class="block"><h3>Catalyseurs</h3><ul class="plain">${p.catalyseurs.map(c => `<li>${esc(c)}</li>`).join("")}</ul></div>` : ""}
+    ${(p.invalidation || []).length ? `<div class="block"><h3>La thèse est invalidée si</h3><ul class="plain invalid">${p.invalidation.map(c => `<li>${esc(c)}</li>`).join("")}</ul></div>` : ""}
+    ${p.note_url ? `<div class="block"><a class="btn" href="${esc(p.note_url)}" target="_blank" rel="noopener">Lire la note de recherche complète ↗</a></div>` : ""}
+    ${hist.length ? `<div class="block"><h3>Historique</h3><div class="gem-rows">${hist.map(e => `<div class="gem-row" style="grid-template-columns:90px minmax(0,1fr)"><span class="num muted">${dfr(e.date)}</span><span><b style="font-weight:600">${esc(e.type)}</b> · ${esc(e.texte)}</span></div>`).join("")}</div></div>` : ""}
+  `;
+  dernierFocus = document.activeElement;
+  dr.hidden = false; document.getElementById("backdrop").hidden = false;
+  document.body.style.overflow = "hidden";
+  dr.scrollTop = 0;
+  document.getElementById("close").focus();
+  document.getElementById("close").onclick = () => fermerFiche();
+  if (pousser) history.pushState(null, "", "#f-" + slug(p.ticker));
+}
+function fermerFiche(pousser = true) {
+  const dr = document.getElementById("drawer");
+  if (dr.hidden) return;
+  dr.hidden = true; document.getElementById("backdrop").hidden = true;
+  document.body.style.overflow = "";
+  if (pousser) history.pushState(null, "", "#" + (vueCourante || "portefeuille"));
+  if (dernierFocus) dernierFocus.focus();
+}
+
+/* ------------------------------------------------------------------ */
+/* Journal                                                             */
+/* ------------------------------------------------------------------ */
+let filtreJournal = "Tout";
+function renderJournal() {
+  const v = document.getElementById("v-journal");
+  const e = (D.journal.entrees || []).slice().sort((a, b) => b.date.localeCompare(a.date));
+  const types = ["Tout", "Entrée", "Renforcement", "Allègement", "Sortie", "Écarté", "Note"].filter(t => t === "Tout" || e.some(x => x.type === t));
+  const liste = filtreJournal === "Tout" ? e : e.filter(x => x.type === filtreJournal);
+  const tickers = new Set((D.portfolio.positions || []).map(p => p.ticker));
+  const tcls = t => ({ "Entrée": "t-entree", "Renforcement": "t-entree", "Sortie": "t-sortie", "Allègement": "t-sortie", "Écarté": "t-ecarte" }[t] || "");
+  let html = "", mois = "";
+  liste.forEach(x => {
+    const k = x.date.slice(0, 7);
+    if (k !== mois) { html += `<div class="month">${MOIS[+k.slice(5) - 1]} ${k.slice(0, 4)}</div>`; mois = k; }
+    html += `<article class="entry">
+      <div class="date">${dfr(x.date)}</div>
+      <div><span class="type ${tcls(x.type)}">${esc(x.type)}</span></div>
+      <div><h3>${esc(x.titre)}${x.ticker ? `<span class="tk">${esc(x.ticker)}</span>` : ""}</h3><p>${esc(x.texte)}</p>
+      ${x.ticker && tickers.has(x.ticker) ? `<button class="linkish" data-fiche="${esc(x.ticker)}">Voir la fiche</button>` : ""}</div>
+    </article>`;
+  });
+  const repo = D.site.depot_github;
+  v.innerHTML = `
+    <div>
+      <div class="sec-head"><h2>Journal des décisions</h2>
+        <p class="proof">${repo ? `Chaque décision est horodatée. <a href="https://github.com/${esc(repo)}/commits/main/data" target="_blank" rel="noopener">Historique des modifications sur GitHub ↗</a>` : "Chaque décision est horodatée et aucune entrée n'est modifiée après coup."}</p></div>
+      <p class="lede" style="margin-bottom:18px">Le journal recense toutes les décisions, y compris les dossiers écartés et les raisons de leur rejet. Une erreur se corrige par une nouvelle entrée datée, jamais en réécrivant l'ancienne.</p>
+      <div class="filters" role="group" aria-label="Filtrer par type">${types.map(t => `<button class="chip" aria-pressed="${t === filtreJournal}" data-filtre="${esc(t)}">${esc(t === "Écarté" ? "Écartés" : t === "Tout" ? "Toutes les décisions" : t + "s")}</button>`).join("")}</div>
+    </div>
+    ${liste.length ? `<div class="timeline">${html}</div>` : `<div class="empty">Aucune entrée de ce type.</div>`}`;
+}
+
+/* ------------------------------------------------------------------ */
+/* Backtest                                                            */
+/* ------------------------------------------------------------------ */
+function renderBacktest() {
+  const b = D.backtest, v = document.getElementById("v-backtest");
+  if (!b || !b.metriques) { v.innerHTML = `<div class="empty">Le backtest sera publié prochainement.</div>`; return; }
+  const ms = b.metriques.strategie, mb = b.metriques.benchmark;
+  const lignes = [
+    ["Rendement annualisé (CAGR)", ms.cagr_pct, mb.cagr_pct, v => pct(v, 1)],
+    ["Performance cumulée", ms.perf_totale_pct, mb.perf_totale_pct, v => pct(v, 0)],
+    ["Volatilité annualisée", ms.volatilite_pct, mb.volatilite_pct, v => fmt(v, 1) + " %"],
+    [`Ratio de Sharpe (taux sans risque ${fmt(b.metriques.taux_sans_risque_pct, 1)} %)`, ms.sharpe, mb.sharpe, v => fmt(v, 2)],
+    ["Drawdown maximal", ms.drawdown_max_pct, mb.drawdown_max_pct, v => pct(v, 1, false)],
+    ["Tracking error", ms.tracking_error_pct, null, v => v == null ? "" : fmt(v, 1) + " %"],
+    ["Ratio d'information", ms.ratio_information, null, v => v == null ? "" : fmt(v, 2)],
+    ["Périodes de surperformance", ms.mois_surperformance_pct, null, v => v == null ? "" : fmt(v, 0) + " %"],
+  ];
+  v.innerHTML = `
+    <div class="callout"><span class="eyebrow">Périmètre du backtest · ${esc(b.periode || "")}</span><p>${esc(b.perimetre)}</p></div>
+    <div class="two">
+      <div>
+        <div class="sec-head"><h2>Indicateurs</h2></div>
+        <div class="table-scroll"><table>
+          <thead><tr><th></th><th class="n">Stratégie</th><th class="n">Benchmark</th></tr></thead>
+          <tbody>${lignes.map(([k, a, c, f]) => `<tr><td>${esc(k)}</td><td class="n">${f(a)}</td><td class="n muted">${c == null ? "" : f(c)}</td></tr>`).join("")}</tbody>
+        </table></div>
+      </div>
+      <div>
+        <div class="sec-head"><h2>Règles de simulation</h2></div>
+        <ul class="plain">${(b.regles || []).map(r => `<li>${esc(r)}</li>`).join("")}</ul>
+        <p class="rule-note" style="margin-top:14px">Univers : ${esc(b.univers || "")}</p>
+      </div>
+    </div>
+    <div>
+      <div class="sec-head"><h2>Valeur liquidative simulée</h2><p>Base 100</p></div>
+      <div class="chart-box"><div class="legend"><span><i></i>Filtre quantitatif</span><span><i class="b"></i>Benchmark</span></div><div class="chart" id="ch-bt"></div></div>
+    </div>
+    <div class="two">
+      <div>
+        <div class="sec-head"><h2>Performances annuelles</h2><p>En %</p></div>
+        <div class="chart-box"><div class="legend"><span><i></i>Stratégie</span><span><i class="b"></i>Benchmark</span></div><div class="chart" id="ch-an"></div></div>
+      </div>
+      <div>
+        <div class="sec-head"><h2>Sensibilité aux seuils</h2><p>CAGR selon le réglage</p></div>
+        <div class="table-scroll"><table class="sens"><tbody>
+          ${(b.sensibilite || []).map(r => `<tr><td>${esc(r.parametre)}</td>${r.valeurs.map((val, i) => `<td class="n"><span class="sub">${esc(val)}</span><span class="num">${fmt(r.cagr_pct[i], 1)} %</span></td>`).join("")}</tr>`).join("")}
+        </tbody></table></div>
+        <p class="rule-note">Si la performance s'effondrait dès qu'un seuil bouge, la stratégie serait surajustée à l'historique.</p>
+      </div>
+    </div>
+    <div class="limits">
+      <h2>Limites de ce backtest</h2>
+      <p>À lire avant tout chiffre ci-dessus.</p>
+      <ul class="plain">${(b.limites || []).map(r => `<li>${esc(r)}</li>`).join("")}</ul>
+    </div>`;
+  lineChart(document.getElementById("ch-bt"), b.courbe.dates, b.courbe.strategie, b.courbe.benchmark, { label: "Backtest du filtre quantitatif", nMain: "Stratégie", nBench: "Benchmark" });
+  barChart(document.getElementById("ch-an"), b.annuel || []);
+}
+
+/* ------------------------------------------------------------------ */
+/* Méthode (texte modifiable directement ici)                          */
+/* ------------------------------------------------------------------ */
+function renderMethode() {
+  const s = D.site, v = document.getElementById("v-methode");
+  const desc = [
+    "Barrières à l'entrée, coûts de transfert, monopoles de niche, capacité à répercuter les hausses de coûts.",
+    "Actionnariat des dirigeants, historique d'allocation du capital, rémunération alignée sur le rendement du capital.",
+    "Sensibilité aux taux, exposition aux devises, adéquation avec la phase du cycle.",
+    "Qualité comptable (FCF contre résultat net), dépendance à un client, risque de dilution.",
+  ];
+  v.innerHTML = `
+    <div>
+      <div class="sec-head"><h2>Philosophie</h2></div>
+      <p class="lede">Identifier des sociétés de grande qualité, capables de composer leur valeur sur longue période, et ne les acheter qu'avec une marge de sécurité. La sélection suit un entonnoir en cinq étapes, appliqué dans cet ordre ; une société doit franchir chaque étape pour passer à la suivante.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="no">1</div><div><h3>Univers et exclusions</h3>
+        <p>Quatorze pays : États-Unis, Canada, France, Allemagne, Pays-Bas, Royaume-Uni, Suisse, Suède, Danemark, Norvège, Finlande, Italie, Espagne et Japon. Capitalisation supérieure à 300 M€. Sont exclus les modèles économiques que la grille ne sait pas juger correctement : banques, assurances et services financiers, utilities, immobilier, biotechnologies sans revenus, mines, pétrole et gaz, transport maritime, automobile, construction et matériaux.</p></div></div>
+      <div class="step"><div class="no">2</div><div><h3>Filtre quantitatif sur cinq à dix ans</h3>
+        <p>La qualité se mesure dans la durée. Les seuils portent sur des moyennes longues pour écarter les sociétés dont une bonne année masque un modèle fragile.</p>
+        <div class="thresholds">
+          <div class="thr"><div class="k">ROCE ou ROIC moyen</div><div class="v">&gt; 12 %</div></div>
+          <div class="thr"><div class="k">Marge opérationnelle</div><div class="v">&gt; 25 %</div><div class="k">ou en expansion structurelle</div></div>
+          <div class="thr"><div class="k">Croissance du CA</div><div class="v">&gt; 10 % / an</div></div>
+          <div class="thr"><div class="k">Dette nette / EBITDA</div><div class="v">&lt; 3,0x</div></div>
+          <div class="thr"><div class="k">Couverture des intérêts</div><div class="v">&gt; 5,0x</div></div>
+        </div></div></div>
+      <div class="step"><div class="no">3</div><div><h3>Valeur intrinsèque et marge de sécurité</h3>
+        <p>Un prix d'entrée théorique est calculé par DCF en trois phases (scénario explicite, période de convergence, valeur terminale normative), recoupé par les multiples historiques de la société. Le cours doit se situer au moins ${s.marge_securite_min_pct} % sous ce prix : cours ≤ prix d'entrée théorique × ${fmt(1 - s.marge_securite_min_pct / 100, 2)}.</p></div></div>
+      <div class="step"><div class="no">4</div><div><h3>Gem framework : analyse qualitative sur 20</h3>
+        <p>Quatre piliers notés de 1 à 5. Seuil d'entrée : ${s.seuil_gem}/20.</p>
+        <div class="pillars">${s.piliers_gem.map((n, i) => `<div class="pillar"><b>${esc(n)}</b><span>${esc(desc[i] || "")}</span></div>`).join("")}</div></div></div>
+      <div class="step"><div class="no">5</div><div><h3>Prise en compte du momentum</h3>
+        <p>Une société qui remplit les quatre conditions précédentes n'est pas achetée immédiatement. L'exécution attend une confirmation du momentum de marché, analysée manuellement. Cette étape évite d'acheter une valeur en pleine dégradation de tendance, seulement parce qu'elle paraît bon marché. Tant que la confirmation manque, le dossier reste en liste de suivi.</p></div></div>
+    </div>
+    <div class="two">
+      <div>
+        <div class="sec-head"><h2>Construction du portefeuille</h2></div>
+        <ul class="plain">
+          <li>12 à 18 lignes à terme, environ 15.</li>
+          <li>Poids initial de 4 à 5 % par ligne ; les liquidités non investies restent en attente d'opportunités.</li>
+          <li>Exécution au cours de clôture du jour d'exécution, frais simulés de ${fmt(s.frais_transaction_pct, 2)} % par transaction.</li>
+          <li>Benchmark : ${esc(s.benchmark_nom)}.</li>
+        </ul>
+      </div>
+      <div>
+        <div class="sec-head"><h2>Règles de sortie</h2></div>
+        <ul class="plain">
+          <li>Une condition d'invalidation de la thèse, fixée à l'entrée, est remplie.</li>
+          <li>Le cours dépasse la valeur intrinsèque estimée : la marge de sécurité est consommée.</li>
+          <li>La société ne passe plus le filtre quantitatif lors de la revue annuelle.</li>
+        </ul>
+      </div>
+    </div>`;
+}
+
+/* ------------------------------------------------------------------ */
+/* À propos                                                            */
+/* ------------------------------------------------------------------ */
+function renderAPropos() {
+  const s = D.site, v = document.getElementById("v-apropos");
+  v.innerHTML = `
+    <div class="about">
+      <div style="display:grid;gap:22px;align-content:start">
+        <div><div class="sec-head"><h2>Qui suis-je</h2></div><p class="lede">${esc(s.presentation)}</p></div>
+        <div><div class="sec-head"><h2>Pourquoi un portefeuille modèle</h2></div>
+          <p class="lede">Un portefeuille fictif permet d'appliquer la stratégie sans contrainte de compte réel, et de la montrer en entier : les positions, mais aussi les dossiers écartés et les raisons de chaque décision. Les règles d'exécution sont fixées à l'avance et chaque décision est horodatée, pour que le suivi puisse être vérifié.</p></div>
+        <div><div class="sec-head"><h2>Avertissement</h2></div><p class="disclaimer">Portefeuille modèle fictif, à vocation pédagogique et de démonstration. L'auteur ne détient aucune des positions présentées. Ce site ne constitue ni un conseil en investissement, ni une recommandation d'achat ou de vente, ni une sollicitation à réaliser une opération sur un instrument financier. Les performances passées, réelles ou simulées, ne préjugent pas des performances futures. Les opinions exprimées sont personnelles et n'engagent aucun employeur.</p></div>
+      </div>
+      <div class="contact">
+        <span class="eyebrow">Contact</span>
+        ${s.email ? `<div class="row"><span class="muted">E-mail</span><div class="copy-row"><span class="mono" id="mail">${esc(s.email)}</span><button class="btn" id="copy">Copier</button></div></div>` : ""}
+        ${s.linkedin ? `<div class="row"><span class="muted">LinkedIn</span><a href="${esc(s.linkedin)}" target="_blank" rel="noopener">${esc(s.linkedin.replace(/^https?:\/\/(www\.)?/, ""))}</a></div>` : ""}
+        ${s.cv_url ? `<div><a class="btn" href="${esc(s.cv_url)}" target="_blank" rel="noopener">Consulter mon CV ↗</a></div>` : ""}
+      </div>
+    </div>`;
+  const b = document.getElementById("copy");
+  if (b) b.onclick = () => {
+    const ok = () => { b.textContent = "Copié"; setTimeout(() => b.textContent = "Copier", 1600); };
+    const fallback = () => { const r = document.createRange(); r.selectNodeContents(document.getElementById("mail")); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); };
+    try { navigator.clipboard.writeText(s.email).then(ok, fallback); } catch (e) { fallback(); }
+  };
+}
+
+/* ------------------------------------------------------------------ */
+/* Navigation                                                          */
+/* ------------------------------------------------------------------ */
+const VUES = ["portefeuille", "journal", "backtest", "methode", "apropos"];
+const rendus = {};
+const RENDER = { portefeuille: renderPortefeuille, journal: renderJournal, backtest: renderBacktest, methode: renderMethode, apropos: renderAPropos };
+let vueCourante = null;
+function montrer(vue) {
+  vueCourante = vue;
+  VUES.forEach(k => { document.getElementById("v-" + k).hidden = k !== vue; });
+  document.querySelectorAll("nav.tabs a").forEach(a => {
+    if (a.dataset.view === vue) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+  });
+  if (!rendus[vue]) { RENDER[vue](); rendus[vue] = true; }
+}
+function route() {
+  const h = decodeURIComponent(location.hash.slice(1));
+  if (h.startsWith("f-")) {
+    if (!vueCourante) montrer("portefeuille");
+    const p = (D.portfolio.positions || []).find(x => slug(x.ticker) === h.slice(2));
+    if (p) ouvrirFiche(p.ticker, false);
+    return;
+  }
+  fermerFiche(false);
+  montrer(VUES.includes(h) ? h : "portefeuille");
+}
+
+document.addEventListener("click", ev => {
+  const f = ev.target.closest("[data-fiche]");
+  if (f) { ouvrirFiche(f.dataset.fiche); return; }
+  const c = ev.target.closest("[data-filtre]");
+  if (c) { filtreJournal = c.dataset.filtre; renderJournal(); document.querySelector(`[data-filtre="${CSS.escape(filtreJournal)}"]`)?.focus(); return; }
+  if (ev.target.id === "backdrop") fermerFiche();
+});
+document.addEventListener("keydown", ev => {
+  if (ev.key === "Escape") fermerFiche();
+  if ((ev.key === "Enter" || ev.key === " ") && ev.target.matches("tr[data-fiche]")) { ev.preventDefault(); ouvrirFiche(ev.target.dataset.fiche); }
+});
+window.addEventListener("popstate", route);
+window.addEventListener("hashchange", route);
+
+/* ------------------------------------------------------------------ */
+/* Mesure d'audience (GoatCounter, optionnelle)                        */
+/* ------------------------------------------------------------------ */
+function audience(code) {
+  if (!code) return;
+  const ref = new URLSearchParams(location.search).get("ref");
+  window.goatcounter = { path: () => location.pathname + (ref ? "?ref=" + encodeURIComponent(ref) : "") };
+  const sc = document.createElement("script");
+  sc.async = true; sc.src = "https://gc.zgo.at/count.js";
+  sc.dataset.goatcounter = `https://${code}.goatcounter.com/count`;
+  document.head.appendChild(sc);
+}
+
+/* ------------------------------------------------------------------ */
+/* Démarrage                                                           */
+/* ------------------------------------------------------------------ */
+Promise.all(FICHIERS.map(f => fetch(`data/${f}.json`, { cache: "no-cache" })
+  .then(r => r.ok ? r.json() : (f === "backtest" || f === "marche" ? {} : Promise.reject(new Error(f))))))
+  .then(res => {
+    FICHIERS.forEach((f, i) => D[f] = res[i] || {});
+    D.marche.positions = D.marche.positions || {};
+    renderHeader();
+    route();
+    audience(D.site.goatcounter);
+  })
+  .catch(err => {
+    document.getElementById("v-portefeuille").innerHTML =
+      `<div class="err">Impossible de charger les données (${esc(err.message)}.json). Vérifiez que le fichier existe dans le dossier data/ et que son contenu est un JSON valide.</div>`;
+  });
+})();
+</script>
+</body>
+</html>
