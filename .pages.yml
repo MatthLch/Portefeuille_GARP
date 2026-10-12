@@ -1,6 +1,5 @@
 # Configuration de l'interface d'administration (Pages CMS : https://app.pagescms.org)
 # Chaque enregistrement dans l'interface crée un commit horodaté dans le dépôt GitHub.
-media: false
 
 content:
   # ------------------------------------------------------------------ #
