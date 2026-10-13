@@ -105,6 +105,8 @@ with zipfile.ZipFile(cache / "companyfacts.zip", "w", zipfile.ZIP_DEFLATED) as z
 (cache / "company_tickers.json").write_text(json.dumps(tickers))
 
 jours = pd.bdate_range("2012-01-02", "2026-10-09")
+# Jours fériés américains où seul le change cote (reproduit le format Yahoo multi-actifs).
+feries = pd.DatetimeIndex([d for d in jours if (d.month, d.day) in ((1, 1), (7, 4), (12, 25)) or (d.month == 11 and 22 <= d.day <= 28 and d.weekday() == 3)])
 adj, close, vol, splits = {}, {}, {}, {}
 for t, (typ, sh, rev12) in info.items():
     mu = {"qualite": 0.13, "moyenne": 0.07}.get(typ, 0.03) / 252
@@ -123,5 +125,8 @@ for d in (vol, splits):
     d["SPY"] = d["EURUSD=X"] = np.zeros(len(jours))
 prix = {k: pd.DataFrame(v, index=jours).astype("float32") for k, v in
         (("adj", adj), ("close", close), ("volume", vol), ("splits", splits))}
+for k in ("adj", "close", "volume"):
+    cols = [c for c in prix[k].columns if c != "EURUSD=X"]
+    prix[k].loc[feries, cols] = np.nan
 pd.to_pickle(prix, cache / "prix.pkl")
 print(f"Données synthétiques écrites dans {cache}")

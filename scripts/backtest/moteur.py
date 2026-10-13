@@ -170,7 +170,13 @@ def prescore(m: pd.DataFrame) -> pd.Series:
 # --------------------------------------------------------------------------- #
 class Marche:
     def __init__(self, prix: dict[str, pd.DataFrame]):
-        self.adj = prix["adj"].sort_index()
+        adj = prix["adj"].sort_index()
+        fx = adj["EURUSD=X"].ffill() if "EURUSD=X" in adj else pd.Series(1.1, index=adj.index)
+        # Le change cote aussi les jours de fermeture de la bourse américaine : ces lignes, vides
+        # pour toutes les actions, empêcheraient les moyennes mobiles de se former. On ne garde
+        # que les séances américaines (jours où SPY cote).
+        seances = adj.index[adj["SPY"].notna()] if "SPY" in adj else adj.index
+        self.adj = adj.loc[seances]
         self.close = prix["close"].reindex(self.adj.index)
         vol = prix["volume"].reindex(self.adj.index)
         sp = prix["splits"].reindex(self.adj.index).fillna(0).replace(0, 1)
@@ -180,16 +186,15 @@ class Marche:
         self.ma50 = self.adj.rolling(50, min_periods=50).mean()
         self.ma200 = self.adj.rolling(200, min_periods=200).mean()
         self.pente = self.ma200 / self.ma200.shift(20) - 1
-        fx = self.adj["EURUSD=X"] if "EURUSD=X" in self.adj else pd.Series(1.1, index=self.adj.index)
-        self.eurusd = fx.ffill().fillna(1.1)
+        self.eurusd = fx.reindex(self.adj.index).ffill().fillna(1.1)
         mens = self.adj.resample("ME").last()
         r = mens.pct_change(fill_method=None)
         # Après la dernière cotation (radiation, rachat), la ligne est supposée passée en liquidités.
         self.rend_m = r.where(mens.notna() | mens.ffill().isna(), 0.0)
 
     def ligne(self, df: pd.DataFrame, t: pd.Timestamp) -> pd.Series:
-        sub = df.loc[:t]
-        return sub.iloc[-1] if len(sub) else pd.Series(dtype=float)
+        sub = df.loc[:t].tail(5)                      # tolère une séance manquante isolée
+        return sub.ffill().iloc[-1] if len(sub) else pd.Series(dtype=float)
 
     def phase(self, t: pd.Timestamp) -> pd.Series:
         c, m50, m200, p = (self.ligne(x, t) for x in (self.adj, self.ma50, self.ma200, self.pente))
@@ -301,6 +306,13 @@ def main() -> None:
 
     principal = par_seuils[base]
     debut = min(principal)
+    attendus = [t for t in trimestres if t >= debut]
+    print(f"Révisions simulées : {len(principal)} sur {len(attendus)} trimestres attendus")
+    if len(principal) < len(attendus):
+        manquants = sorted(set(attendus) - set(principal))
+        print("ATTENTION, trimestres sans portefeuille :", [f"{d:%Y-%m}" for d in manquants])
+    ph_mi = mk.phase(attendus[len(attendus) // 2]).value_counts().to_dict()
+    print(f"Contrôle des phases au {attendus[len(attendus) // 2]:%Y-%m} : {ph_mi}")
     print(f"Simulation de {debut:%m/%Y} à {fins_mois[-1]:%m/%Y}…")
     rend = mk.rend_m.loc[debut:]
     vl_strat, rot = simuler(principal, rend)
