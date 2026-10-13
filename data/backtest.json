@@ -629,5 +629,31 @@
   "part_qualite_sans_cours_pct": 14.3,
   "rotation_trimestrielle_pct": 12.8,
   "rotation_concentre_pct": 16.8
- }
+ },
+ "lecture": [
+  {
+   "titre": "La qualité seule ne bat pas son univers",
+   "texte": "Appliquées sans aucun critère de prix, les règles de qualité rapportent 10,4 % par an, contre 11,5 % pour l'univers investissable équipondéré, avec un ratio d'information de −0,28. Volatilité et pertes maximales sont presque identiques. Ce résultat est cohérent avec la conception de la stratégie : les gates identifient des sociétés de qualité, pas des prix raisonnables, et aucun filtre de valorisation n'intervient à ce stade."
+  },
+  {
+   "titre": "2022 montre le prix de la qualité",
+   "texte": "L'écart le plus marqué survient en 2022 : −21,1 % pour les règles de qualité, contre −16,3 % pour l'univers. Les sociétés les plus rentables étaient aussi les plus chères au moment de la hausse des taux. C'est exactement le risque que l'étage 6, le reverse DCF avec une marge de sécurité, est censé écarter, et que ce backtest ne peut pas simuler."
+  },
+  {
+   "titre": "Le classement apporte davantage que le filtre",
+   "texte": "Parmi les sociétés retenues, les 15 premières selon un pré-score approché rapportent 14,3 % par an, soit près de 4 points de plus que l'ensemble des sociétés retenues. Le résultat est à lire avec prudence : 15 lignes sur une seule période laissent une large place au hasard, et le pré-score réel diffère de cette approximation. Il va toutefois dans le sens de la stratégie, qui confie la sélection finale aux étages 3 à 6, pas aux gates."
+  },
+  {
+   "titre": "Le momentum réduit le risque, sans changer la nature du portefeuille",
+   "texte": "Dimensionner les lignes selon leur phase fait passer le rendement de 10,4 % à 10,9 %, la volatilité de 17,1 % à 16,2 % et la perte maximale de −27,9 % à −26,8 %. L'effet est modeste et conforme à son rôle : le momentum dimensionne la position, il ne la sélectionne pas."
+  },
+  {
+   "titre": "Des seuils robustes, mais qui ne créent pas la performance",
+   "texte": "Faire varier les seuils de G1, G2 et G3 laisse le rendement entre 10,4 % et 11,0 % : le résultat ne dépend pas d'un réglage fin, ce qui écarte l'hypothèse d'un surajustement. La contrepartie est claire : les gates filtrent, ils ne sont pas la source d'une surperformance."
+  },
+  {
+   "titre": "Ce que le S&P 500 rappelle",
+   "texte": "Le S&P 500, pondéré par les capitalisations, rapporte 14,0 % par an sur la période, devant toutes les versions équipondérées. Cet écart tient surtout à la domination des très grandes capitalisations américaines depuis 2015 ; c'est pourquoi la comparaison principale se fait à pondération égale, sur le même univers."
+  }
+ ]
 }
