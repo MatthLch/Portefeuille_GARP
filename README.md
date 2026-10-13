@@ -12,7 +12,7 @@ data/marche.json               cours et performance  ← généré automatiqueme
 data/backtest.json             textes et indicateurs du backtest
 data/backtest_courbe.csv       valeurs liquidatives du backtest (date,strategie,benchmark)
 scripts/maj_marche.py          recalcul quotidien du portefeuille
-scripts/backtest_metriques.py  calcul des indicateurs du backtest
+scripts/backtest/             backtest EDGAR (fondamentaux, cours, moteur)
 .pages.yml                     configuration de l'interface d'administration
 .github/workflows/maj-cours.yml  tâche automatique quotidienne
 ```
@@ -74,22 +74,26 @@ Chaque enregistrement crée un commit horodaté dans GitHub. L'onglet Journal du
 3. *Journal des décisions* : supprime les exemples, ajoute une note de lancement, **décoche « Données d'exemple »**.
 4. Backtest : voir la section 6. Tant que `"exemple": true` figure dans `data/backtest.json`, le bandeau d'avertissement reste affiché.
 
-## 6. Publier ton backtest
+## 6. Lancer le backtest (SEC EDGAR)
 
-1. Produis les valeurs liquidatives de ton backtest (mensuelles ou quotidiennes) dans un fichier `data/backtest_courbe.csv` au format :
-   ```
-   date,strategie,benchmark
-   2016-01-29,100,100
-   2016-02-29,101.3,99.2
-   ```
-2. Dans le Terminal, depuis le dossier du projet :
-   ```bash
-   python3 -m pip install pandas numpy
-   python3 scripts/backtest_metriques.py --taux-sans-risque 2.0
-   ```
-   Le script calcule CAGR, volatilité, Sharpe, drawdown, tracking error, ratio d'information et performances annuelles, puis les écrit dans `data/backtest.json`.
-3. Dans `data/backtest.json`, ajuste les textes (`perimetre`, `univers`, `regles`, `limites`), remplis le tableau `sensibilite` avec les CAGR de tes propres variantes, puis passe `"exemple"` à `false`.
-4. Envoie les deux fichiers sur GitHub.
+Le backtest applique la couche quantitative de la stratégie (R1 à R4, filtres du screener, gates G1 à G3, vetos V5 et V6) à toutes les sociétés américaines, avec les comptes tels qu'ils étaient publiés à chaque date. Il tourne dans une GitHub Action, en 1 à 2 heures.
+
+1. **Identification SEC.** La SEC exige un nom et une adresse e-mail dans chaque requête. Dans le dépôt : **Settings → Secrets and variables → Actions → New repository secret**. Nom : `SEC_USER_AGENT`. Valeur : `Prénom Nom ton-adresse@exemple.com`. Le secret n'est jamais visible publiquement.
+2. **Onglet Actions → Backtest EDGAR → Run workflow.**
+3. À la fin, un commit « Backtest EDGAR du … » met à jour `data/backtest.json` et `data/backtest_courbe.csv`. L'onglet Backtest du site affiche les vrais résultats, et le bandeau « Données d'exemple » disparaît pour cette partie.
+
+Les étapes, dans `scripts/backtest/` :
+
+| Script | Rôle |
+|---|---|
+| `fondamentaux.py` | Télécharge la base XBRL de la SEC et garde, pour chaque exercice, le chiffre du premier dépôt et sa date |
+| `prix.py` | Télécharge les cours quotidiens Yahoo (dividendes réinvestis, volumes, divisions) |
+| `moteur.py` | Applique les règles à chaque fin de trimestre et simule les portefeuilles |
+| `test_synthetique.py` | Fabrique des données factices pour tester toute la chaîne sans internet |
+
+Les textes de l'onglet (périmètre, règles, limites) se modifient dans `data/backtest.json` ; le moteur ne réécrit que les blocs chiffrés.
+
+Si l'étape 2 échoue (Yahoo limite parfois les requêtes), relance simplement l'Action.
 
 ## 7. Voir le site sur ton Mac avant publication
 

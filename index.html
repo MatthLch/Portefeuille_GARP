@@ -106,7 +106,8 @@ nav.tabs a[aria-current="page"] { color: var(--ink); background: var(--bg); bord
 .demo-banner b { font-weight: 600; }
 
 main { padding-block: 36px 64px; }
-section.view { display: grid; gap: 40px; }
+section.view { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; }
+section.view > * { min-width: 0; }
 .sec-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
 .sec-head h2 { font-size: var(--s-lg); font-weight: 600; letter-spacing: -.01em; }
 .sec-head p { margin: 0; color: var(--muted); font-size: var(--s-sm); }
@@ -193,6 +194,7 @@ tbody tr.clickable:hover { background: var(--accent-soft); }
 /* ---- Backtest & méthode ---- */
 .callout { border: 1px solid var(--line); border-left: 3px solid var(--accent); background: var(--surface); padding: 16px 20px; border-radius: 4px 10px 10px 4px; }
 .callout p { margin: 6px 0 0; font-family: var(--f-prose); max-width: 75ch; }
+.two > div, .about > div { min-width: 0; }
 .two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; }
 ul.plain, ol.plain { margin: 0; padding-left: 1.2em; display: grid; gap: 8px; font-family: var(--f-prose); max-width: 72ch; }
 ul.plain li::marker { color: var(--muted); }
@@ -326,7 +328,7 @@ footer p { margin: 0; max-width: 95ch; }
   .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .kpi:nth-child(3) { border-left: 0; }
   .kpi:nth-child(n+3) { border-top: 1px solid var(--line); }
-  .two, .about { grid-template-columns: 1fr; }
+  .two, .about { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 560px) {
   .wrap { padding-inline: 16px; }
@@ -729,6 +731,9 @@ function renderBacktest() {
   const b = D.backtest, v = document.getElementById("v-backtest");
   if (!b || !b.metriques) { v.innerHTML = `<div class="empty">Le backtest sera publié prochainement.</div>`; return; }
   const ms = b.metriques.strategie, mb = b.metriques.benchmark;
+  const nS = esc(b.nom_strategie || "Stratégie"), nB = esc(b.nom_benchmark || "Benchmark");
+  const cv = b.couverture;
+  const comp = b.comparaisons || [];
   const lignes = [
     ["Rendement annualisé (CAGR)", ms.cagr_pct, mb.cagr_pct, v => pct(v, 1)],
     ["Performance cumulée", ms.perf_totale_pct, mb.perf_totale_pct, v => pct(v, 0)],
@@ -745,7 +750,7 @@ function renderBacktest() {
       <div>
         <div class="sec-head"><h2>Indicateurs</h2></div>
         <div class="table-scroll"><table>
-          <thead><tr><th></th><th class="n">Stratégie</th><th class="n">Benchmark</th></tr></thead>
+          <thead><tr><th></th><th class="n">${nS}</th><th class="n">${nB}</th></tr></thead>
           <tbody>${lignes.map(([k, a, c, f]) => `<tr><td>${esc(k)}</td><td class="n">${f(a)}</td><td class="n muted">${c == null ? "" : f(c)}</td></tr>`).join("")}</tbody>
         </table></div>
       </div>
@@ -756,13 +761,27 @@ function renderBacktest() {
       </div>
     </div>
     <div>
-      <div class="sec-head"><h2>Valeur liquidative simulée</h2><p>Base 100</p></div>
-      <div class="chart-box"><div class="legend"><span><i></i>Filtre quantitatif</span><span><i class="b"></i>Benchmark</span></div><div class="chart" id="ch-bt"></div></div>
+      <div class="sec-head"><h2>Valeur liquidative simulée</h2><p>Base 100${b.devise ? ", en " + (b.devise === "USD" ? "dollars" : esc(b.devise)) : ""}</p></div>
+      <div class="chart-box"><div class="legend"><span><i></i>${nS}</span><span><i class="b"></i>${nB}</span></div><div class="chart" id="ch-bt"></div></div>
     </div>
+    ${comp.length ? `<div>
+      <div class="sec-head"><h2>Comparaisons</h2><p>Même période, mêmes frais</p></div>
+      <div class="table-scroll"><table>
+        <thead><tr><th></th><th class="n">CAGR</th><th class="n">Volatilité</th><th class="n">Sharpe</th><th class="n">Drawdown max.</th></tr></thead>
+        <tbody>${comp.map(c => `<tr><td>${c.role === "principal" ? "<b>" + esc(c.nom) + "</b>" : esc(c.nom)}${c.role === "variante" ? '<span class="sub">variante</span>' : ""}</td>
+          <td class="n num">${pct(c.cagr_pct, 1)}</td><td class="n num">${fmt(c.volatilite_pct, 1)} %</td><td class="n num">${fmt(c.sharpe, 2)}</td><td class="n num">${pct(c.drawdown_max_pct, 1, false)}</td></tr>`).join("")}</tbody>
+      </table></div>
+    </div>` : ""}
+    ${cv ? `<div class="kpis">
+      <div class="kpi"><span class="eyebrow">Lignes en moyenne</span><span class="v num">${fmt(cv.lignes_moyennes, 0)}</span><span class="d">sur ${fmt(cv.univers_moyen, 0)} sociétés investissables</span></div>
+      <div class="kpi"><span class="eyebrow">Rotation trimestrielle</span><span class="v num">${fmt(cv.rotation_trimestrielle_pct, 1)} %</span><span class="d">${fmt(cv.rotation_concentre_pct, 1)} % pour la variante à 15 lignes</span></div>
+      <div class="kpi"><span class="eyebrow">Retenues sans cours</span><span class="v num">${fmt(cv.part_qualite_sans_cours_pct, 1)} %</span><span class="d">sociétés qui passent les règles mais ne peuvent pas être achetées : mesure du biais du survivant</span></div>
+      <div class="kpi"><span class="eyebrow">Ratio d'information</span><span class="v num">${fmt(ms.ratio_information, 2)}</span><span class="d">contre l'univers investissable</span></div>
+    </div>` : ""}
     <div class="two">
       <div>
         <div class="sec-head"><h2>Performances annuelles</h2><p>En %</p></div>
-        <div class="chart-box"><div class="legend"><span><i></i>Stratégie</span><span><i class="b"></i>Benchmark</span></div><div class="chart" id="ch-an"></div></div>
+        <div class="chart-box"><div class="legend"><span><i></i>${nS}</span><span><i class="b"></i>${nB}</span></div><div class="chart" id="ch-an"></div></div>
       </div>
       <div>
         <div class="sec-head"><h2>Sensibilité aux seuils</h2><p>CAGR selon le réglage</p></div>
@@ -777,7 +796,7 @@ function renderBacktest() {
       <p>À lire avant tout chiffre ci-dessus.</p>
       <ul class="plain">${(b.limites || []).map(r => `<li>${esc(r)}</li>`).join("")}</ul>
     </div>`;
-  lineChart(document.getElementById("ch-bt"), b.courbe.dates, b.courbe.strategie, b.courbe.benchmark, { label: "Backtest du filtre quantitatif", nMain: "Stratégie", nBench: "Benchmark" });
+  lineChart(document.getElementById("ch-bt"), b.courbe.dates, b.courbe.strategie, b.courbe.benchmark, { label: "Backtest des règles de qualité", nMain: b.nom_strategie || "Stratégie", nBench: b.nom_benchmark || "Benchmark" });
   barChart(document.getElementById("ch-an"), b.annuel || []);
 }
 
