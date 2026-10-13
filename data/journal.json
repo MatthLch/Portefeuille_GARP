@@ -6,126 +6,112 @@
       "type": "Note",
       "ticker": "",
       "titre": "Lancement du portefeuille modèle",
-      "texte": "Capital fictif de 100 000 €. Règles d'exécution fixées à l'avance : entrée au cours de clôture du jour d'exécution, frais simulés de 0,10 % par transaction, poids initial de 5 % par ligne, 12 à 18 lignes à terme. Aucune modification rétroactive : chaque correction fait l'objet d'une nouvelle entrée datée."
+      "texte": "Capital fictif de 100 000 €. Règles fixées à l'avance : ordre à cours limité au prix d'entrée maximal, frais simulés de 0,10 % par transaction, ligne pleine de 4,5 % en phase A, tranche réduite de 1,5 % en phase P ou C, aucun achat en phase B. Aucune modification rétroactive : chaque correction fait l'objet d'une nouvelle entrée datée."
     },
     {
       "date": "2026-07-02",
       "type": "Entrée",
       "ticker": "CSU.TO",
       "titre": "Entrée sur Constellation Software",
-      "texte": "Passe les quatre filtres quantitatifs. Marge de sécurité de 19 % sur le prix d'entrée théorique. Score Gem de 18/20. Momentum confirmé."
-    },
-    {
-      "date": "2026-07-03",
-      "type": "Entrée",
-      "ticker": "ADYEN.AS",
-      "titre": "Entrée sur Adyen",
-      "texte": "Marge de sécurité de 18 %. Score Gem de 17/20. Point d'attention : sensibilité aux volumes de consommation."
+      "texte": "Dossier passé en quarantaine au gate G3 (conversion FCF / résultat net de 288 %), puis validé à la main en substituant le ratio FCF / EBITDA, comme prévu pour les acquéreurs en série de logiciels. Aucun veto. Score Gem 18/20, marge de sécurité de 19 % pour 10 % exigés. Phase A : ligne pleine."
     },
     {
       "date": "2026-07-06",
       "type": "Écarté",
       "ticker": "INTC",
-      "titre": "Intel écarté au filtre quantitatif",
-      "texte": "ROCE moyen sur dix ans en dégradation et sous le seuil, marge opérationnelle en contraction structurelle, FCF négatif sous l'effet du programme d'investissement. Le dossier n'atteint pas l'étape de valorisation."
+      "titre": "Intel écarté aux gates",
+      "texte": "Croissance du chiffre d'affaires sur dix ans négative et dérive de marge très supérieure à 0,35 (G2). Le dossier n'atteint pas l'étape des vetos."
     },
     {
       "date": "2026-07-08",
       "type": "Entrée",
       "ticker": "HLMA.L",
       "titre": "Entrée sur Halma",
-      "texte": "Marge de sécurité de 17 %, juste au-dessus du minimum de 15 %. Score Gem de 17/20."
+      "texte": "Score Gem 17/20, marge de sécurité de 17 % pour 15 % exigés. Phase A : ligne pleine."
     },
     {
       "date": "2026-07-15",
       "type": "Entrée",
       "ticker": "DPLM.L",
       "titre": "Entrée sur Diploma",
-      "texte": "Marge de sécurité de 18 %. Score Gem de 16/20. Levier post-acquisitions surveillé."
+      "texte": "Score Gem 16/20, marge de sécurité de 18 % pour 15 % exigés. Levier sous le seuil de 2,5x de l'archétype acquéreur en série. Phase A : ligne pleine."
     },
     {
       "date": "2026-07-20",
       "type": "Écarté",
       "ticker": "KHC",
-      "titre": "Kraft Heinz écarté au filtre quantitatif",
-      "texte": "Croissance du chiffre d'affaires sur dix ans très inférieure au seuil de 10 % par an, dépréciations répétées de marques. Valorisation basse, mais une décote ne compense pas l'absence de croissance."
+      "titre": "Kraft Heinz écarté aux gates",
+      "texte": "Croissance du chiffre d'affaires sur dix ans sous le seuil et conversion FCF / résultat net hors bornes (G3). Les ratios d'allocation du capital sont flatteurs, mais ils financent un portefeuille de marques en déclin."
     },
     {
       "date": "2026-07-22",
       "type": "Entrée",
       "ticker": "LIFCO-B.ST",
       "titre": "Entrée sur Lifco",
-      "texte": "Marge de sécurité de 20 %. Score Gem de 17/20."
+      "texte": "Score Gem 17/20, marge de sécurité de 20 % pour 15 % exigés. Phase A : ligne pleine."
     },
     {
       "date": "2026-08-03",
       "type": "Entrée",
       "ticker": "6861.T",
-      "titre": "Entrée sur Keyence",
-      "texte": "Marge de sécurité de 21 %. Score Gem de 16/20 : pilier macro noté 3 en raison du point bas du cycle industriel et de l'exposition au yen."
+      "titre": "Entrée partielle sur Keyence",
+      "texte": "Score Gem 16/20, marge de sécurité de 21 % pour 15 % exigés. Phase P (pause) : tranche réduite de 1,5 %, solde au passage en phase A ou sous trois mois."
     },
     {
       "date": "2026-08-05",
       "type": "Écarté",
       "ticker": "TDOC",
-      "titre": "Teladoc écarté au filtre quantitatif",
-      "texte": "Rentabilité opérationnelle négative, dépréciations massives du goodwill issu de l'acquisition de Livongo, dilution significative. Aucun des critères de rentabilité n'est rempli."
+      "titre": "Teladoc écarté aux gates",
+      "texte": "Marge opérationnelle négative, dérive de marge et conversion FCF hors bornes : échec sur G1, G2 et G3."
     },
     {
       "date": "2026-08-12",
       "type": "Entrée",
       "ticker": "MSFT",
       "titre": "Entrée sur Microsoft",
-      "texte": "Marge de sécurité de 16 %. Score Gem de 17/20. Point de vigilance : intensité capitalistique des centres de données."
+      "texte": "Score Gem 17/20, marge de sécurité de 16 % pour 15 % exigés. Point de vigilance sur le pilier transparence : cohérence entre capex et amortissements, avec la montée en charge des centres de données. Phase A : ligne pleine."
     },
     {
       "date": "2026-08-20",
       "type": "Entrée",
       "ticker": "FAST",
       "titre": "Entrée sur Fastenal",
-      "texte": "Marge de sécurité de 17 %. Score Gem de 16/20."
+      "texte": "Score Gem 16/20, marge de sécurité de 17 % pour 15 % exigés. Phase A : ligne pleine."
     },
     {
       "date": "2026-08-24",
       "type": "Écarté",
       "ticker": "SAP.DE",
-      "titre": "SAP non retenu à l'étape de valorisation",
-      "texte": "Passe les filtres quantitatifs, mais le cours reste au-dessus du prix d'entrée théorique corrigé de la marge de sécurité. Placé en liste de suivi."
+      "titre": "SAP non retenu à la valorisation",
+      "texte": "Passe les gates, aucun veto, score Gem suffisant. Le reverse DCF montre une croissance implicite supérieure à la croissance réalisée : le cours reste au-dessus du prix d'entrée maximal. Placé en liste de suivi."
     },
     {
       "date": "2026-08-27",
       "type": "Entrée",
       "ticker": "GWW",
       "titre": "Entrée sur W.W. Grainger",
-      "texte": "Marge de sécurité de 16 %. Score Gem de 15/20."
+      "texte": "Score Gem 16/20, marge de sécurité de 16 % pour 15 % exigés. Phase A : ligne pleine."
     },
     {
       "date": "2026-09-03",
       "type": "Entrée",
       "ticker": "ROP",
       "titre": "Entrée sur Roper Technologies",
-      "texte": "Marge de sécurité de 18 %. Score Gem de 15/20 : pilier risques noté 3 en raison du poids du goodwill au bilan."
+      "texte": "Score Gem 16/20 : pilier transparence noté 3 en raison du poids du goodwill au bilan, au plancher autorisé. Marge de sécurité de 18 % pour 15 % exigés. Phase A : ligne pleine."
     },
     {
       "date": "2026-09-10",
       "type": "Entrée",
       "ticker": "COLO-B.CO",
       "titre": "Entrée sur Coloplast",
-      "texte": "Marge de sécurité de 17 %. Score Gem de 15/20."
+      "texte": "Score Gem 16/20, marge de sécurité de 17 % pour 15 % exigés. Phase A : ligne pleine."
     },
     {
       "date": "2026-09-17",
       "type": "Entrée",
       "ticker": "NOVO-B.CO",
-      "titre": "Entrée sur Novo Nordisk",
-      "texte": "Marge de sécurité de 24 % après la correction du titre. Score Gem de 15/20 : pilier risques noté 3 en raison de la concurrence sur l'obésité."
-    },
-    {
-      "date": "2026-09-24",
-      "type": "Sortie",
-      "ticker": "ADYEN.AS",
-      "titre": "Sortie d'Adyen",
-      "texte": "Le cours dépasse la valeur intrinsèque estimée. La thèse reste intacte, mais la marge de sécurité est consommée. Sortie selon la règle de valorisation ; le dossier repasse en liste de suivi."
+      "titre": "Entrée partielle sur Novo Nordisk",
+      "texte": "Score Gem 15/20, candidat sous surveillance : marge de sécurité de 24 % pour 20 % exigés. Phase C (controverse) : tranche réduite de 1,5 %."
     }
   ]
 }

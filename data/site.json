@@ -14,12 +14,26 @@
   "frais_transaction_pct": 0.1,
   "benchmark_ticker": "IWDA.AS",
   "benchmark_nom": "iShares Core MSCI World (EUR)",
-  "seuil_gem": 14,
-  "marge_securite_min_pct": 15,
+  "seuil_gem": 15,
   "piliers_gem": [
     "Moat & pricing power",
-    "Management & gouvernance",
-    "Overlay macro",
-    "Red flags & risques"
+    "Management & allocation du capital",
+    "Piste de réinvestissement",
+    "Transparence comptable"
+  ],
+  "plancher_pilier": 3,
+  "marges_securite": [
+    {
+      "score_min": 18,
+      "marge_pct": 10
+    },
+    {
+      "score_min": 16,
+      "marge_pct": 15
+    },
+    {
+      "score_min": 15,
+      "marge_pct": 20
+    }
   ]
 }

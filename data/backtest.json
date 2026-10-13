@@ -1,7 +1,7 @@
 {
  "exemple": true,
- "perimetre": "Le backtest porte uniquement sur la couche quantitative de la stratégie : filtres de qualité, de croissance et de solidité financière, puis règle de marge de sécurité sur un prix d'entrée théorique calculé de façon mécanique. Le score Gem et la prise en compte du momentum reposent sur un jugement humain ; ils ne sont pas simulés, car les reconstituer après coup reviendrait à utiliser des informations inconnues à l'époque.",
- "univers": "Sociétés cotées dans 14 pays (Amérique du Nord, Europe occidentale et nordique, Japon), capitalisation supérieure à 300 M€, hors finance, utilities, immobilier, biotechnologies et secteurs de matières premières.",
+ "perimetre": "Le backtest porte uniquement sur la couche quantitative de la stratégie : règles d'exclusion R1 à R4, filtres du screener et gates G1 à G3. Les vetos, le score Gem, le reverse DCF et les phases de momentum reposent sur la lecture des documents ou sur un jugement ; ils ne sont pas simulés, car les reconstituer après coup reviendrait à utiliser des informations inconnues à l'époque.",
+ "univers": "Sociétés cotées dans 15 pays (Amérique du Nord, Europe occidentale et nordique, Japon), capitalisation d'au moins un milliard, hors modèles économiques exclus à l'étape 1 de la méthode.",
  "regles": [
   "Rééquilibrage annuel, fin avril, pour laisser le temps aux comptes annuels d'être publiés.",
   "Fondamentaux décalés de quatre mois par rapport à la date de décision.",
@@ -11,24 +11,11 @@
  ],
  "sensibilite": [
   {
-   "parametre": "Marge opérationnelle minimale",
+   "parametre": "G1 · ROIC ajusté minimal",
    "valeurs": [
-    "20 %",
-    "25 % (retenu)",
-    "30 %"
-   ],
-   "cagr_pct": [
-    7.4,
-    8.3,
-    6.9
-   ]
-  },
-  {
-   "parametre": "ROCE moyen minimal",
-   "valeurs": [
-    "10 %",
-    "12 % (retenu)",
-    "15 %"
+    "9 %",
+    "11 % (retenu)",
+    "13 %"
    ],
    "cagr_pct": [
     7.9,
@@ -37,11 +24,24 @@
    ]
   },
   {
-   "parametre": "Marge de sécurité",
+   "parametre": "G2 · Dérive de marge maximale",
    "valeurs": [
-    "10 %",
-    "15 % (retenu)",
-    "20 %"
+    "0,25",
+    "0,35 (retenu)",
+    "0,45"
+   ],
+   "cagr_pct": [
+    7.4,
+    8.3,
+    6.9
+   ]
+  },
+  {
+   "parametre": "Seuil du score Gem",
+   "valeurs": [
+    "14/20",
+    "15/20 (retenu)",
+    "16/20"
    ],
    "cagr_pct": [
     8.7,
