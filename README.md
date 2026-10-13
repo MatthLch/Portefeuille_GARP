@@ -59,7 +59,7 @@ Ensuite, le recalcul tourne seul du lundi au vendredi à 22h17 UTC, et immédiat
 Chaque enregistrement crée un commit horodaté dans GitHub. L'onglet Journal du site renvoie vers cet historique dès que le champ « Dépôt GitHub » est renseigné : c'est ta preuve qu'aucune décision n'a été réécrite.
 
 **Passer une nouvelle position :**
-1. *Positions* → ajouter un élément → remplir ticker Yahoo, cours, prix d'entrée théorique, notes Gem, thèse et conditions d'invalidation → **Save**.
+1. *Positions* → ajouter un élément → remplir ticker Yahoo, cours, valeur intrinsèque, notes Gem, absence de veto, phase de momentum, thèse et conditions d'invalidation → **Save**.
 2. *Journal des décisions* → ajouter une entrée de type « Entrée » qui résume la décision → **Save**.
 3. Le site affiche la ligne immédiatement ; les cours et la performance arrivent après le recalcul automatique (une à deux minutes).
 

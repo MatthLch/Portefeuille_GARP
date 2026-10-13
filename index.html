@@ -204,6 +204,7 @@ ul.plain li::marker { color: var(--muted); }
 .steps { display: grid; gap: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
 .step { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 18px; padding: 22px 24px; }
 .step + .step { border-top: 1px solid var(--line); }
+.step > div { min-width: 0; }
 .step .no { font: 500 var(--s-xl)/1 var(--f-data); color: var(--accent); }
 .step h3 { font-size: var(--s-md); font-weight: 600; }
 .step p { margin: 6px 0 0; font-family: var(--f-prose); max-width: 70ch; }
@@ -270,6 +271,55 @@ footer p { margin: 0; max-width: 95ch; }
 .empty { padding: 28px; text-align: center; color: var(--muted); background: var(--surface); border: 1px dashed var(--line-strong); border-radius: 10px; }
 .err { padding: 18px; border: 1px solid var(--neg); color: var(--neg); border-radius: 10px; background: var(--surface); }
 
+
+/* ---- Construction ---- */
+.tally { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+.tally > div { padding: 16px 18px; display: grid; gap: 4px; align-content: start; }
+.tally > div + div { border-left: 1px solid var(--line); }
+.tally .v { font: 500 1.75rem/1.1 var(--f-data); }
+.tally .d { font-size: var(--s-sm); color: var(--muted); }
+.board { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 20px; }
+.board-col { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px 18px; display: grid; gap: 14px; align-content: start; }
+.board-col h3 { font-size: var(--s-md); font-weight: 600; }
+.board-col h3 small { font-weight: 400; color: var(--muted); font-size: var(--s-sm); margin-left: 6px; }
+.grp { display: grid; gap: 7px; }
+.grp-t { font-size: var(--s-xs); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.co-chip {
+  display: inline-flex; align-items: center; gap: 6px; font-size: var(--s-sm); padding: 4px 9px 4px 7px;
+  border-radius: 5px; border: 1px solid var(--line-strong); background: var(--bg); line-height: 1.3;
+}
+.co-chip::before { content: "✓"; font-size: 11px; font-weight: 700; color: var(--pos); width: 12px; text-align: center; }
+.co-chip.err { border-color: var(--neg); }
+.co-chip.err::before { content: "✕"; color: var(--neg); }
+.co-chip.q { border-style: dashed; color: var(--muted); }
+.co-chip.q::before { content: "?"; color: var(--warn); }
+.co-chip.na { border-style: dotted; color: var(--muted); }
+.co-chip.na::before { content: "–"; color: var(--muted); }
+.legend-chips { display: flex; gap: 14px; flex-wrap: wrap; font-size: var(--s-sm); color: var(--muted); }
+.legend-chips .co-chip { pointer-events: none; }
+.mode-note { font-size: var(--s-xs); color: var(--muted); margin-top: -2px; }
+.lessons { display: grid; gap: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+.lesson { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 20px; padding: 18px 22px; }
+.lesson + .lesson { border-top: 1px solid var(--line); }
+.lesson h3 { font-size: var(--s-base); font-weight: 600; }
+.lesson .ex { font-size: var(--s-xs); color: var(--muted); margin-top: 4px; font-family: var(--f-data); }
+.lesson p { margin: 0; font-family: var(--f-prose); max-width: 68ch; }
+.lesson p + p { margin-top: 8px; }
+.lesson .fix { color: var(--ink); }
+.lesson .fix b { font-family: var(--f-ui); font-size: var(--s-xs); letter-spacing: .06em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-right: 6px; }
+.open-cases { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 14px; }
+.case { border: 1px solid var(--line); border-top: 3px solid var(--warn); border-radius: 4px 4px 10px 10px; background: var(--surface); padding: 16px 18px; display: grid; gap: 8px; align-content: start; }
+.case h3 { font-size: var(--s-base); font-weight: 600; }
+.case p { margin: 0; font-family: var(--f-prose); font-size: var(--s-base); }
+@media (max-width: 900px) {
+  .board, .open-cases { grid-template-columns: 1fr; }
+  .tally { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tally > div:nth-child(3) { border-left: 0; }
+  .tally > div:nth-child(n+3) { border-top: 1px solid var(--line); }
+  .lesson { grid-template-columns: 1fr; gap: 8px; }
+}
+
 @media (max-width: 900px) {
   .masthead-grid { grid-template-columns: 1fr; }
   .vl-card { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); padding-top: 18px; }
@@ -284,7 +334,7 @@ footer p { margin: 0; max-width: 95ch; }
   .entry { grid-template-columns: 1fr; gap: 6px; }
   .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .pillars { grid-template-columns: 1fr; }
-  .step { grid-template-columns: 1fr; gap: 8px; }
+  .step { grid-template-columns: minmax(0, 1fr); gap: 8px; }
   .drawer { padding-inline: 18px; }
   .gem-row { grid-template-columns: minmax(0, 1fr) 90px 30px; }
 }
@@ -310,8 +360,9 @@ footer p { margin: 0; max-width: 95ch; }
     <nav class="tabs" aria-label="Sections">
       <a href="#portefeuille" data-view="portefeuille">Portefeuille</a>
       <a href="#journal" data-view="journal">Journal des décisions</a>
-      <a href="#backtest" data-view="backtest">Backtest</a>
       <a href="#methode" data-view="methode">Méthode</a>
+      <a href="#construction" data-view="construction">Construction</a>
+      <a href="#backtest" data-view="backtest">Backtest</a>
       <a href="#apropos" data-view="apropos">À propos</a>
     </nav>
   </div>
@@ -323,6 +374,7 @@ footer p { margin: 0; max-width: 95ch; }
   <section class="view" id="v-journal" hidden></section>
   <section class="view" id="v-backtest" hidden></section>
   <section class="view" id="v-methode" hidden></section>
+  <section class="view" id="v-construction" hidden></section>
   <section class="view" id="v-apropos" hidden></section>
 </main>
 
@@ -358,14 +410,30 @@ const prix = (v, d) => {
 };
 const slug = t => String(t).replace(/[^A-Za-z0-9._~-]/g, "_");
 
-function gemTotal(p) { return [p.gem_moat, p.gem_management, p.gem_macro, p.gem_risques].reduce((a, b) => a + (+b || 0), 0); }
+const notesGem = p => [p.gem_moat, p.gem_management, p.gem_reinvestissement, p.gem_transparence].map(v => +v || 0);
+function gemTotal(p) { return notesGem(p).reduce((a, b) => a + b, 0); }
 function marge(p) { return p.prix_entree_theorique ? (1 - p.cours_entree / p.prix_entree_theorique) * 100 : null; }
+/* Marge de sécurité exigée selon le score Gem (null si le score est sous le seuil). */
+function margeExigee(score) {
+  const grille = (D.site.marges_securite || []).slice().sort((a, b) => b.score_min - a.score_min);
+  const r = grille.find(x => score >= x.score_min);
+  return r ? r.marge_pct : null;
+}
+const PHASES = {
+  A: { nom: "Accélération", decision: "Ligne pleine" },
+  P: { nom: "Pause", decision: "Tranche réduite" },
+  C: { nom: "Controverse", decision: "Tranche réduite" },
+  B: { nom: "Baisse", decision: "Aucun achat" },
+};
 function regles(p) {
-  const s = D.site;
+  const s = D.site, g = gemTotal(p), plancher = s.plancher_pilier ?? 3;
+  const exig = margeExigee(g);
+  const retenu = g >= s.seuil_gem && notesGem(p).every(n => n >= plancher) && p.vetos_ok !== false;
+  const ph = PHASES[p.phase] ? p.phase : null;
   return [
-    { ok: (marge(p) ?? -1) >= s.marge_securite_min_pct - 1e-9, lbl: `Marge de sécurité ≥ ${s.marge_securite_min_pct} %` },
-    { ok: gemTotal(p) >= s.seuil_gem, lbl: `Score Gem ≥ ${s.seuil_gem}/20` },
-    { ok: !!p.momentum_valide, lbl: "Momentum confirmé" },
+    { ok: retenu, lbl: `Gem retenu : ${g}/20 (seuil ${s.seuil_gem}), aucun pilier sous ${plancher}, aucun veto` },
+    { ok: exig != null && (marge(p) ?? -1) >= exig - 1e-9, lbl: exig != null ? `Marge de sécurité ≥ ${exig} % pour un score de ${g}/20` : "Marge de sécurité : score sous le seuil" },
+    { ok: ph != null && ph !== "B", lbl: ph ? `Phase ${ph} · ${PHASES[ph].nom} : ${PHASES[ph].decision.toLowerCase()}` : "Phase de momentum non renseignée" },
   ];
 }
 const mk = p => (D.marche.positions || {})[p.ticker] || {};
@@ -477,7 +545,7 @@ function renderHeader() {
 /* Portefeuille                                                        */
 /* ------------------------------------------------------------------ */
 function gemMini(p) {
-  const g = [p.gem_moat, p.gem_management, p.gem_macro, p.gem_risques];
+  const g = notesGem(p);
   return `<span class="gem" aria-hidden="true">${g.map(v => `<i style="height:${(v / 5) * 100}%"></i>`).join("")}</span>`;
 }
 function renderPortefeuille() {
@@ -505,15 +573,15 @@ function renderPortefeuille() {
   };
   const head = (closed) => `<thead><tr>
       <th>Société</th><th class="n">Exécution</th><th class="n">${closed ? "Sortie" : "Cours"}</th><th class="n">Performance</th>
-      <th class="n">${closed ? "Contribution" : "Poids"}</th><th class="n" title="Décote du cours d'entrée sur le prix d'entrée théorique">Marge sécu.</th>
+      <th class="n">${closed ? "Contribution" : "Poids"}</th><th class="n" title="Décote du cours d'entrée sur la valeur intrinsèque">Marge sécu.</th>
       <th class="n">Gem /20</th><th>Règles</th></tr></thead>`;
 
   v.innerHTML = `
     <div class="kpis">
       <div class="kpi"><span class="eyebrow">Valeur liquidative</span><span class="v num">${fmt(sy.valeur, 0)} €</span><span class="d">pour ${fmt(s.capital_initial, 0)} € de capital fictif</span></div>
       <div class="kpi"><span class="eyebrow">Lignes</span><span class="v num">${ouvertes.length}</span><span class="d">${fmt(sy.cash_pct, 1)} % de liquidités · cible 12 à 18 lignes</span></div>
-      <div class="kpi"><span class="eyebrow">Marge de sécurité à l'entrée</span><span class="v num">${fmt(mosMoy, 1)} %</span><span class="d">moyenne, minimum requis ${s.marge_securite_min_pct} %</span></div>
-      <div class="kpi"><span class="eyebrow">Score Gem moyen</span><span class="v num">${fmt(gemMoy, 1)}/20</span><span class="d">seuil d'entrée ${s.seuil_gem}/20</span></div>
+      <div class="kpi"><span class="eyebrow">Marge de sécurité à l'entrée</span><span class="v num">${fmt(mosMoy, 1)} %</span><span class="d">moyenne, exigée de 10 à 20 % selon le score</span></div>
+      <div class="kpi"><span class="eyebrow">Score Gem moyen</span><span class="v num">${fmt(gemMoy, 1)}/20</span><span class="d">seuil ${s.seuil_gem}/20, aucun pilier sous ${s.plancher_pilier ?? 3}</span></div>
     </div>
 
     <div>
@@ -528,8 +596,8 @@ function renderPortefeuille() {
       <div class="sec-head"><h2>Positions ouvertes</h2><p>Cliquez sur une ligne pour lire la thèse</p></div>
       ${ouvertes.length ? `<div class="table-scroll"><table>${head(false)}<tbody>${ouvertes.map(row).join("")}</tbody></table></div>` : `<div class="empty">Aucune position ouverte pour le moment.</div>`}
       <div class="rule-note">
-        <span>Chaque ligne est vérifiée automatiquement contre les trois conditions d'entrée :</span>
-        <span>① marge de sécurité ≥ ${s.marge_securite_min_pct} %</span><span>② score Gem ≥ ${s.seuil_gem}/20</span><span>③ momentum confirmé</span>
+        <span>Chaque ligne est vérifiée automatiquement contre les trois conditions d'achat :</span>
+        <span>① dossier retenu au Gem</span><span>② marge de sécurité exigée pour ce score</span><span>③ phase de momentum autre que B</span>
       </div>
       <p class="rule-note">Le cours d'exécution est la clôture réelle du jour d'exécution, relevée automatiquement, et non un cours saisi à la main.</p>
     </div>
@@ -551,8 +619,8 @@ function ouvrirFiche(ticker, pousser = true) {
   const p = (D.portfolio.positions || []).find(x => x.ticker === ticker);
   if (!p) return;
   const s = D.site, m = mk(p), r = regles(p), g = gemTotal(p);
-  const notes = [p.gem_moat, p.gem_management, p.gem_macro, p.gem_risques];
-  const exec = m.cours_execution ?? p.cours_entree, th = p.prix_entree_theorique, seuil = th * (1 - s.marge_securite_min_pct / 100);
+  const notes = notesGem(p), exig = margeExigee(g) ?? 20;
+  const exec = m.cours_execution ?? p.cours_entree, th = p.prix_entree_theorique, seuil = th * (1 - exig / 100);
   const hi = Math.max(th, exec, m.cours_actuel || 0) * 1.06, lo = Math.min(exec, m.cours_actuel || exec, seuil) * .9;
   const xp = v => ((v - lo) / (hi - lo) * 100).toFixed(2) + "%";
   const hist = (D.journal.entrees || []).filter(e => e.ticker === p.ticker).sort((a, b) => a.date.localeCompare(b.date));
@@ -568,7 +636,7 @@ function ouvrirFiche(ticker, pousser = true) {
       <div class="fact"><span class="k">Exécution</span><span class="v">${prix(exec, p.devise)}</span><span class="k">${dfr(m.jour_execution || p.date_entree)}</span></div>
       <div class="fact"><span class="k">${p.statut === "cloturee" ? "Sortie" : "Cours actuel"}</span><span class="v">${prix(p.statut === "cloturee" ? (m.cours_sortie_marche ?? p.cours_sortie) : m.cours_actuel, p.devise)}</span><span class="k">${dfr(p.statut === "cloturee" ? (m.jour_sortie || p.date_sortie) : D.marche.maj)}</span></div>
       <div class="fact"><span class="k">Performance</span><span class="v ${cls(m.perf_locale_pct)}">${pct(m.perf_locale_pct)}</span><span class="k">${pct(m.perf_base_pct)} en ${esc(s.devise_portefeuille)}</span></div>
-      <div class="fact"><span class="k">Prix d'entrée théorique</span><span class="v">${prix(th, p.devise)}</span></div>
+      <div class="fact"><span class="k">Valeur intrinsèque</span><span class="v">${prix(th, p.devise)}</span></div>
       <div class="fact"><span class="k">Marge de sécurité</span><span class="v">${fmt(marge(p), 1)} %</span></div>
       <div class="fact"><span class="k">${p.statut === "cloturee" ? "Contribution" : "Poids actuel"}</span><span class="v">${p.statut === "cloturee" ? pct(m.contribution_pct, 2) : fmt(m.poids_actuel_pct, 1) + " %"}</span></div>
     </div>
@@ -581,11 +649,11 @@ function ouvrirFiche(ticker, pousser = true) {
       <div class="scale" aria-hidden="true">
         <div class="track"></div>
         <div class="zone" style="left:0;width:${xp(seuil)}"></div>
-        <div class="mk th" style="left:${xp(th)}"><span>Théorique</span><i></i></div>
+        <div class="mk th" style="left:${xp(th)}"><span>Valeur intrinsèque</span><i></i></div>
         <div class="mk" style="left:${xp(exec)}"><span>Entrée</span><i></i></div>
-        <div class="mk th lbl-below" style="left:${xp(seuil)}"><i></i><span>−${s.marge_securite_min_pct} %</span></div>
+        <div class="mk th lbl-below" style="left:${xp(seuil)}"><i></i><span>−${exig} %</span></div>
       </div>
-      <p class="scale-caption">Zone verte : cours compatibles avec la règle d'entrée (≤ ${fmt(1 - s.marge_securite_min_pct / 100, 2)} × prix théorique, soit ${prix(seuil, p.devise)}). ${esc(p.methode_valo || "")}.</p>
+      <p class="scale-caption">Zone verte : cours compatibles avec le prix d'entrée maximal, soit la valeur intrinsèque diminuée de ${exig} % pour un score de ${g}/20 (${prix(seuil, p.devise)}). ${esc(p.methode_valo || "")}.</p>
     </div>
 
     <div class="block"><h3>Gem framework</h3>
@@ -595,7 +663,7 @@ function ouvrirFiche(ticker, pousser = true) {
       </div>
     </div>
 
-    <div class="block"><h3>Conditions d'entrée</h3>
+    <div class="block"><h3>Conditions d'achat</h3>
       <div class="gem-rows">${r.map(x => `<div class="gem-row" style="grid-template-columns:24px minmax(0,1fr)"><span class="check ${x.ok ? "" : "ko"}">${x.ok ? "✓" : "✕"}</span><span>${esc(x.lbl)}</span></div>`).join("")}</div>
     </div>
 
@@ -718,54 +786,255 @@ function renderBacktest() {
 /* ------------------------------------------------------------------ */
 function renderMethode() {
   const s = D.site, v = document.getElementById("v-methode");
-  const desc = [
-    "Barrières à l'entrée, coûts de transfert, monopoles de niche, capacité à répercuter les hausses de coûts.",
-    "Actionnariat des dirigeants, historique d'allocation du capital, rémunération alignée sur le rendement du capital.",
-    "Sensibilité aux taux, exposition aux devises, adéquation avec la phase du cycle.",
-    "Qualité comptable (FCF contre résultat net), dépendance à un client, risque de dilution.",
+  const t = (head, rows, cls = []) => `<div class="table-scroll" style="margin-top:12px"><table>
+    <thead><tr>${head.map((h, i) => `<th class="${cls[i] || ""}">${h}</th>`).join("")}</tr></thead>
+    <tbody>${rows.map(r => `<tr>${r.map((c, i) => `<td class="${cls[i] || ""}">${c}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+  const sub = h => `<div class="sec-head" style="margin-top:22px;margin-bottom:6px"><h3 style="font-size:var(--s-md);font-weight:600">${h}</h3></div>`;
+  const step = (no, titre, corps) => `<div class="step"><div class="no">${no}</div><div><h3>${titre}</h3>${corps}</div></div>`;
+  const piliers = [
+    "Niveau et stabilité des marges sur dix ans. Rétention client, hausses de prix supérieures à l'inflation, part de marché, coûts de changement.",
+    "Évolution du nombre d'actions, rendement pour l'actionnaire, trajectoire du ROIC. Détention par les dirigeants, rémunération indexée sur le ROCE ou le FCF par action, acquisitions qui préservent le ROIC.",
+    "Croissance = ROIC × taux de réinvestissement. Où va le prochain milliard investi, et à quel rendement ? Si la réponse est « rachat d'actions », le pilier plafonne à 3.",
+    "Conversion FCF / résultat net, rémunération en actions, cohérence entre capex et amortissements. Écart entre résultat publié et ajusté, frais de développement capitalisés, changements de méthode.",
   ];
   v.innerHTML = `
     <div>
       <div class="sec-head"><h2>Philosophie</h2></div>
-      <p class="lede">Identifier des sociétés de grande qualité, capables de composer leur valeur sur longue période, et ne les acheter qu'avec une marge de sécurité. La sélection suit un entonnoir en cinq étapes, appliqué dans cet ordre ; une société doit franchir chaque étape pour passer à la suivante.</p>
+      <p class="lede">Identifier des sociétés capables de réinvestir durablement leurs capitaux à un rendement élevé, et les acheter à un prix qui n'anticipe pas déjà cette performance. Le processus est séquentiel : chaque étage réduit l'univers, et seuls les derniers appellent un jugement. L'ordre n'est jamais inversé : le prix ne se regarde qu'après avoir statué sur la qualité, et la qualité ne se note qu'après avoir vérifié qu'aucun veto ne s'applique.</p>
+      ${t(["Étage", "Nature", "Univers restant"], [
+        ["1 · Univers et filtres de base", "Automatique", "~770"],
+        ["2 · Gates discriminants", "Automatique", "~480"],
+        ["3 · Pré-score et sélection", "Automatique, puis choix", "~50"],
+        ["4 · Vetos", "Lecture des rapports annuels", "variable"],
+        ["5 · Score Gem", "Semi-automatique", "15 à 25"],
+        ["6 · Reverse DCF et marge de sécurité", "Modélisation", "~10"],
+        ["7 · Momentum et exécution", "Règle mécanique", "portefeuille"],
+      ], ["", "", "n"])}
     </div>
     <div class="steps">
-      <div class="step"><div class="no">1</div><div><h3>Univers et exclusions</h3>
-        <p>Quatorze pays : États-Unis, Canada, France, Allemagne, Pays-Bas, Royaume-Uni, Suisse, Suède, Danemark, Norvège, Finlande, Italie, Espagne et Japon. Capitalisation supérieure à 300 M€. Sont exclus les modèles économiques que la grille ne sait pas juger correctement : banques, assurances et services financiers, utilities, immobilier, biotechnologies sans revenus, mines, pétrole et gaz, transport maritime, automobile, construction et matériaux.</p></div></div>
-      <div class="step"><div class="no">2</div><div><h3>Filtre quantitatif sur cinq à dix ans</h3>
-        <p>La qualité se mesure dans la durée. Les seuils portent sur des moyennes longues pour écarter les sociétés dont une bonne année masque un modèle fragile.</p>
-        <div class="thresholds">
-          <div class="thr"><div class="k">ROCE ou ROIC moyen</div><div class="v">&gt; 12 %</div></div>
-          <div class="thr"><div class="k">Marge opérationnelle</div><div class="v">&gt; 25 %</div><div class="k">ou en expansion structurelle</div></div>
-          <div class="thr"><div class="k">Croissance du CA</div><div class="v">&gt; 10 % / an</div></div>
-          <div class="thr"><div class="k">Dette nette / EBITDA</div><div class="v">&lt; 3,0x</div></div>
-          <div class="thr"><div class="k">Couverture des intérêts</div><div class="v">&gt; 5,0x</div></div>
-        </div></div></div>
-      <div class="step"><div class="no">3</div><div><h3>Valeur intrinsèque et marge de sécurité</h3>
-        <p>Un prix d'entrée théorique est calculé par DCF en trois phases (scénario explicite, période de convergence, valeur terminale normative), recoupé par les multiples historiques de la société. Le cours doit se situer au moins ${s.marge_securite_min_pct} % sous ce prix : cours ≤ prix d'entrée théorique × ${fmt(1 - s.marge_securite_min_pct / 100, 2)}.</p></div></div>
-      <div class="step"><div class="no">4</div><div><h3>Gem framework : analyse qualitative sur 20</h3>
-        <p>Quatre piliers notés de 1 à 5. Seuil d'entrée : ${s.seuil_gem}/20.</p>
-        <div class="pillars">${s.piliers_gem.map((n, i) => `<div class="pillar"><b>${esc(n)}</b><span>${esc(desc[i] || "")}</span></div>`).join("")}</div></div></div>
-      <div class="step"><div class="no">5</div><div><h3>Prise en compte du momentum</h3>
-        <p>Une société qui remplit les quatre conditions précédentes n'est pas achetée immédiatement. L'exécution attend une confirmation du momentum de marché, analysée manuellement. Cette étape évite d'acheter une valeur en pleine dégradation de tendance, seulement parce qu'elle paraît bon marché. Tant que la confirmation manque, le dossier reste en liste de suivi.</p></div></div>
+      ${step(1, "Univers et filtres de base", `
+        <p>Quinze pays : États-Unis, Canada, France, Allemagne, Pays-Bas, Royaume-Uni, Irlande, Suisse, Suède, Danemark, Norvège, Finlande, Italie, Espagne et Japon. Capitalisation d'au moins 1 milliard d'euros, volume quotidien moyen supérieur à 3 millions d'euros, au moins huit ans d'historique.</p>
+        <p style="margin-top:8px">Les exclusions sectorielles ont été abandonnées : elles écartaient Visa, Mastercard, Moody's ou MSCI, rangés dans la finance alors que ce sont des franchises de données très rentables, et laissaient passer des cycliques déguisées en industrielles. Quatre règles fondées sur le modèle économique les remplacent.</p>
+        ${t(["Règle", "Seuil", "Ce qu'elle écarte"], [
+          ["R1 · Rotation du capital tangible", "≥ 0,40", "Modèles à spread de bilan : banques, assurance, foncières"],
+          ["R2 · Volatilité de marge (dérive 3 ans contre 10 ans)", "≤ 0,35", "Preneurs de prix : mines, pétrole, chimie de base"],
+          ["R3 · Intensité capitalistique (capex / CA)", "≤ 25 %", "Infrastructures régulées, utilities"],
+          ["R4 · Profitabilité établie", "EBIT positif 4 ans sur 5", "Sociétés sans revenus, biotechs en développement"],
+        ], ["", "num", ""])}
+        ${sub("Filtres du screener")}
+        <p>Ce qui est éliminé au screener est irrécupérable : les seuils y sont donc volontairement plus larges que les gates. Aucun filtre de valorisation à ce stade, sous peine d'éliminer mécaniquement les meilleures franchises.</p>
+        ${t(["Critère", "Seuil"], [
+          ["ROCE moyen sur 10 ans", "≥ 9 %"], ["Marge opérationnelle moyenne sur 10 ans", "≥ 5 %"], ["Marge brute moyenne sur 10 ans", "≥ 25 %"],
+          ["Croissance annuelle du chiffre d'affaires sur 10 ans", "≥ 4 %"], ["Conversion FCF / résultat net", "−30 % à 320 %"],
+        ], ["", "n num"])}
+        <p class="rule-note">Ni goodwill / actif, ni couverture des intérêts au screener : ces champs sont vides pour les sociétés sans acquisition ou sans dette, et un champ vide y vaut échec. Fastenal et Keyence étaient éliminés parce que leur bilan était trop propre. Ces critères s'appliquent en aval, où une cellule vide vaut passage.</p>`)}
+
+      ${step(2, "Gates discriminants", `
+        <p>Appliqués dans le classeur, sur l'export du screener. Un gate en échec bloque le dossier ; une donnée manquante ou une valeur en zone grise l'envoie en quarantaine, c'est-à-dire en revue manuelle.</p>
+        ${t(["Gate", "Règle", "Ce qu'il attrape"], [
+          ["G1 · Rentabilité", "ROIC ajusté du goodwill ≥ 11 % <b>ou</b> ROCE sur 10 ans ≥ 18 %", "Rentabilité insuffisante, sans pénaliser les acquéreurs en série"],
+          ["G2 · Stabilité", "Dérive de la marge opérationnelle, 3 ans contre 10 ans, ≤ 0,35", "Teladoc, Zoom, Peloton, Intel, Ubisoft. Aucun compounder ne dépasse 0,28."],
+          ["G3 · Qualité du cash", "Conversion FCF / résultat net entre −30 % et 250 %, quarantaine de 250 à 350 %", "En bas : résultat dégradé. En haut : résultat écrasé par l'amortissement des acquisitions."],
+        ])}
+        <p class="rule-note">ROIC ajusté = ROIC moyen sur 5 ans ÷ (1 − goodwill / actif total). Sans correction, Roper ressort à 5,1 %, Dassault à 9,0 % et Halma à 12,5 %, tous sous Bayer à 10,6 %. Après ajustement : 13,0 %, 12,8 % et 21,0 %.</p>
+        ${sub("D'où viennent ces seuils")}
+        <p>La première version reprenait des seuils courants pour une stratégie de qualité. Le calibrage sur des dossiers réels a montré que chacun se trompait d'une façon précise.</p>
+        ${t(["Seuil initial", "Ce que le calibrage a montré", "Remplacé par"], [
+          ["ROCE &gt; 12 %", "Éliminait Halma, à 11,4 % : le goodwill des acquéreurs en série écrase le ratio brut.", "G1, ROIC ajusté du goodwill"],
+          ["Marge opérationnelle &gt; 25 %", "Éliminait Fastenal, Bunzl et Ferguson : un distributeur vit de sa rotation, pas de sa marge.", "Marge ≥ 5 % au screener, stabilité en G2, seuils par archétype"],
+          ["Croissance &gt; 10 % / an", "Laissait passer Teleperformance, à 12,1 %, et bloquait W.W. Grainger.", "Croissance ≥ 4 %, la qualité étant jugée par G1 à G3"],
+          ["Dette nette / EBITDA &lt; 3x", "Éliminait MSCI et Roper, qui portent volontairement du levier sur des flux prévisibles, tout en restant trop laxiste pour un éditeur de logiciels.", "Seuils par archétype, de 1,5x à 2,5x, et veto de solvabilité à 4x"],
+          ["Couverture des intérêts &gt; 5x", "Ratio absent pour les sociétés sans dette : les bilans les plus sains étaient éliminés.", "Veto V6 en aval, où un champ vide vaut passage"],
+        ], ["num", "", ""])}
+        ${sub("Les archétypes")}
+        <p>Chaque dossier qui passe les gates reçoit un archétype, qui fixe ses seuils secondaires et oriente la lecture qualitative. Un seuil unique sur un univers hétérogène produit des erreurs dans les deux sens.</p>
+        ${t(["", "A · Franchise asset-light", "B · Acquéreur en série", "C · Distributeur / réseau", "D · Marque & medtech"], [
+          ["Exemples", "Microsoft, SAP, MSCI", "Halma, Diploma, Lifco, Roper", "Fastenal, Bunzl, Ferguson", "L'Oréal, Hermès, Novo Nordisk, Keyence"],
+          ["Marge opérationnelle", "&gt; 25 %", "15 à 25 %", "5 à 12 %", "&gt; 18 %"],
+          ["ROIC hors goodwill", "&gt; 25 %", "&gt; 20 %", "&gt; 20 %", "&gt; 20 %"],
+          ["Dette nette / EBITDA", "&lt; 1,5x", "&lt; 2,5x", "&lt; 2,0x", "&lt; 2,0x"],
+          ["Conversion FCF / résultat net", "&gt; 85 %", "&gt; 80 %", "&gt; 80 %", "&gt; 85 %"],
+          ["Vigilance dominante", "Dilution, disruption", "Qualité des acquisitions", "BFR, pouvoir des fournisseurs", "Renouvellement de marque, réglementation"],
+        ])}`)}
+
+      ${step(3, "Pré-score et sélection", `
+        <p>Un pré-score Gem sur 20 est calculé automatiquement pour chaque dossier qui passe les gates, à partir des seuls ratios. Les 50 à 60 premiers forment la file de travail, à raison d'un dossier par semaine.</p>
+        <p style="margin-top:8px">Le pré-score classe, il ne décide pas. Au calibrage, Kraft Heinz obtenait 13,6/20 grâce à ses rachats et à son dividende, au-dessus de quatre compounders authentiques.</p>`)}
+
+      ${step(4, "Vetos", `
+        <p>Binaires et appliqués avant toute notation : un seul veto écarte le dossier, sans compensation possible. Ils existent parce qu'aucun ratio n'attrape une fraude ou un passif juridique : des comptes falsifiés sont cohérents par construction.</p>
+        ${t(["Veto", "Déclencheur", "Source"], [
+          ["V1 · Passif juridique", "Provisions et passifs éventuels &gt; 25 % de la capitalisation, ou contentieux de masse", "Rapport annuel"],
+          ["V2 · Opacité", "Auditeur changé depuis moins de 3 ans, réserve, retraitement, faiblesse de contrôle interne", "Rapport annuel"],
+          ["V3 · Trésorerie non vérifiable", "Plus de 30 % chez des tiers, sous séquestre ou non rapatriable", "Rapport annuel"],
+          ["V4 · Dépendance client", "Un client &gt; 25 % du CA, ou les trois premiers &gt; 50 %", "Rapport annuel"],
+          ["V5 · Dilution", "Actions +2 % par an sur 5 ans, avec une croissance du BPA inférieure ou égale à celle du CA", "Calculé"],
+          ["V6 · Continuité", "Dette nette / EBITDA &gt; 4x, couverture des intérêts &lt; 2x, ou &lt; 1,5x après capex", "Calculé"],
+        ])}
+        <p class="rule-note">Un drapeau sur les accruals (test de Sloan) complète le dispositif sans être un veto : il signale où regarder.</p>`)}
+
+      ${step(5, "Score Gem", `
+        <p>Quatre piliers notés de 1 à 5. Chaque pilier reçoit une note d'ancrage calculée à partir des ratios, que l'analyse ajuste d'un point au plus, à partir de six questions binaires. L'ancrage garantit la reproductibilité ; la limite d'un point empêche le jugement de réécrire le score.</p>
+        <div class="pillars">${s.piliers_gem.map((n, i) => `<div class="pillar"><b>${esc(n)}</b><span>${esc(piliers[i] || "")}</span></div>`).join("")}</div>
+        ${t(["Score Gem", "Décision", "Marge de sécurité exigée"], [
+          ["18 à 20", "Candidat prioritaire", "10 %"], ["16 à 17", "Candidat", "15 %"], ["15", "Candidat sous surveillance", "20 %"], ["Moins de 15", "Écarté", "—"],
+        ], ["num", "", "num"])}
+        <p class="rule-note">Plancher : aucun pilier sous ${s.plancher_pilier ?? 3}, quel que soit le total. La marge de sécurité diminue quand la qualité augmente, car la prévision est plus fiable. Une marge uniforme conduit à acheter les moins bons dossiers de la liste, puisque les meilleurs ne décotent jamais assez.</p>`)}
+
+      ${step(6, "Reverse DCF et prix d'entrée", `
+        <p>Un DCF classique produit un prix cible faussement précis, qu'on ajuste inconsciemment jusqu'au résultat souhaité. Le reverse DCF pose une question : quelle croissance le cours exige-t-il, et est-elle défendable au regard de ce que la société a réalisé ? Si le marché exige plus que l'historique, on paie une amélioration qui n'a pas eu lieu.</p>
+        <p style="margin-top:8px">Projection sur 10 ans en deux phases de croissance, valeur terminale à croissance normative, table de sensibilité dont la lecture inverse donne la croissance implicite. Prix d'entrée maximal = valeur par action × (1 − marge de sécurité exigée).</p>`)}
+
+      ${step(7, "Momentum et dimensionnement", `
+        <p>Le momentum dimensionne la position ; il n'autorise pas l'achat. La marge de sécurité apparaît quand le cours baisse, le momentum se confirme quand il monte : en faire deux conditions cumulatives produit une liste d'attente permanente.</p>
+        ${t(["Phase", "Définition", "Décision"], [
+          ["A · Accélération", "Cours &gt; MM50 &gt; MM200, pente de la MM200 positive", "Ligne pleine, 4,5 %"],
+          ["P · Pause", "MM50 &gt; MM200, cours repassé sous la MM50", "Tranche réduite, 1,5 %"],
+          ["C · Controverse", "MM50 &lt; MM200, cours repassé au-dessus de la MM50", "Tranche réduite, 1,5 %"],
+          ["B · Baisse", "Cours &lt; MM50 &lt; MM200, pente de la MM200 négative", "<b>Aucun achat</b>"],
+        ])}
+        <p class="rule-note">Moyennes sur cours quotidiens, relevé hebdomadaire sur la clôture du vendredi, confirmation sur deux relevés consécutifs avant tout changement de phase. Seule la phase B bloque : acheter dans une tendance baissière établie revient à parier sur un point bas inconnu.</p>`)}
     </div>
+
     <div class="two">
       <div>
-        <div class="sec-head"><h2>Construction du portefeuille</h2></div>
-        <ul class="plain">
-          <li>12 à 18 lignes à terme, environ 15.</li>
-          <li>Poids initial de 4 à 5 % par ligne ; les liquidités non investies restent en attente d'opportunités.</li>
-          <li>Exécution au cours de clôture du jour d'exécution, frais simulés de ${fmt(s.frais_transaction_pct, 2)} % par transaction.</li>
-          <li>Benchmark : ${esc(s.benchmark_nom)}.</li>
-        </ul>
+        <div class="sec-head"><h2>Conditions d'achat</h2></div>
+        <ol class="plain">
+          <li>Dossier retenu au Gem : score d'au moins ${s.seuil_gem}/20, aucun pilier sous ${s.plancher_pilier ?? 3}, aucun veto.</li>
+          <li>Cours inférieur ou égal au prix d'entrée maximal.</li>
+          <li>Phase de momentum autre que B.</li>
+        </ol>
+        <p class="rule-note">Ordre à cours limité, jamais au marché. Entrée en tranches à des dates fixées à l'avance, jamais en fonction du cours entre-temps : c'est ce qui empêche le « j'attends encore un peu ».</p>
       </div>
       <div>
-        <div class="sec-head"><h2>Règles de sortie</h2></div>
-        <ul class="plain">
-          <li>Une condition d'invalidation de la thèse, fixée à l'entrée, est remplie.</li>
-          <li>Le cours dépasse la valeur intrinsèque estimée : la marge de sécurité est consommée.</li>
-          <li>La société ne passe plus le filtre quantitatif lors de la revue annuelle.</li>
-        </ul>
+        <div class="sec-head"><h2>Construction du portefeuille</h2></div>
+        ${t(["Paramètre", "Valeur"], [
+          ["Nombre de lignes", "15 (12 à 18)"], ["Position initiale", "4 à 5 %"], ["Plafond au coût", "10 %"],
+          ["Plafond après appréciation", "15 %"], ["Maximum par archétype", "25 %"], ["Maximum par devise", "40 %"],
+        ], ["", "n num"])}
+        <p class="rule-note">Un portefeuille Quality Growth reste un pari factoriel unique : ces titres corrèlent brutalement sur un choc de taux, comme en 2022. Benchmark : ${esc(s.benchmark_nom)}. Frais simulés de ${fmt(s.frais_transaction_pct, 2)} % par transaction.</p>
+      </div>
+    </div>
+
+    <div>
+      <div class="sec-head"><h2>Discipline de vente</h2><p>La cause détermine l'action. Priorité stricte : A, puis B, puis C, puis D.</p></div>
+      ${t(["Cause", "Déclencheur", "Action"], [
+        ["A · Thèse cassée", "Un veto se déclenche, un pilier Gem passe sous 3, le score passe sous 13, le ROIC ajusté baisse deux exercices de suite sous le seuil de l'archétype, ou la dérive de marge repasse au-dessus de 0,35", "<b>Sortie totale</b> sous 10 jours, sans considération de prix"],
+        ["B · Valorisation extrême", "Croissance implicite supérieure à 1,5x la croissance réalisée sur 10 ans", "Allègement à 50 %"],
+        ["", "Cours supérieur à 2x la valeur intrinsèque", "Sortie totale"],
+        ["C · Momentum", "Passage en phase B, sans déclencheur A ni B", "Réduction au tiers, jamais de sortie totale"],
+        ["D · Taille", "Position au-delà de 15 % ou sous 2 %, archétype au-delà de 25 %, devise au-delà de 40 %", "Écrêtage à 10 %, renfort ou sortie, rééquilibrage"],
+      ])}
+      <p class="rule-note">Aucune vente dans les cinq séances qui suivent une publication, sauf cause A. Ni la hausse ni la baisse du cours ne sont à elles seules un motif de vente. Toute vente, comme toute décision de conserver malgré un déclencheur, est datée et motivée par écrit avant l'exécution.</p>
+    </div>`;
+}
+
+/* ------------------------------------------------------------------ */
+/* Construction de la stratégie (texte modifiable directement ici)     */
+/* ------------------------------------------------------------------ */
+/* r : "ok" correctement classé · "err" erreur · "q" quarantaine · "na" non évalué */
+const CALIB = {
+  passe: [
+    { g: "A · Franchise asset-light", c: [["Microsoft","ok"],["SAP","ok"],["Dassault Systèmes","ok"],["MSCI","ok"],["Constellation Software","err"]] },
+    { g: "B · Acquéreur en série", c: [["Halma","ok"],["Diploma","ok"],["Indutrade","ok"],["Lifco","ok"],["Roper Technologies","ok"]] },
+    { g: "C · Distributeur / réseau", c: [["Fastenal","ok"],["Bunzl","ok"],["Ferguson","ok"],["W.W. Grainger","ok"]] },
+    { g: "D · Marque & medtech", c: [["L'Oréal","ok"],["Hermès","ok"],["Novo Nordisk","ok"],["Coloplast","ok"],["Keyence","ok"],["Hoya","ok"]] },
+    { g: "Bon actif, prix impossible", n: "Doivent passer les gates : l'échec se joue à la valorisation.", c: [["Sartorius Stedim Biotech","ok"],["Adyen","q"]] },
+  ],
+  bloque: [
+    { g: "Qualité comptable", c: [["Wirecard","na"],["Grifols","ok"],["Ubisoft","ok"]] },
+    { g: "Acquéreur en série en fin de course", c: [["Nidec","ok"],["Rentokil Initial","ok"]] },
+    { g: "Érosion du moat", c: [["Kraft Heinz","ok"],["Intel","ok"],["Teleperformance","ok"]] },
+    { g: "Croissance empruntée à l'avenir", c: [["Teladoc","ok"],["Peloton","q"],["Zoom","q"]] },
+    { g: "Complexité et litiges", c: [["Bayer","ok"],["3M","ok"],["Fresenius Medical Care","ok"]] },
+  ],
+};
+const LECONS = [
+  { t: "Les exclusions sectorielles écartaient de vrais compounders",
+    ex: "Visa · Mastercard · Moody's · MSCI",
+    p: "La première version excluait des secteurs entiers selon la classification GICS. Elle éliminait des franchises de données très rentables, rangées dans la finance, et laissait passer des cycliques déguisées en industrielles.",
+    f: "Quatre règles fondées sur le modèle économique remplacent la liste de secteurs : rotation du capital, volatilité des marges, intensité capitalistique, absence de revenus." },
+  { t: "Des seuils uniformes pénalisaient certains modèles",
+    ex: "Distributeurs · acquéreurs en série",
+    p: "Un distributeur ne peut pas afficher la marge brute d'un éditeur de logiciels, et un acquéreur en série ne peut pas afficher le ROIC d'une société à croissance organique. Un seuil unique crée un biais systématique contre des archétypes entiers.",
+    f: "Quatre archétypes, chacun avec ses propres seuils de marge, de ROIC, de levier et de conversion. Une cinquième famille, les services externalisés à forte intensité de main-d'œuvre, reste à formaliser." },
+  { t: "Le ROIC brut éliminait les acquéreurs en série",
+    ex: "Roper · Halma · Dassault Systèmes",
+    p: "Le goodwill accumulé au fil des acquisitions gonfle le capital investi et écrase le ROIC, alors que les acquisitions elles-mêmes créent de la valeur.",
+    f: "ROIC ajusté = ROIC moyen sur 5 ans ÷ (1 − goodwill / actif total)." },
+  { t: "Un champ vide était compté comme un échec",
+    ex: "Fastenal · Keyence",
+    p: "Sans dette ni goodwill, certains ratios sont tout simplement absents de la base. Les sociétés les plus saines étaient donc éliminées parce que leur bilan était trop propre.",
+    f: "Ces critères quittent le screener et s'appliquent en aval, où un champ vide vaut passage." },
+  { t: "La stabilité des marges n'était pas disponible",
+    ex: "Coefficient de variation",
+    p: "Le coefficient de variation de la marge opérationnelle était le critère le plus discriminant du calibrage, mais la plateforme de screening ne le fournit pas.",
+    f: "Ratio de dérive entre la marge moyenne sur 3 ans et sur 10 ans, plafonné à 0,35." },
+  { t: "Le FCF publié surestimait certaines sociétés",
+    ex: "Ubisoft · Teladoc",
+    p: "Le free cash flow de la base de données exclut les investissements incorporels, comme les coûts de développement capitalisés. Pour un éditeur de jeux vidéo, c'est l'essentiel de l'investissement.",
+    f: "Lecture critique de la conversion FCF / résultat net, qui reste bornée dans les deux sens." },
+  { t: "Une base de données peut être incohérente",
+    ex: "Grifols",
+    p: "Sur sept exercices, les capitaux propres excluaient les intérêts minoritaires, puis les incluaient : le bilan reconstitué ne s'équilibrait plus. Le dossier a été retiré de la phase qui travaillait sur les états financiers bruts.",
+    f: "Le calibrage final repose sur les ratios déjà calculés de la plateforme de screening, sans bilan à reconstituer." },
+  { t: "Mieux vaut ne pas trancher que trancher mal",
+    ex: "Zoom · Peloton · Adyen",
+    p: "Sans dix ans d'historique, ou quand le modèle économique casse les ratios standards, comme chez une plateforme de paiement, les gates ne peuvent pas trancher correctement.",
+    f: "Ces dossiers partent en quarantaine, c'est-à-dire en revue manuelle. Ils ne comptent ni comme succès, ni comme échec." },
+];
+function renderConstruction() {
+  const v = document.getElementById("v-construction");
+  const chip = ([n, r]) => `<span class="co-chip ${r === "ok" ? "" : r}">${esc(n)}</span>`;
+  const col = (titre, sous, groupes) => `<div class="board-col"><h3>${titre}<small>${sous}</small></h3>
+    ${groupes.map(g => `<div class="grp"><span class="grp-t">${esc(g.g)}</span>${g.n ? `<span class="mode-note">${esc(g.n)}</span>` : ""}<div class="chips">${g.c.map(chip).join("")}</div></div>`).join("")}</div>`;
+  v.innerHTML = `
+    <div>
+      <div class="sec-head"><h2>Construction de la stratégie</h2></div>
+      <p class="lede">Avant d'appliquer la grille, je l'ai testée sur 36 dossiers dont je connaissais l'histoire : 20 compounders qu'elle devait retenir, et 16 pièges, chacun choisi pour un mode d'échec précis. Chaque erreur de classement a servi à corriger une règle. Cette page retrace ces corrections.</p>
+    </div>
+    <div class="callout"><span class="eyebrow">À lire comme un calibrage, pas comme une preuve</span>
+      <p>Les seuils ont été réglés sur ces mêmes dossiers : un bon taux de classement était donc attendu. La validation de la grille sur des sociétés qu'elle n'a jamais vues est l'objet de l'onglet Backtest.</p></div>
+
+    <div>
+      <div class="sec-head"><h2>Résultat du calibrage final</h2><p>35 dossiers évalués · Wirecard, radié en 2020, est absent de la plateforme de screening</p></div>
+      <div class="tally">
+        <div><span class="eyebrow">Correctement classés</span><span class="v num">31</span><span class="d">20 retenus et 11 bloqués comme prévu</span></div>
+        <div><span class="eyebrow">Erreur</span><span class="v num">1</span><span class="d">un compounder bloqué à tort</span></div>
+        <div><span class="eyebrow">Quarantaines</span><span class="v num">3</span><span class="d">renvoyées en revue manuelle</span></div>
+        <div><span class="eyebrow">Pièges passés</span><span class="v num">0</span><span class="d">sur 13 à bloquer</span></div>
+      </div>
+      <p class="rule-note">Score Gem calculé sur les seuls ancrages : 14,6/20 en moyenne pour les compounders, contre 11,0 pour les pièges. Aucun piège ne franchit le seuil de 15 avec le plancher de 3 par pilier.</p>
+    </div>
+
+    <div>
+      <div class="sec-head"><h2>Le jeu de test</h2>
+        <div class="legend-chips"><span class="co-chip">Bien classé</span><span class="co-chip err">Erreur</span><span class="co-chip q">Quarantaine</span><span class="co-chip na">Non évalué</span></div></div>
+      <div class="board">
+        ${col("Doivent passer les gates", "22 dossiers", CALIB.passe)}
+        ${col("Doivent être bloqués", "16 dossiers, dont Wirecard", CALIB.bloque)}
+      </div>
+    </div>
+
+    <div>
+      <div class="sec-head"><h2>Ce que le calibrage a corrigé</h2><p>Dans l'ordre où les problèmes sont apparus</p></div>
+      <div class="lessons">${LECONS.map(l => `<div class="lesson"><div><h3>${esc(l.t)}</h3><div class="ex">${esc(l.ex)}</div></div>
+        <div><p>${esc(l.p)}</p><p class="fix"><b>Correction</b>${esc(l.f)}</p></div></div>`).join("")}</div>
+    </div>
+
+    <div>
+      <div class="sec-head"><h2>Ce que les filtres ne résolvent pas</h2></div>
+      <div class="open-cases">
+        <div class="case"><span class="eyebrow">Erreur acceptée</span><h3>Constellation Software</h3>
+          <p>Bloqué à tort par la borne haute de la conversion FCF / résultat net : 288 %, pour une borne à 250 %. Chez un acquéreur en série de logiciels, l'amortissement des actifs acquis creuse le résultat sans toucher la trésorerie. Aucun réglage ne le sépare de Teleperformance, à 297 %, qui doit être bloqué. La grille l'envoie en quarantaine plutôt que de l'éliminer, et la revue manuelle substitue le ratio FCF / EBITDA.</p></div>
+        <div class="case"><span class="eyebrow">Limite des chiffres</span><h3>Wirecard et 3M</h3>
+          <p>Lors d'un calibrage intermédiaire sur les états financiers bruts, ces deux pièges ont passé les filtres. Wirecard affichait un ROIC supérieur à 40 % et une conversion de trésorerie proche de 100 %. Une fraude bien construite ou un risque de litige ne se lisent pas dans les ratios : c'est le rôle des vetos documentaires de l'analyse qualitative.</p></div>
+        <div class="case"><span class="eyebrow">Limite des chiffres</span><h3>Kraft Heinz</h3>
+          <p>Le déclin structurel d'une marque ne se lit pas dans les ratios d'allocation du capital : rachats et dividende donnent 13,6/20 d'ancrage, au-dessus de quatre compounders. Seules les questions du pilier moat, sur la part de marché et les hausses de prix, font barrage.</p></div>
+        <div class="case"><span class="eyebrow">Limite connue</span><h3>Southern Copper</h3>
+          <p>Un producteur de cuivre obtient 18,0 de pré-score : le cycle a été porteur sur toute la période mesurée, et la marge paraît stable. Un critère complémentaire sur les matières premières, fondé sur le pire exercice plutôt que sur la moyenne, reste à construire.</p></div>
+        <div class="case"><span class="eyebrow">Un autre filtre</span><h3>Sartorius Stedim et Adyen</h3>
+          <p>De très bons actifs, à un prix qui suppose une croissance irréaliste. La qualité ne suffit pas : c'est le reverse DCF qui les écarte, à l'étage 6.</p></div>
       </div>
     </div>`;
 }
@@ -801,9 +1070,9 @@ function renderAPropos() {
 /* ------------------------------------------------------------------ */
 /* Navigation                                                          */
 /* ------------------------------------------------------------------ */
-const VUES = ["portefeuille", "journal", "backtest", "methode", "apropos"];
+const VUES = ["portefeuille", "journal", "methode", "construction", "backtest", "apropos"];
 const rendus = {};
-const RENDER = { portefeuille: renderPortefeuille, journal: renderJournal, backtest: renderBacktest, methode: renderMethode, apropos: renderAPropos };
+const RENDER = { portefeuille: renderPortefeuille, journal: renderJournal, backtest: renderBacktest, methode: renderMethode, construction: renderConstruction, apropos: renderAPropos };
 let vueCourante = null;
 function montrer(vue) {
   vueCourante = vue;
