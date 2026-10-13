@@ -778,6 +778,10 @@ function renderBacktest() {
       <div class="kpi"><span class="eyebrow">Retenues sans cours</span><span class="v num">${fmt(cv.part_qualite_sans_cours_pct, 1)} %</span><span class="d">sociétés qui passent les règles mais ne peuvent pas être achetées : mesure du biais du survivant</span></div>
       <div class="kpi"><span class="eyebrow">Ratio d'information</span><span class="v num">${fmt(ms.ratio_information, 2)}</span><span class="d">contre l'univers investissable</span></div>
     </div>` : ""}
+    ${(b.lecture || []).length ? `<div>
+      <div class="sec-head"><h2>Ce que montrent les résultats</h2></div>
+      <div class="lessons">${b.lecture.map(l => `<div class="lesson"><div><h3>${esc(l.titre)}</h3></div><div><p>${esc(l.texte)}</p></div></div>`).join("")}</div>
+    </div>` : ""}
     <div class="two">
       <div>
         <div class="sec-head"><h2>Performances annuelles</h2><p>En %</p></div>
