@@ -1,13 +1,14 @@
 {
  "exemple": true,
- "perimetre": "Le backtest porte uniquement sur la couche quantitative de la stratégie : règles d'exclusion R1 à R4, filtres du screener et gates G1 à G3. Les vetos, le score Gem, le reverse DCF et les phases de momentum reposent sur la lecture des documents ou sur un jugement ; ils ne sont pas simulés, car les reconstituer après coup reviendrait à utiliser des informations inconnues à l'époque.",
- "univers": "Sociétés cotées dans 15 pays (Amérique du Nord, Europe occidentale et nordique, Japon), capitalisation d'au moins un milliard, hors modèles économiques exclus à l'étape 1 de la méthode.",
+ "perimetre": "Le backtest applique mécaniquement la couche quantitative de la stratégie à toutes les sociétés américaines qui publient leurs comptes à la SEC : règles R1 à R4, filtres du screener, gates G1 à G3 et vetos calculés V5 et V6. À chaque fin de trimestre, seuls les comptes déjà publiés à cette date sont utilisés. Le pré-score, les vetos documentaires V1 à V4, le score Gem et le reverse DCF ne sont pas simulés : ils reposent sur la lecture des rapports annuels, qu'on ne peut pas reconstituer sans connaître la suite.",
+ "univers": "Sociétés américaines déposant un 10-K à la SEC, avec au moins 8 exercices publiés, une capitalisation d'au moins 1 Md€ et un volume quotidien moyen d'au moins 3 M€ à la date de décision. Calcul en dollars.",
  "regles": [
-  "Rééquilibrage annuel, fin avril, pour laisser le temps aux comptes annuels d'être publiés.",
-  "Fondamentaux décalés de quatre mois par rapport à la date de décision.",
-  "Équipondération des titres retenus, plafonnée à 18 lignes.",
+  "Comptes : base XBRL de la SEC. Pour chaque exercice, on retient le chiffre du premier dépôt et sa date de publication ; les retraitements ultérieurs sont ignorés.",
+  "Révision trimestrielle, fin mars, juin, septembre et décembre, avec les seuls comptes publiés avant cette date.",
+  "Portefeuille équipondéré de toutes les sociétés qui passent les règles, conservé jusqu'à la révision suivante.",
+  "Dossiers en quarantaine (donnée manquante, conversion FCF entre 250 et 350 %) : exclus, faute de revue manuelle possible.",
   "Frais de 0,10 % par transaction, dividendes réinvestis.",
-  "Benchmark : MSCI World dividendes réinvestis, converti en euros."
+  "Référence principale : l'univers investissable équipondéré, soumis aux mêmes filtres de taille et de liquidité. L'écart mesure l'apport des seules règles de qualité."
  ],
  "sensibilite": [
   {
@@ -51,11 +52,12 @@
   }
  ],
  "limites": [
-  "Biais du survivant : si l'univers historique est reconstitué à partir des sociétés cotées aujourd'hui, les faillites et les radiations sont absentes, ce qui surestime la performance.",
-  "Données retraitées : les fournisseurs corrigent parfois les comptes historiques après coup ; les chiffres utilisés ne sont pas tous ceux qui étaient disponibles à l'époque.",
-  "Calibrage : une partie des seuils a été fixée en connaissant l'historique. Le tableau de sensibilité sert à vérifier que le résultat ne tient pas à un réglage précis.",
-  "Le backtest ne mesure pas l'apport du jugement qualitatif, qui peut être positif comme négatif. C'est l'objet du portefeuille suivi en conditions réelles.",
-  "Période unique de dix ans, marquée par des taux bas jusqu'en 2022, favorable aux valeurs de croissance de qualité."
+  "Biais du survivant côté cours : Yahoo Finance ne fournit pas les cours des sociétés radiées, qui ne peuvent donc pas être achetées dans la simulation. La part des sociétés qui passent les règles sans cours disponible est publiée plus haut : elle mesure l'ampleur du biais.",
+  "Définitions approchées : les ratios sont recalculés à partir des balises XBRL, qui ne recouvrent pas exactement les définitions de la plateforme de screening de la stratégie réelle. Une marge brute non publiée vaut passage.",
+  "États-Unis uniquement : l'Europe et le Japon, qui forment une large part de l'univers réel, n'ont pas de source publique équivalente.",
+  "Variantes approchées : le pré-score y est remplacé par une moyenne de rangs centiles des ancrages, et la phase de momentum est relevée à la date de révision, sans confirmation sur deux semaines.",
+  "Le backtest ne mesure ni l'apport du jugement qualitatif ni celui de la valorisation, qui peuvent être positifs comme négatifs. C'est l'objet du portefeuille suivi en conditions réelles.",
+  "Historique court : les comptes structurés ne remontent qu'à 2007 environ, ce qui limite la période à une dizaine d'années, avec une seule récession, celle de 2020."
  ],
  "metriques": {
   "strategie": {
