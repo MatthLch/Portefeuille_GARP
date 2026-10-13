@@ -40,14 +40,19 @@ content:
             options:
               format: yyyy-MM-dd
           - { name: cours_entree, label: "Cours d'entrée (clôture du jour d'exécution, en devise de cotation)", type: number }
-          - { name: poids_cible, label: "Poids initial (% du capital)", type: number }
-          - { name: prix_entree_theorique, label: "Prix d'entrée théorique (valeur intrinsèque)", type: number }
+          - { name: poids_cible, label: "Poids initial (% du capital : 4,5 en phase A, 1,5 en phase P ou C)", type: number }
+          - { name: prix_entree_theorique, label: "Valeur intrinsèque par action (reverse DCF), en devise de cotation", type: number }
           - { name: methode_valo, label: Méthode de valorisation, type: string }
-          - { name: gem_moat, label: "Gem – Moat & pricing power (1 à 5)", type: number }
-          - { name: gem_management, label: "Gem – Management & gouvernance (1 à 5)", type: number }
-          - { name: gem_macro, label: "Gem – Overlay macro (1 à 5)", type: number }
-          - { name: gem_risques, label: "Gem – Red flags & risques (1 à 5)", type: number }
-          - { name: momentum_valide, label: Momentum confirmé, type: boolean }
+          - { name: gem_moat, label: "Gem 1 – Moat & pricing power (1 à 5)", type: number }
+          - { name: gem_management, label: "Gem 2 – Management & allocation du capital (1 à 5)", type: number }
+          - { name: gem_reinvestissement, label: "Gem 3 – Piste de réinvestissement (1 à 5)", type: number }
+          - { name: gem_transparence, label: "Gem 4 – Transparence comptable (1 à 5)", type: number }
+          - { name: vetos_ok, label: "Aucun veto déclenché (V1 à V6)", type: boolean }
+          - name: phase
+            label: "Phase de momentum à l'exécution (A ligne pleine, P/C tranche réduite, B aucun achat)"
+            type: select
+            options:
+              values: [A, P, C, B]
           - { name: these, label: Thèse (5 lignes environ), type: text }
           - { name: catalyseurs, label: Catalyseurs, type: string, list: true }
           - { name: invalidation, label: La thèse est invalidée si…, type: string, list: true }
@@ -124,5 +129,12 @@ content:
       - { name: benchmark_ticker, label: "Ticker Yahoo du benchmark (coté dans la devise du portefeuille)", type: string }
       - { name: benchmark_nom, label: Nom du benchmark, type: string }
       - { name: seuil_gem, label: Seuil Gem (/20), type: number }
-      - { name: marge_securite_min_pct, label: Marge de sécurité minimale (%), type: number }
+      - { name: plancher_pilier, label: Note minimale par pilier, type: number }
+      - name: marges_securite
+        label: Marge de sécurité exigée selon le score Gem
+        type: object
+        list: true
+        fields:
+          - { name: score_min, label: Score Gem minimal, type: number }
+          - { name: marge_pct, label: Marge de sécurité exigée (%), type: number }
       - { name: piliers_gem, label: Noms des 4 piliers Gem, type: string, list: true }
