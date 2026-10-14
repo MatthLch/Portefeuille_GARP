@@ -1,72 +1,72 @@
 {
  "exemple": false,
- "maj": "2026-10-13",
+ "maj": "2026-10-14",
  "devise": "EUR",
  "synthese": {
-  "valeur": 101871.11,
-  "perf_pct": 1.87,
-  "perf_benchmark_pct": 4.93,
-  "volatilite_pct": 4.16,
+  "valeur": 101849.17,
+  "perf_pct": 1.85,
+  "perf_benchmark_pct": 5.09,
+  "volatilite_pct": 4.14,
   "drawdown_max_pct": -2.84,
-  "cash_pct": 55.46,
+  "cash_pct": 55.47,
   "nb_lignes": 11,
-  "jours": 104
+  "jours": 105
  },
  "positions": {
   "CSU.TO": {
    "cours_execution": 2777.4463,
    "jour_execution": "2026-07-02",
    "ecart_saisie_pct": 61.3,
-   "cours_actuel": 3003.78,
-   "perf_locale_pct": 8.15,
-   "perf_base_pct": 9.8,
-   "contribution_pct": 0.44,
-   "valeur": 4936.0,
-   "poids_actuel_pct": 4.85
+   "cours_actuel": 3093.29,
+   "perf_locale_pct": 11.37,
+   "perf_base_pct": 13.07,
+   "contribution_pct": 0.59,
+   "valeur": 5083.12,
+   "poids_actuel_pct": 4.99
   },
   "HLMA.L": {
    "cours_execution": 3631.8628,
    "jour_execution": "2026-07-08",
    "ecart_saisie_pct": -13.27,
-   "cours_actuel": 3512.0,
-   "perf_locale_pct": -3.3,
-   "perf_base_pct": -2.19,
-   "contribution_pct": -0.1,
-   "valeur": 4396.91,
-   "poids_actuel_pct": 4.32
+   "cours_actuel": 3540.0,
+   "perf_locale_pct": -2.53,
+   "perf_base_pct": -1.44,
+   "contribution_pct": -0.06,
+   "valeur": 4430.76,
+   "poids_actuel_pct": 4.35
   },
   "DPLM.L": {
    "cours_execution": 6770.0,
    "jour_execution": "2026-07-15",
    "ecart_saisie_pct": -27.33,
-   "cours_actuel": 7905.0,
-   "perf_locale_pct": 16.77,
-   "perf_base_pct": 17.9,
-   "contribution_pct": 0.81,
-   "valeur": 5300.02,
-   "poids_actuel_pct": 5.2
+   "cours_actuel": 7870.0,
+   "perf_locale_pct": 16.25,
+   "perf_base_pct": 17.34,
+   "contribution_pct": 0.78,
+   "valeur": 5275.12,
+   "poids_actuel_pct": 5.18
   },
   "LIFCO-B.ST": {
    "cours_execution": 315.2,
    "jour_execution": "2026-07-22",
    "ecart_saisie_pct": 5.33,
-   "cours_actuel": 318.8,
-   "perf_locale_pct": 1.14,
-   "perf_base_pct": 0.22,
-   "contribution_pct": 0.01,
-   "valeur": 4505.22,
-   "poids_actuel_pct": 4.42
+   "cours_actuel": 316.0,
+   "perf_locale_pct": 0.25,
+   "perf_base_pct": -0.53,
+   "contribution_pct": -0.02,
+   "valeur": 4471.78,
+   "poids_actuel_pct": 4.39
   },
   "6861.T": {
    "cours_execution": 80317.9375,
    "jour_execution": "2026-08-03",
    "ecart_saisie_pct": -23.8,
-   "cours_actuel": 79770.0,
-   "perf_locale_pct": -0.68,
-   "perf_base_pct": 2.12,
-   "contribution_pct": 0.03,
-   "valeur": 1530.32,
-   "poids_actuel_pct": 1.5
+   "cours_actuel": 80430.0,
+   "perf_locale_pct": 0.14,
+   "perf_base_pct": 2.96,
+   "contribution_pct": 0.04,
+   "valeur": 1542.9,
+   "poids_actuel_pct": 1.51
   },
   "MSFT": {
    "cours_execution": 491.5047,
@@ -74,9 +74,9 @@
    "ecart_saisie_pct": -2.75,
    "cours_actuel": 541.15,
    "perf_locale_pct": 10.1,
-   "perf_base_pct": 13.59,
-   "contribution_pct": 0.61,
-   "valeur": 5106.3,
+   "perf_base_pct": 13.41,
+   "contribution_pct": 0.6,
+   "valeur": 5098.3,
    "poids_actuel_pct": 5.01
   },
   "FAST": {
@@ -85,10 +85,10 @@
    "ecart_saisie_pct": -17.49,
    "cours_actuel": 51.49,
    "perf_locale_pct": 1.64,
-   "perf_base_pct": 6.04,
-   "contribution_pct": 0.27,
-   "valeur": 4766.94,
-   "poids_actuel_pct": 4.68
+   "perf_base_pct": 5.87,
+   "contribution_pct": 0.26,
+   "valeur": 4759.47,
+   "poids_actuel_pct": 4.67
   },
   "GWW": {
    "cours_execution": 1321.08,
@@ -96,10 +96,10 @@
    "ecart_saisie_pct": -20.9,
    "cours_actuel": 1306.73,
    "perf_locale_pct": -1.09,
-   "perf_base_pct": 3.03,
-   "contribution_pct": 0.14,
-   "valeur": 4631.63,
-   "poids_actuel_pct": 4.55
+   "perf_base_pct": 2.87,
+   "contribution_pct": 0.13,
+   "valeur": 4624.38,
+   "poids_actuel_pct": 4.54
   },
   "ROP": {
    "cours_execution": 421.29,
@@ -107,32 +107,32 @@
    "ecart_saisie_pct": 27.7,
    "cours_actuel": 367.32,
    "perf_locale_pct": -12.81,
-   "perf_base_pct": -9.73,
+   "perf_base_pct": -9.87,
    "contribution_pct": -0.44,
-   "valeur": 4058.28,
+   "valeur": 4051.92,
    "poids_actuel_pct": 3.98
   },
   "COLO-B.CO": {
    "cours_execution": 432.8,
    "jour_execution": "2026-09-10",
    "ecart_saisie_pct": 50.65,
-   "cours_actuel": 457.7,
-   "perf_locale_pct": 5.75,
-   "perf_base_pct": 5.74,
-   "contribution_pct": 0.26,
-   "valeur": 4753.67,
-   "poids_actuel_pct": 4.67
+   "cours_actuel": 446.3,
+   "perf_locale_pct": 3.12,
+   "perf_base_pct": 3.12,
+   "contribution_pct": 0.14,
+   "valeur": 4635.89,
+   "poids_actuel_pct": 4.55
   },
   "NOVO-B.CO": {
    "cours_execution": 279.35,
    "jour_execution": "2026-09-17",
    "ecart_saisie_pct": 43.91,
-   "cours_actuel": 258.35,
-   "perf_locale_pct": -7.52,
-   "perf_base_pct": -7.52,
-   "contribution_pct": -0.11,
-   "valeur": 1385.83,
-   "poids_actuel_pct": 1.36
+   "cours_actuel": 256.4,
+   "perf_locale_pct": -8.22,
+   "perf_base_pct": -8.2,
+   "contribution_pct": -0.12,
+   "valeur": 1375.55,
+   "poids_actuel_pct": 1.35
   }
  },
  "courbe": {
@@ -211,7 +211,8 @@
    "2026-10-08",
    "2026-10-09",
    "2026-10-12",
-   "2026-10-13"
+   "2026-10-13",
+   "2026-10-14"
   ],
   "portefeuille": [
    100.0,
@@ -287,8 +288,9 @@
    100.446,
    100.591,
    101.235,
-   101.456,
-   101.871
+   101.657,
+   101.896,
+   101.849
   ],
   "benchmark": [
    100.0,
@@ -364,8 +366,9 @@
    104.441,
    104.068,
    104.616,
-   104.616,
-   104.926
+   105.085,
+   105.085,
+   105.085
   ]
  },
  "avertissements": [
