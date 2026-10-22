@@ -1,0 +1,38 @@
+{
+  "exemple": false,
+  "positions": [
+    {
+      "ticker": "2124.T",
+      "nom": "JAC Recruitment",
+      "pays": "JP",
+      "secteur": "Recrutement de cadres",
+      "archetype": "Franchise asset-light",
+      "devise": "JPY",
+      "date_entree": "2026-10-22",
+      "poids_cible": 2.25,
+      "cours_dcf": 1111,
+      "rendement_implicite_pct": 11.9,
+      "prix_entree_max": 1565,
+      "valeur_intrinseque": 1686,
+      "methode_valo": "Reverse DCF : rendement implicite de 11,9 % au cours de 1 111 JPY, contre 9 % exigés pour un Gem de 17,2/20. FCF normalisé de 58 M$, croissance de 12 % sur 5 ans puis convergence vers 2 %.",
+      "gem_moat": 3.83,
+      "gem_management": 3.87,
+      "gem_reinvestissement": 4.47,
+      "gem_transparence": 5,
+      "vetos_ok": true,
+      "phase": "A",
+      "these": "Cabinet de recrutement de cadres et de profils bilingues, spécialiste des entreprises étrangères implantées au Japon. Un même consultant y suit le client et le candidat. Le modèle, sans actifs et en trésorerie nette, affiche une marge opérationnelle de 26 % en moyenne sur dix ans, exceptionnelle pour le secteur, avec un ROIC proche de 95 %.",
+      "catalyseurs": [
+        "La mobilité des cadres en milieu de carrière progresse au Japon.",
+        "La hausse des salaires augmente mécaniquement les honoraires, calculés sur la rémunération annuelle."
+      ],
+      "invalidation": [
+        "Marge opérationnelle durablement sous 20 %.",
+        "Dérive de marge au-delà de 0,35.",
+        "Baisse de la productivité par consultant sur deux exercices.",
+        "Un pilier Gem qui passe sous 3."
+      ],
+      "statut": "ouverte"
+    }
+  ]
+}
