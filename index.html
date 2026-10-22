@@ -951,12 +951,12 @@ function renderMethode() {
           <li>Rendement implicite du cours au moins égal au rendement exigé, soit un cours inférieur ou égal au prix d'entrée maximal.</li>
           <li>Phase de momentum autre que B.</li>
         </ol>
-        <p class="rule-note">Ordre à cours limité, jamais au marché. Entrée en tranches à des dates fixées à l'avance, jamais en fonction du cours entre-temps : c'est ce qui empêche le « j'attends encore un peu ».</p>
+        <p class="rule-note">Ordre à cours limité, jamais au marché. Entrée en tranches à des dates fixées à l'avance, jamais en fonction du cours entre-temps : c'est ce qui empêche le « j'attends encore un peu ». Au plus une nouvelle position par semaine, dans l'ordre d'une file d'attente publiée à l'avance et classée par écart entre rendement implicite et rendement exigé ; la phase de momentum ne modifie pas cet ordre.</p>
       </div>
       <div>
         <div class="sec-head"><h2>Construction du portefeuille</h2></div>
         ${t(["Paramètre", "Valeur"], [
-          ["Nombre de lignes", "15 (12 à 18)"], ["Position initiale", "4 à 5 %"], ["Plafond au coût", "10 %"],
+          ["Nombre de lignes", "15 (12 à 18)"], ["Ligne pleine", "4,5 %, atteinte en deux ou trois tranches"], ["Plafond au coût", "10 %"],
           ["Plafond après appréciation", "15 %"], ["Maximum par archétype", "25 %"], ["Maximum par devise", "40 %"],
         ], ["", "n num"])}
         <p class="rule-note">Un portefeuille Quality Growth reste un pari factoriel unique : ces titres corrèlent brutalement sur un choc de taux, comme en 2022. Benchmark : ${esc(s.benchmark_nom)}. Frais simulés de ${fmt(s.frais_transaction_pct, 2)} % par transaction.</p>
@@ -968,7 +968,7 @@ function renderMethode() {
       ${t(["Cause", "Déclencheur", "Action"], [
         ["A · Thèse cassée", "Un veto se déclenche, un pilier Gem passe sous 3, le score passe sous 13, le ROIC ajusté baisse deux exercices de suite sous le seuil de l'archétype, ou la dérive de marge repasse au-dessus de 0,35", "<b>Sortie totale</b> sous 10 jours, sans considération de prix"],
         ["B · Valorisation extrême", "Croissance implicite supérieure à 1,5x la croissance réalisée sur 10 ans", "Allègement à 50 %"],
-        ["", "Cours supérieur à 2x la valeur intrinsèque", "Sortie totale"],
+        ["", "Cours supérieur à 2x la valeur intrinsèque (valeur par action au taux de 8,5 %)", "Sortie totale"],
         ["C · Momentum", "Passage en phase B, sans déclencheur A ni B", "Réduction au tiers, jamais de sortie totale"],
         ["D · Taille", "Position au-delà de 15 % ou sous 2 %, archétype au-delà de 25 %, devise au-delà de 40 %", "Écrêtage à 10 %, renfort ou sortie, rééquilibrage"],
       ])}
@@ -1038,7 +1038,7 @@ function renderConstruction() {
   v.innerHTML = `
     <div>
       <div class="sec-head"><h2>Construction de la stratégie</h2></div>
-      <p class="lede">Avant d'appliquer la grille, je l'ai testée sur 36 dossiers dont je connaissais l'histoire : 20 compounders qu'elle devait retenir, et 16 pièges, chacun choisi pour un mode d'échec précis. Chaque erreur de classement a servi à corriger une règle. Cette page retrace ces corrections.</p>
+      <p class="lede">Avant d'appliquer la grille, je l'ai testée sur 36 dossiers dont je connaissais l'histoire : 20 compounders qu'elle devait retenir, 2 très bons actifs à un prix impossible, et 14 pièges, chacun choisi pour un mode d'échec précis. Chaque erreur de classement a servi à corriger une règle. Cette page retrace ces corrections.</p>
     </div>
     <div class="callout"><span class="eyebrow">À lire comme un calibrage, pas comme une preuve</span>
       <p>Les seuils ont été réglés sur ces mêmes dossiers : un bon taux de classement était donc attendu. La validation de la grille sur des sociétés qu'elle n'a jamais vues est l'objet de l'onglet Backtest.</p></div>
@@ -1059,7 +1059,7 @@ function renderConstruction() {
         <div class="legend-chips"><span class="co-chip">Bien classé</span><span class="co-chip err">Erreur</span><span class="co-chip q">Quarantaine</span><span class="co-chip na">Non évalué</span></div></div>
       <div class="board">
         ${col("Doivent passer les gates", "22 dossiers", CALIB.passe)}
-        ${col("Doivent être bloqués", "16 dossiers, dont Wirecard", CALIB.bloque)}
+        ${col("Doivent être bloqués", "14 dossiers, dont Wirecard", CALIB.bloque)}
       </div>
     </div>
 
