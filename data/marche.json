@@ -3,12 +3,12 @@
  "maj": "2026-10-23",
  "devise": "EUR",
  "synthese": {
-  "valeur": 100053.35,
-  "perf_pct": 0.05,
+  "valeur": 99988.09,
+  "perf_pct": -0.01,
   "perf_benchmark_pct": 0.0,
   "volatilite_pct": null,
-  "drawdown_max_pct": 0.0,
-  "cash_pct": 97.7,
+  "drawdown_max_pct": -0.01,
+  "cash_pct": 97.76,
   "nb_lignes": 1,
   "jours": 1
  },
@@ -26,13 +26,13 @@
      "poids_pct": 2.25
     }
    ],
-   "cours_actuel": 1135.0,
-   "perf_locale_pct": 1.07,
-   "perf_base_pct": 2.37,
-   "contribution_pct": 0.05,
+   "cours_actuel": 1106.0,
+   "perf_locale_pct": -1.51,
+   "perf_base_pct": -0.53,
+   "contribution_pct": -0.01,
    "investi_pct": 2.25,
-   "valeur": 2303.35,
-   "poids_actuel_pct": 2.3
+   "valeur": 2238.09,
+   "poids_actuel_pct": 2.24
   }
  },
  "courbe": {
@@ -42,7 +42,7 @@
   ],
   "portefeuille": [
    99.998,
-   100.053
+   99.988
   ],
   "benchmark": [
    100.0,
