@@ -3,9 +3,9 @@
  "maj": "2026-10-26",
  "devise": "EUR",
  "synthese": {
-  "valeur": 99980.86,
+  "valeur": 99978.07,
   "perf_pct": -0.02,
-  "perf_benchmark_pct": null,
+  "perf_benchmark_pct": 0.45,
   "volatilite_pct": null,
   "drawdown_max_pct": -0.02,
   "cash_pct": 96.27,
@@ -26,12 +26,12 @@
      "poids_pct": 2.25
     }
    ],
-   "cours_actuel": 1106.0,
-   "perf_locale_pct": -1.51,
-   "perf_base_pct": -0.78,
+   "cours_actuel": 1101.0,
+   "perf_locale_pct": -1.96,
+   "perf_base_pct": -0.91,
    "contribution_pct": -0.02,
    "investi_pct": 2.25,
-   "valeur": 2232.36,
+   "valeur": 2229.57,
    "poids_actuel_pct": 2.23
   },
   "EVO.ST": {
@@ -65,9 +65,13 @@
   "portefeuille": [
    99.998,
    99.99,
-   99.981
+   99.978
   ],
-  "benchmark": []
+  "benchmark": [
+   100.0,
+   99.962,
+   100.454
+  ]
  },
  "avertissements": []
 }
