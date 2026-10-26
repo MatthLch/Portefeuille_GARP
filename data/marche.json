@@ -5,7 +5,7 @@
  "synthese": {
   "valeur": 99980.86,
   "perf_pct": -0.02,
-  "perf_benchmark_pct": NaN,
+  "perf_benchmark_pct": null,
   "volatilite_pct": null,
   "drawdown_max_pct": -0.02,
   "cash_pct": 96.27,
@@ -67,11 +67,7 @@
    99.99,
    99.981
   ],
-  "benchmark": [
-   NaN,
-   NaN,
-   NaN
-  ]
+  "benchmark": []
  },
  "avertissements": []
 }

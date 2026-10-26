@@ -244,6 +244,11 @@ def calculer(site: dict, portefeuille: dict, closes: pd.DataFrame) -> dict:
         }
 
     b = closes[bench] if bench in closes else None
+    if b is not None:
+        # Séance manquante ou cours absent le jour du lancement : on reprend le cours connu le plus proche.
+        b = b.ffill().bfill()
+        if b.isna().all():
+            b = None
     if b is None:
         avertissements.append(f"Pas de cours pour le benchmark {bench}.")
     rend = vl.pct_change().dropna()
@@ -295,10 +300,33 @@ def main() -> None:
         closes = synthetique(tickers, debut, ancrages, base)
     else:
         closes = telecharger(tickers, debut)
+        # Yahoo renvoie parfois une colonne vide lors d'un téléchargement groupé : on retente seul.
+        vides = [t for t in tickers if t not in closes or closes[t].isna().all()]
+        for t in vides:
+            try:
+                c1 = telecharger([t], debut)
+                if t in c1 and c1[t].notna().any():
+                    closes = closes.drop(columns=[t], errors="ignore").join(c1[[t]], how="outer")
+                    print(f"{t} : cours récupérés au second essai.")
+                else:
+                    print(f"{t} : toujours aucun cours au second essai.")
+            except Exception as e:  # noqa: BLE001
+                print(f"{t} : échec du second essai ({e}).")
 
     resultat = calculer(site, portefeuille, closes)
     resultat["exemple"] = exemple
-    (DATA / "marche.json").write_text(json.dumps(resultat, ensure_ascii=False, indent=1),
+    def propre(o):
+        """Remplace NaN et infinis par null : le navigateur refuse un JSON qui en contient."""
+        if isinstance(o, dict):
+            return {k: propre(v) for k, v in o.items()}
+        if isinstance(o, list):
+            return [propre(v) for v in o]
+        if isinstance(o, float) and not math.isfinite(o):
+            return None
+        return o
+
+    resultat = propre(resultat)
+    (DATA / "marche.json").write_text(json.dumps(resultat, ensure_ascii=False, indent=1, allow_nan=False),
                                       encoding="utf-8")
     s = resultat["synthese"]
     print(f"Mis à jour au {resultat['maj']} : performance {s['perf_pct']} % "
