@@ -33,6 +33,13 @@
       "type": "Note",
       "titre": "File d'attente",
       "texte": "Onze dossiers remplissent aujourd'hui les conditions d'achat en plus de JAC. Ils seront traités un par semaine, par ordre décroissant d'écart entre le rendement implicite et le rendement exigé : Evolution (+6,3 pts), Autotrader (+4,1), Federated Hermes (+3,4), Booking (+3,0), ATOSS (+1,8), Rightmove (+1,5), ZOZO (+1,3), Zoetis (+1,2), USS (+0,4), Asahi Intecc (+0,4), Ulta (+0,4). Avant chaque exécution, je refais le reverse DCF si le cours a bougé de plus de 10 % et je relève la phase de momentum de la semaine. Si l'écart devient négatif, le dossier sort de la file et passe en liste de suivi. Un dossier passé en phase B est reporté à la semaine suivante."
+    },
+    {
+      "date": "2026-10-26",
+      "type": "Entrée",
+      "ticker": "EVO.ST",
+      "titre": "Evolution",
+      "texte": "Premier dossier de la file d'attente publiée le 22 octobre. Issu du screener (verdict PASSE, pré-score 17,1). Gates : ROIC ajusté du goodwill de 44 %, dérive de marge de 0,19, conversion FCF / résultat net de 116 %. Trésorerie nette. Aucun veto. Score Gem de 16,8/20 (piliers 4,2 · 3,3 · 4,3 · 5,0), soit un rendement exigé de 9 %. Le pilier management est le plus faible : le ROIC a reculé de 18 points entre la moyenne sur dix ans et celle sur cinq ans, sous l'effet du goodwill des acquisitions. Reverse DCF sur un FCF normalisé de 1 295 M$ : rendement implicite de 15,3 % au cours de 890 SEK, prix d'entrée maximal de 1 751 SEK. Le cours se situe sous la valeur à croissance nulle : le marché anticipe un recul de l'activité, alors que le chiffre d'affaires a progressé de 7 % par an sur trois ans. L'écart s'explique par le risque réglementaire, que je surveille en priorité. Phase P (pause) : tranche réduite de 1,5 % à la clôture du jour. Le solde de 3 % sera exécuté au passage confirmé en phase A, et au plus tard le 26 janvier 2027."
     }
   ]
 }
