@@ -32,6 +32,42 @@
         "Baisse de la productivité par consultant sur deux exercices.",
         "Un pilier Gem qui passe sous 3."
       ],
+      "statut": "ouverte",
+      "date_sortie": "2026-10-26"
+    },
+    {
+      "ticker": "EVO.ST",
+      "nom": "Evolution",
+      "pays": "SE",
+      "secteur": "Jeux en ligne B2B - Studios de casino en direct",
+      "archetype": "Franchise asset-light",
+      "devise": "SEK",
+      "date_entree": "2026-10-26",
+      "cours_entree": 837,
+      "poids_cible": 1.5,
+      "cours_dcf": 890,
+      "rendement_implicite_pct": 15.3,
+      "prix_entree_max": 1751,
+      "valeur_intrinseque": 1892,
+      "methode_valo": "Reverse DCF : rendement implicite de 15,3 % au cours de 890 SEK, contre 9 % exigés pour un Gem de 16,8/20. FCF normalisé de 1 295 M$, croissance de 12 % sur 5 ans (plafond, contre 36 % de croissance du CA sur 10 ans) puis convergence vers 2 %.",
+      "gem_moat": 4.17,
+      "gem_management": 3.27,
+      "gem_reinvestissement": 4.33,
+      "gem_transparence": 5,
+      "vetos_ok": true,
+      "phase": "P",
+      "these": "Evolution conçoit et opère des studios de casino en direct, dont les tables filmées sont distribuées aux opérateurs de jeux en ligne contre une commission sur leurs revenus. La taille de ses studios et son catalogue de jeux lui donnent une avance d'échelle que les concurrents peinent à rattraper : marge opérationnelle supérieure à 50 % en moyenne sur dix ans, conversion FCF / résultat net de 116 % et trésorerie nette. Au cours de 890 SEK, le marché ne price aucune croissance : le titre vaut moins que la valeur obtenue avec une croissance nulle (environ 990 SEK). Le rendement implicite ressort à 15,3 %, soit 6,3 points au-dessus des 9 % exigés.",
+      "catalyseurs": [
+        "Régulation progressive du jeu en ligne dans de nouveaux marchés (États-Unis, Amérique latine), qui ouvre de nouveaux clients aux fournisseurs agréés",
+        "Ouverture de nouveaux studios et lancement de nouveaux jeux, principal levier de croissance",
+        "Rachats d'actions financés par le FCF (rendement de rachat d'environ 3,8 %)"
+      ],
+      "invalidation": [
+        "Une enquête réglementaire aboutit à une perte de licence dans un marché significatif (veto V1)",
+        "La marge opérationnelle reste sous 45 % pendant deux exercices consécutifs",
+        "La croissance du chiffre d'affaires devient négative pendant deux exercices",
+        "Le pilier management passe sous 3, par exemple en cas d'acquisition destructrice de valeur"
+      ],
       "statut": "ouverte"
     }
   ]
