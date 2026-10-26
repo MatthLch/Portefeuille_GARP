@@ -1,16 +1,16 @@
 {
  "exemple": false,
- "maj": "2026-10-23",
+ "maj": "2026-10-26",
  "devise": "EUR",
  "synthese": {
-  "valeur": 99988.09,
-  "perf_pct": -0.01,
-  "perf_benchmark_pct": 0.0,
+  "valeur": 99980.86,
+  "perf_pct": -0.02,
+  "perf_benchmark_pct": NaN,
   "volatilite_pct": null,
-  "drawdown_max_pct": -0.01,
-  "cash_pct": 97.76,
-  "nb_lignes": 1,
-  "jours": 1
+  "drawdown_max_pct": -0.02,
+  "cash_pct": 96.27,
+  "nb_lignes": 2,
+  "jours": 4
  },
  "positions": {
   "2124.T": {
@@ -28,25 +28,49 @@
    ],
    "cours_actuel": 1106.0,
    "perf_locale_pct": -1.51,
-   "perf_base_pct": -0.53,
-   "contribution_pct": -0.01,
+   "perf_base_pct": -0.78,
+   "contribution_pct": -0.02,
    "investi_pct": 2.25,
-   "valeur": 2238.09,
-   "poids_actuel_pct": 2.24
+   "valeur": 2232.36,
+   "poids_actuel_pct": 2.23
+  },
+  "EVO.ST": {
+   "jour_execution": "2026-10-26",
+   "cours_execution": 837.0,
+   "pru": 837.0,
+   "nb_mouvements": 1,
+   "mouvements": [
+    {
+     "date": "2026-10-26",
+     "type": "Entrée",
+     "cours": 837.0,
+     "poids_pct": 1.5
+    }
+   ],
+   "cours_actuel": 837.0,
+   "perf_locale_pct": 0.0,
+   "perf_base_pct": -0.1,
+   "contribution_pct": -0.0,
+   "investi_pct": 1.5,
+   "valeur": 1498.5,
+   "poids_actuel_pct": 1.5
   }
  },
  "courbe": {
   "dates": [
    "2026-10-22",
-   "2026-10-23"
+   "2026-10-23",
+   "2026-10-26"
   ],
   "portefeuille": [
    99.998,
-   99.988
+   99.99,
+   99.981
   ],
   "benchmark": [
-   100.0,
-   100.0
+   NaN,
+   NaN,
+   NaN
   ]
  },
  "avertissements": []
