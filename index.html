@@ -340,6 +340,29 @@ footer p { margin: 0; max-width: 95ch; }
   .drawer { padding-inline: 18px; }
   .gem-row { grid-template-columns: minmax(0, 1fr) 90px 30px; }
 }
+/* Positions : une carte par ligne sur petit écran, au lieu d'un tableau tronqué */
+@media (max-width: 640px) {
+  table.positions thead { display: none; }
+  table.positions, table.positions tbody { display: block; }
+  table.positions tr { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 16px; padding: 16px; border-bottom: 1px solid var(--line); }
+  table.positions tr:last-child { border-bottom: 0; }
+  table.positions td { display: grid; gap: 3px; align-content: start; justify-items: start; padding: 0; border: 0; text-align: left; white-space: normal !important; }
+  table.positions td.c-co { grid-column: 1 / -1; }
+  table.positions td.c-co .co { min-width: 0; }
+  table.positions td[data-label]::before {
+    content: attr(data-label); font: 600 10px/1.2 var(--f-ui); letter-spacing: .06em; text-transform: uppercase; color: var(--muted);
+  }
+  table.positions .sub { display: block; }
+}
+/* Onglets : sur mobile, un dégradé signale qu'on peut faire défiler */
+.tabs-wrap { position: relative; }
+@media (max-width: 760px) {
+  .tabs-wrap::after {
+    content: ""; position: absolute; right: -1px; top: 32px; bottom: 1px; width: 40px; pointer-events: none;
+    background: linear-gradient(to right, transparent, var(--surface));
+  }
+  .tabs-wrap.fin::after { display: none; }
+}
 @media (prefers-reduced-motion: no-preference) {
   .drawer { animation: slide .22s ease-out; }
   @keyframes slide { from { transform: translateX(24px); opacity: .6; } to { transform: none; opacity: 1; } }
@@ -359,14 +382,14 @@ footer p { margin: 0; max-width: 95ch; }
       </div>
       <div class="vl-card" id="vlcard" aria-live="polite"></div>
     </div>
-    <nav class="tabs" aria-label="Sections">
+    <div class="tabs-wrap"><nav class="tabs" aria-label="Sections">
       <a href="#portefeuille" data-view="portefeuille">Portefeuille</a>
       <a href="#journal" data-view="journal">Journal des décisions</a>
       <a href="#methode" data-view="methode">Méthode</a>
       <a href="#construction" data-view="construction">Construction</a>
       <a href="#backtest" data-view="backtest">Backtest</a>
       <a href="#apropos" data-view="apropos">À propos</a>
-    </nav>
+    </nav></div>
   </div>
 </header>
 <div class="demo-banner" id="demo" hidden><div class="wrap"><b>Données d'exemple.</b> <span id="demo-txt"></span></div></div>
@@ -469,19 +492,23 @@ function lineChart(el, dates, main, bench, opts = {}) {
     const all = main.concat(bench).filter(v => v != null);
     let lo = Math.min(...all, 100), hi = Math.max(...all, 100);
     const pad = (hi - lo) * .08 || 1; lo -= pad; hi += pad;
+    // Série courte ou très plate : échelle d'au moins ±1 % autour de la base, pour ne pas grossir le bruit.
+    if (hi - lo < 2) { const c = (hi + lo) / 2; lo = Math.min(lo, c - 1); hi = Math.max(hi, c + 1); }
     const ticks = niceTicks(lo, hi, 5); lo = Math.min(lo, ticks[0]); hi = Math.max(hi, ticks[ticks.length - 1]);
+    const pas = ticks.length > 1 ? ticks[1] - ticks[0] : 1, dec = pas >= 1 ? 0 : pas >= .1 ? 1 : 2;
     const n = dates.length, x = i => m.l + (n < 2 ? 0 : i / (n - 1)) * (W - m.l - m.r);
     const y = v => m.t + (1 - (v - lo) / (hi - lo)) * (H - m.t - m.b);
     const path = arr => arr.map((v, i) => (i ? "L" : "M") + x(i).toFixed(1) + "," + y(v).toFixed(1)).join("");
     // repères de dates : début de mois (ou d'année si la série est longue)
-    const longue = n > 0 && (new Date(dates[n - 1]) - new Date(dates[0])) > 3 * 365 * 864e5;
+    const duree = n > 0 ? (new Date(dates[n - 1]) - new Date(dates[0])) / 864e5 : 0;
+    const longue = duree > 3 * 365, courte = duree <= 92;
     const xt = []; let prev = "";
-    dates.forEach((d, i) => { const k = longue ? d.slice(0, 4) : d.slice(0, 7); if (k !== prev) { xt.push([i, k]); prev = k; } });
+    dates.forEach((d, i) => { const k = courte ? d : longue ? d.slice(0, 4) : d.slice(0, 7); if (k !== prev) { xt.push([i, k]); prev = k; } });
     const every = Math.ceil(xt.length / Math.max(2, Math.floor((W - 60) / 70)));
-    const xlab = k => longue ? k : MOIS[+k.slice(5, 7) - 1].slice(0, 4).replace(/\.$/, "") + (k.slice(5, 7) === "01" ? " " + k.slice(2, 4) : "");
+    const xlab = k => courte ? k.slice(8, 10) + "/" + k.slice(5, 7) : longue ? k : MOIS[+k.slice(5, 7) - 1].slice(0, 4).replace(/\.$/, "") + (k.slice(5, 7) === "01" ? " " + k.slice(2, 4) : "");
     let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(opts.label || "Graphique")}">`;
     s += `<g class="grid">${ticks.map(t => `<line x1="${m.l}" x2="${W - m.r}" y1="${y(t)}" y2="${y(t)}"/>`).join("")}</g>`;
-    s += `<g class="axis">${ticks.map(t => `<text x="${m.l - 8}" y="${y(t) + 4}" text-anchor="end">${fmt(t, 0)}</text>`).join("")}`;
+    s += `<g class="axis">${ticks.map(t => `<text x="${m.l - 8}" y="${y(t) + 4}" text-anchor="end">${fmt(t, dec)}</text>`).join("")}`;
     s += xt.filter((_, j) => j % every === 0).map(([i, k]) => `<text x="${x(i)}" y="${H - 8}" text-anchor="middle">${xlab(k)}</text>`).join("") + `</g>`;
     s += `<line class="base" x1="${m.l}" x2="${W - m.r}" y1="${y(100)}" y2="${y(100)}"/>`;
     if (main.length) s += `<path class="a-main" d="${path(main)}L${x(n - 1)},${y(lo)}L${x(0)},${y(lo)}Z"/>`;
@@ -497,7 +524,8 @@ function lineChart(el, dates, main, bench, opts = {}) {
       cur.setAttribute("x1", x(i)); cur.setAttribute("x2", x(i));
       tip.hidden = false;
       tip.style.left = (x(i) / W * r.width) + "px"; tip.style.top = (y(main[i] ?? bench[i]) / H * r.height) + "px";
-      tip.innerHTML = `${dfr(dates[i])}<br>${esc(opts.nMain || "Portefeuille")} ${fmt(main[i], 1)}` + (bench.length ? `<br>${esc(opts.nBench || "Benchmark")} ${fmt(bench[i], 1)}` : "");
+      const var100 = v => v == null ? "—" : pct(v - 100, Math.abs(v - 100) < 10 ? 2 : 1);
+      tip.innerHTML = `<b>${dfr(dates[i])}</b><br>${esc(opts.nMain || "Portefeuille")} <span class="${cls(main[i] - 100)}">${var100(main[i])}</span>` + (bench.length ? `<br>${esc(opts.nBench || "Benchmark")} <span class="${cls(bench[i] - 100)}">${var100(bench[i])}</span>` : "");
     };
     svg.addEventListener("pointermove", move);
     svg.addEventListener("pointerleave", () => { tip.hidden = true; cur.setAttribute("x1", -10); cur.setAttribute("x2", -10); });
@@ -576,14 +604,14 @@ function renderPortefeuille() {
   const row = p => {
     const m = mk(p), r = regles(p);
     return `<tr class="clickable" tabindex="0" data-fiche="${esc(p.ticker)}" aria-label="Ouvrir la fiche ${esc(p.nom)}">
-      <td><div class="co"><b>${esc(p.nom)}</b><small><span class="tk">${esc(p.ticker)}</span> · ${esc(p.pays)} · ${esc(p.secteur)}</small></div></td>
-      <td class="n">${dfr(m.jour_execution || p.date_entree)}<span class="sub num">PRU ${prix(m.pru ?? m.cours_execution ?? p.cours_entree, p.devise)}</span>${(m.nb_mouvements || 1) > 1 ? `<span class="sub">${m.nb_mouvements} tranches</span>` : ""}</td>
-      <td class="n">${p.statut === "cloturee" ? `${dfr(m.jour_sortie || p.date_sortie)}<span class="sub num">${prix(m.cours_sortie_marche ?? p.cours_sortie, p.devise)}</span>` : `<span class="num">${prix(m.cours_actuel, p.devise)}</span>`}</td>
-      <td class="n"><span class="num ${cls(m.perf_locale_pct)}">${pct(m.perf_locale_pct)}</span><span class="sub num">${pct(m.perf_base_pct)} en ${esc(s.devise_portefeuille)}</span></td>
-      ${p.statut === "cloturee" ? `<td class="n num ${cls(m.contribution_pct)}">${pct(m.contribution_pct, 2)}</td>` : `<td class="n num">${fmt(m.poids_actuel_pct, 1)} %</td>`}
-      <td class="n num">${rdtImplicite(p) == null ? "—" : fmt(rdtImplicite(p), 1) + " %"}<span class="sub">exigé ${rdtExige(gemTotal(p)) ?? "—"} %</span></td>
-      <td class="n" style="white-space:nowrap">${gemMini(p)}<span class="num">${fmtG(gemTotal(p))}</span></td>
-      <td><span class="checks">${r.map(x => `<span class="check ${x.ok ? "" : "ko"}" title="${esc(x.lbl)}">${x.ok ? "✓" : "✕"}</span>`).join("")}</span></td>
+      <td class="c-co"><div class="co"><b>${esc(p.nom)}</b><small><span class="tk">${esc(p.ticker)}</span> · ${esc(p.pays)} · ${esc(p.secteur)}</small></div></td>
+      <td class="n" data-label="Exécution">${dfr(m.jour_execution || p.date_entree)}<span class="sub num">PRU ${prix(m.pru ?? m.cours_execution ?? p.cours_entree, p.devise)}</span>${(m.nb_mouvements || 1) > 1 ? `<span class="sub">${m.nb_mouvements} tranches</span>` : ""}</td>
+      <td class="n" data-label="${p.statut === "cloturee" ? "Sortie" : "Cours"}">${p.statut === "cloturee" ? `${dfr(m.jour_sortie || p.date_sortie)}<span class="sub num">${prix(m.cours_sortie_marche ?? p.cours_sortie, p.devise)}</span>` : `<span class="num">${prix(m.cours_actuel, p.devise)}</span>`}</td>
+      <td class="n" data-label="Performance"><span class="num ${cls(m.perf_locale_pct)}">${pct(m.perf_locale_pct)}</span><span class="sub num">${pct(m.perf_base_pct)} en ${esc(s.devise_portefeuille)}</span></td>
+      ${p.statut === "cloturee" ? `<td class="n num ${cls(m.contribution_pct)}" data-label="Contribution">${pct(m.contribution_pct, 2)}</td>` : `<td class="n num" data-label="Poids">${fmt(m.poids_actuel_pct, 1)} %</td>`}
+      <td class="n num" data-label="Rdt implicite">${rdtImplicite(p) == null ? "—" : fmt(rdtImplicite(p), 1) + " %"}<span class="sub">exigé ${rdtExige(gemTotal(p)) ?? "—"} %</span></td>
+      <td class="n" data-label="Gem /20" style="white-space:nowrap">${gemMini(p)}<span class="num">${fmtG(gemTotal(p))}</span></td>
+      <td data-label="Règles"><span class="checks">${r.map(x => `<span class="check ${x.ok ? "" : "ko"}" title="${esc(x.lbl)}">${x.ok ? "✓" : "✕"}</span>`).join("")}</span></td>
     </tr>`;
   };
   const head = (closed) => `<thead><tr>
@@ -609,7 +637,7 @@ function renderPortefeuille() {
 
     <div>
       <div class="sec-head"><h2>Positions ouvertes</h2><p>Cliquez sur une ligne pour lire la thèse</p></div>
-      ${ouvertes.length ? `<div class="table-scroll"><table>${head(false)}<tbody>${ouvertes.map(row).join("")}</tbody></table></div>` : `<div class="empty">Aucune position ouverte pour le moment.</div>`}
+      ${ouvertes.length ? `<div class="table-scroll"><table class="positions">${head(false)}<tbody>${ouvertes.map(row).join("")}</tbody></table></div>` : `<div class="empty">Aucune position ouverte pour le moment.</div>`}
       <div class="rule-note">
         <span>Chaque ligne est vérifiée automatiquement contre les trois conditions d'achat :</span>
         <span>① dossier retenu au Gem</span><span>② rendement implicite au moins égal au rendement exigé pour ce score</span><span>③ phase de momentum autre que B</span>
@@ -619,7 +647,7 @@ function renderPortefeuille() {
 
     ${closes.length ? `<div>
       <div class="sec-head"><h2>Positions clôturées</h2><p>Performance entre l'exécution et la sortie</p></div>
-      <div class="table-scroll"><table>${head(true)}<tbody>${closes.map(row).join("")}</tbody></table></div>
+      <div class="table-scroll"><table class="positions">${head(true)}<tbody>${closes.map(row).join("")}</tbody></table></div>
     </div>` : ""}`;
 
   if (c.dates && c.dates.length > 1) lineChart(document.getElementById("ch-vl"), c.dates, c.portefeuille, c.benchmark, { label: "Valeur liquidative comparée au benchmark", nBench: "Benchmark" });
@@ -1128,7 +1156,15 @@ function montrer(vue) {
     if (a.dataset.view === vue) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
   });
   if (!rendus[vue]) { RENDER[vue](); rendus[vue] = true; }
+  const actif = document.querySelector(`nav.tabs a[data-view="${vue}"]`);
+  if (actif) { const nav = actif.parentElement; nav.scrollTo({ left: Math.max(0, actif.offsetLeft - (nav.clientWidth - actif.offsetWidth) / 2) }); }
 }
+(() => {
+  const nav = document.querySelector("nav.tabs"), wrap = nav && nav.parentElement;
+  if (!nav) return;
+  const maj = () => wrap.classList.toggle("fin", nav.scrollLeft + nav.clientWidth >= nav.scrollWidth - 4);
+  nav.addEventListener("scroll", maj, { passive: true }); window.addEventListener("resize", maj); maj();
+})();
 function route() {
   const h = decodeURIComponent(location.hash.slice(1));
   if (h.startsWith("f-")) {
