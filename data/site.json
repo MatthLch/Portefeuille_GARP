@@ -35,5 +35,51 @@
     "Management & allocation du capital",
     "Piste de réinvestissement",
     "Transparence comptable"
+  ],
+  "file_attente": [
+    {
+      "ticker": "EVO.ST",
+      "nom": "Evolution"
+    },
+    {
+      "ticker": "AUTO.L",
+      "nom": "Autotrader"
+    },
+    {
+      "ticker": "FHI",
+      "nom": "Federated Hermes"
+    },
+    {
+      "ticker": "BKNG",
+      "nom": "Booking Holdings"
+    },
+    {
+      "ticker": "AOF.DE",
+      "nom": "ATOSS Software"
+    },
+    {
+      "ticker": "RMV.L",
+      "nom": "Rightmove"
+    },
+    {
+      "ticker": "3092.T",
+      "nom": "ZOZO"
+    },
+    {
+      "ticker": "ZTS",
+      "nom": "Zoetis"
+    },
+    {
+      "ticker": "4732.T",
+      "nom": "USS"
+    },
+    {
+      "ticker": "7747.T",
+      "nom": "Asahi Intecc"
+    },
+    {
+      "ticker": "ULTA",
+      "nom": "Ulta Beauty"
+    }
   ]
 }

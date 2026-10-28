@@ -124,6 +124,11 @@ content:
               values: [Entrée, Renforcement, Allègement, Sortie, Écarté, Note]
           - { name: ticker, label: Ticker (facultatif), type: string }
           - { name: titre, label: Titre, type: string }
+          - name: etape_blocage
+            label: "Bloqué à l'étape (dossiers écartés uniquement, facultatif)"
+            type: select
+            options:
+              values: [Univers, Gates, Veto, Gem, Rendement, Phase B, Taille, Secteur]
           - { name: texte, label: Texte, type: text }
 
   # ------------------------------------------------------------------ #
@@ -166,3 +171,10 @@ content:
       - { name: ligne_pleine_pct, label: "Ligne pleine (% du capital)", type: number }
       - { name: tranche_reduite_pct, label: "Tranche réduite (% du capital)", type: number }
       - { name: piliers_gem, label: Noms des 4 piliers Gem, type: string, list: true }
+      - name: file_attente
+        label: "File d'attente (dans l'ordre publié). Le site affiche le premier dossier pas encore en portefeuille."
+        type: object
+        list: true
+        fields:
+          - { name: ticker, label: "Ticker Yahoo Finance", type: string }
+          - { name: nom, label: Société, type: string }

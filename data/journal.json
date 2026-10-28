@@ -19,14 +19,16 @@
       "type": "Écarté",
       "ticker": "LULU",
       "titre": "Lululemon : achat bloqué par la phase B",
-      "texte": "Score Gem 16,7/20, aucun veto. Le rendement implicite ressort à 21,3 %, très au-dessus des 9 % exigés. Mais le titre est en phase B, confirmée sur deux relevés : cours 30 % sous la moyenne mobile 200 jours, qui est elle-même en baisse. Aucun achat n'est donc possible. Un rendement implicite aussi élevé indique surtout que le marché doute de la croissance passée : je relirai la thèse (concurrence, marché nord-américain) avant toute entrée. Le dossier reste en liste de suivi et pourra entrer dans la file d'attente à la sortie de la phase B."
+      "texte": "Score Gem 16,7/20, aucun veto. Le rendement implicite ressort à 21,3 %, très au-dessus des 9 % exigés. Mais le titre est en phase B, confirmée sur deux relevés : cours 30 % sous la moyenne mobile 200 jours, qui est elle-même en baisse. Aucun achat n'est donc possible. Un rendement implicite aussi élevé indique surtout que le marché doute de la croissance passée : je relirai la thèse (concurrence, marché nord-américain) avant toute entrée. Le dossier reste en liste de suivi et pourra entrer dans la file d'attente à la sortie de la phase B.",
+      "etape_blocage": "Phase B"
     },
     {
       "date": "2026-10-22",
       "type": "Écarté",
       "ticker": "MC.PA",
       "titre": "LVMH : achat bloqué par la phase B",
-      "texte": "Score Gem 16,8/20, aucun veto. Le rendement implicite ressort à 9,9 % pour 9 % exigés, une marge faible de 0,9 point. Le titre est en phase B, confirmée sur deux relevés : cours 17 % sous la moyenne mobile 200 jours, elle-même en baisse. Aucun achat n'est donc possible. Le dossier reste en liste de suivi. À la sortie de la phase B, je referai le reverse DCF avant toute entrée dans la file d'attente, car la marge de rendement est trop étroite pour supporter une remontée du cours."
+      "texte": "Score Gem 16,8/20, aucun veto. Le rendement implicite ressort à 9,9 % pour 9 % exigés, une marge faible de 0,9 point. Le titre est en phase B, confirmée sur deux relevés : cours 17 % sous la moyenne mobile 200 jours, elle-même en baisse. Aucun achat n'est donc possible. Le dossier reste en liste de suivi. À la sortie de la phase B, je referai le reverse DCF avant toute entrée dans la file d'attente, car la marge de rendement est trop étroite pour supporter une remontée du cours.",
+      "etape_blocage": "Phase B"
     },
     {
       "date": "2026-10-22",

@@ -340,6 +340,33 @@ footer p { margin: 0; max-width: 95ch; }
   .drawer { padding-inline: 18px; }
   .gem-row { grid-template-columns: minmax(0, 1fr) 90px 30px; }
 }
+/* Prochaines exécutions */
+.agenda { border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+.ag-row { display: grid; grid-template-columns: 120px minmax(160px, 1.1fr) minmax(0, 1.4fr) 170px; gap: 16px; align-items: center; padding: 12px 20px; }
+.ag-row + .ag-row { border-top: 1px solid var(--line); }
+.ag-date { font-size: var(--s-sm); }
+.ag-date .sub { font-family: var(--f-ui); }
+.ag-co { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.ag-co b, .linkish.strong { font-weight: 600; font-size: var(--s-base); }
+.ag-co button.linkish { background: none; border: 0; padding: 0; font-family: inherit; cursor: pointer; text-align: left; }
+.linkish.strong { color: var(--ink); text-decoration: none; }
+.linkish.strong:hover { text-decoration: underline; }
+.ag-act { font-size: var(--s-sm); }
+.ag-st { font-size: var(--s-xs); color: var(--muted); text-align: right; }
+.ag-row.late { background: color-mix(in srgb, var(--neg) 6%, transparent); }
+.ag-st.neg { color: var(--neg); font-weight: 600; }
+@media (max-width: 640px) {
+  .ag-row { grid-template-columns: 1fr auto; gap: 4px 12px; padding: 12px 16px; }
+  .ag-date { grid-row: 1; grid-column: 1; }
+  .ag-st { grid-row: 1; grid-column: 2; }
+  .ag-co, .ag-act { grid-column: 1 / -1; }
+}
+/* Repères du journal */
+.marks { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 2px; }
+.mark { font: 500 11px/1 var(--f-data); padding: 5px 8px; border-radius: 4px; background: var(--accent-soft); color: var(--ink); border: 1px solid var(--line); }
+.mark.ko { background: transparent; border-style: dashed; color: var(--muted); }
+.tally-line { font-size: var(--s-sm); color: var(--muted); margin: 0 0 12px; }
+.tally-line b { color: var(--ink); font-family: var(--f-data); }
 /* Positions : une carte par ligne sur petit écran, au lieu d'un tableau tronqué */
 @media (max-width: 640px) {
   table.positions thead { display: none; }
@@ -475,6 +502,39 @@ function regles(p) {
   ];
 }
 const mk = p => (D.marche.positions || {})[p.ticker] || {};
+/* Dates ISO (AAAA-MM-JJ) en heure locale */
+const isoJ = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+const dIso = iso => { const [y, m, d] = iso.split("-").map(Number); return new Date(y, m - 1, d); };
+const plusJours = (iso, n) => { const d = dIso(iso); d.setDate(d.getDate() + n); return isoJ(d); };
+const plusMois = (iso, n) => { const d = dIso(iso), j = d.getDate(); d.setMonth(d.getMonth() + n); if (d.getDate() < j) d.setDate(0); return isoJ(d); };
+const ecartJours = (a, b) => Math.round((dIso(b) - dIso(a)) / 864e5);
+/* Échéances à venir : tranches restantes et prochain dossier de la file d'attente */
+function prochainesExecutions() {
+  const s = D.site, auj = isoJ(new Date()), pleine = +(s.ligne_pleine_pct || 4.5);
+  const pos = D.portfolio.positions || [], items = [];
+  pos.filter(p => p.statut !== "cloturee" && p.date_entree).forEach(p => {
+    if ((p.mouvements || []).some(m => m.type === "Renforcement")) return;
+    const reste = Math.max(0, pleine - (+p.poids_cible || 0));
+    if (!reste) return;
+    if (p.phase === "A") items.push({ date: plusJours(p.date_entree, 21), borne: false, p, action: `Seconde moitié · ${fmt(reste, 2).replace(/,?0+$/, "")} %`, note: "date fixée à l'entrée" });
+    else if (p.phase === "P" || p.phase === "C") items.push({ date: plusMois(p.date_entree, 3), borne: true, p, action: `Solde · ${fmt(reste, 1).replace(/,0$/, "")} %`, note: "au passage en phase A" });
+  });
+  const detenus = new Set(pos.map(p => p.ticker));
+  const suivant = (s.file_attente || []).find(x => x && x.ticker && !detenus.has(x.ticker));
+  if (suivant) {
+    const der = pos.map(p => p.date_entree).filter(Boolean).sort().pop() || auj;
+    const d = dIso(plusJours(der, 7)); d.setDate(d.getDate() - ((d.getDay() + 6) % 7));
+    items.push({ date: isoJ(d), semaine: true, nom: suivant.nom || suivant.ticker, ticker: suivant.ticker, action: "Prochain dossier de la file d'attente", note: "après contrôle du rendement et de la phase" });
+  }
+  items.sort((a, b) => a.date.localeCompare(b.date));
+  return items.map(it => {
+    const n = ecartJours(auj, it.date);
+    it.statut = it.semaine ? (n <= 0 ? "cette semaine" : `dans ${n} jour${n > 1 ? "s" : ""}`)
+      : n < 0 ? (it.borne ? "échéance dépassée" : "en retard") : n === 0 ? "aujourd'hui" : `dans ${n} jour${n > 1 ? "s" : ""}`;
+    it.retard = !it.semaine && n < 0;
+    return it;
+  });
+}
 
 /* ------------------------------------------------------------------ */
 /* Graphique linéaire                                                  */
@@ -627,6 +687,20 @@ function renderPortefeuille() {
       <div class="kpi"><span class="eyebrow">Score Gem moyen</span><span class="v num">${fmt(gemMoy, 1)}/20</span><span class="d">seuil ${s.seuil_gem}/20, aucun pilier sous ${s.plancher_pilier ?? 3}</span></div>
     </div>
 
+    ${(() => {
+      const it = prochainesExecutions();
+      if (!it.length) return "";
+      return `<div>
+      <div class="sec-head"><h2>Prochaines exécutions</h2><p>Dates fixées au moment de chaque entrée, jamais en fonction du cours</p></div>
+      <div class="agenda">${it.map(x => `<div class="ag-row${x.retard ? " late" : ""}">
+        <div class="ag-date num">${x.semaine ? `<span class="sub">semaine du</span>` : x.borne ? `<span class="sub">au plus tard</span>` : ""}${dfr(x.date)}</div>
+        <div class="ag-co">${x.p ? `<button class="linkish strong" data-fiche="${esc(x.p.ticker)}">${esc(x.p.nom)}</button>` : `<b>${esc(x.nom)}</b>`}<span class="tk">${esc(x.p ? x.p.ticker : x.ticker)}</span></div>
+        <div class="ag-act">${esc(x.action)}<span class="sub">${esc(x.note)}</span></div>
+        <div class="ag-st ${x.retard ? "neg" : ""}">${esc(x.statut)}</div>
+      </div>`).join("")}</div>
+    </div>`;
+    })()}
+
     <div>
       <div class="sec-head"><h2>Performance comparée</h2><p>Base 100 au ${dfr(s.date_lancement)}, dividendes réinvestis, frais de ${fmt(s.frais_transaction_pct, 2)} % inclus</p></div>
       <div class="chart-box">
@@ -740,6 +814,24 @@ function fermerFiche(pousser = true) {
 /* Journal                                                             */
 /* ------------------------------------------------------------------ */
 let filtreJournal = "Tout";
+function reperes(x) {
+  const out = [];
+  if (x.type === "Écarté" && x.etape_blocage) out.push(`<span class="mark ko">Bloqué : ${esc(x.etape_blocage)}</span>`);
+  const p = (D.portfolio.positions || []).find(q => q.ticker === x.ticker);
+  if (p && (x.type === "Entrée" || x.type === "Renforcement" || x.type === "Allègement")) {
+    const g = gemTotal(p), ri = rdtImplicite(p), re = rdtExige(g);
+    if (x.type === "Entrée") {
+      if (g) out.push(`<span class="mark">Gem ${fmtG(g)}</span>`);
+      if (ri != null) out.push(`<span class="mark">Rdt ${fmt(ri, 1)} % · exigé ${re ?? "—"} %</span>`);
+      if (p.phase) out.push(`<span class="mark">Phase ${esc(p.phase)} · ${PHASES[p.phase] ? PHASES[p.phase].nom : ""}</span>`);
+      if (p.poids_cible) out.push(`<span class="mark">${fmt(+p.poids_cible, 2).replace(/,?0+$/, "")} % du capital</span>`);
+    } else {
+      const m = (p.mouvements || []).find(q => q.date === x.date && q.type === x.type);
+      if (m && m.poids_pct) out.push(`<span class="mark">${x.type === "Allègement" ? fmt(+m.poids_pct, 0) + " % de la ligne vendu" : fmt(+m.poids_pct, 2).replace(/,?0+$/, "") + " % du capital"}</span>`);
+    }
+  }
+  return out.length ? `<div class="marks">${out.join("")}</div>` : "";
+}
 function renderJournal() {
   const v = document.getElementById("v-journal");
   const e = (D.journal.entrees || []).slice().sort((a, b) => b.date.localeCompare(a.date));
@@ -754,7 +846,7 @@ function renderJournal() {
     html += `<article class="entry">
       <div class="date">${dfr(x.date)}</div>
       <div><span class="type ${tcls(x.type)}">${esc(x.type)}</span></div>
-      <div><h3>${esc(x.titre)}${x.ticker ? `<span class="tk">${esc(x.ticker)}</span>` : ""}</h3><p>${esc(x.texte)}</p>
+      <div><h3>${esc(x.titre)}${x.ticker ? `<span class="tk">${esc(x.ticker)}</span>` : ""}</h3>${reperes(x)}<p>${esc(x.texte)}</p>
       ${x.ticker && tickers.has(x.ticker) ? `<button class="linkish" data-fiche="${esc(x.ticker)}">Voir la fiche</button>` : ""}</div>
     </article>`;
   });
@@ -764,6 +856,12 @@ function renderJournal() {
       <div class="sec-head"><h2>Journal des décisions</h2>
         <p class="proof">${repo ? `Chaque décision est horodatée. <a href="https://github.com/${esc(repo)}/commits/main/data" target="_blank" rel="noopener">Historique des modifications sur GitHub ↗</a>` : "Chaque décision est horodatée et aucune entrée n'est modifiée après coup."}</p></div>
       <p class="lede" style="margin-bottom:18px">Le journal recense toutes les décisions, y compris les dossiers écartés et les raisons de leur rejet. Une erreur se corrige par une nouvelle entrée datée, jamais en réécrivant l'ancienne.</p>
+      ${(() => {
+        const ec = e.filter(x => x.type === "Écarté");
+        if (!ec.length) return "";
+        const parEtape = {}; ec.forEach(x => { const k = x.etape_blocage || "autre motif"; parEtape[k] = (parEtape[k] || 0) + 1; });
+        return `<p class="tally-line"><b>${ec.length}</b> dossier${ec.length > 1 ? "s" : ""} écarté${ec.length > 1 ? "s" : ""} pour <b>${e.filter(x => x.type === "Entrée").length}</b> entrée${e.filter(x => x.type === "Entrée").length > 1 ? "s" : ""} · ${Object.entries(parEtape).map(([k, n]) => `${esc(k)} : ${n}`).join(" · ")}</p>`;
+      })()}
       <div class="filters" role="group" aria-label="Filtrer par type">${types.map(t => `<button class="chip" aria-pressed="${t === filtreJournal}" data-filtre="${esc(t)}">${esc(t === "Écarté" ? "Écartés" : t === "Tout" ? "Toutes les décisions" : t + "s")}</button>`).join("")}</div>
     </div>
     ${liste.length ? `<div class="timeline">${html}</div>` : `<div class="empty">Aucune entrée de ce type.</div>`}`;
