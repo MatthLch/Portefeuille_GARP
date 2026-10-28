@@ -687,20 +687,6 @@ function renderPortefeuille() {
       <div class="kpi"><span class="eyebrow">Score Gem moyen</span><span class="v num">${fmt(gemMoy, 1)}/20</span><span class="d">seuil ${s.seuil_gem}/20, aucun pilier sous ${s.plancher_pilier ?? 3}</span></div>
     </div>
 
-    ${(() => {
-      const it = prochainesExecutions();
-      if (!it.length) return "";
-      return `<div>
-      <div class="sec-head"><h2>Prochaines exécutions</h2><p>Dates fixées au moment de chaque entrée, jamais en fonction du cours</p></div>
-      <div class="agenda">${it.map(x => `<div class="ag-row${x.retard ? " late" : ""}">
-        <div class="ag-date num">${x.semaine ? `<span class="sub">semaine du</span>` : x.borne ? `<span class="sub">au plus tard</span>` : ""}${dfr(x.date)}</div>
-        <div class="ag-co">${x.p ? `<button class="linkish strong" data-fiche="${esc(x.p.ticker)}">${esc(x.p.nom)}</button>` : `<b>${esc(x.nom)}</b>`}<span class="tk">${esc(x.p ? x.p.ticker : x.ticker)}</span></div>
-        <div class="ag-act">${esc(x.action)}<span class="sub">${esc(x.note)}</span></div>
-        <div class="ag-st ${x.retard ? "neg" : ""}">${esc(x.statut)}</div>
-      </div>`).join("")}</div>
-    </div>`;
-    })()}
-
     <div>
       <div class="sec-head"><h2>Performance comparée</h2><p>Base 100 au ${dfr(s.date_lancement)}, dividendes réinvestis, frais de ${fmt(s.frais_transaction_pct, 2)} % inclus</p></div>
       <div class="chart-box">
@@ -718,6 +704,20 @@ function renderPortefeuille() {
       </div>
       <p class="rule-note">Le cours d'exécution est la clôture réelle du jour d'exécution, relevée automatiquement, et non un cours saisi à la main.</p>
     </div>
+
+    ${(() => {
+      const it = prochainesExecutions();
+      if (!it.length) return "";
+      return `<div>
+      <div class="sec-head"><h2>Prochaines exécutions</h2><p>Dates fixées au moment de chaque entrée, jamais en fonction du cours</p></div>
+      <div class="agenda">${it.map(x => `<div class="ag-row${x.retard ? " late" : ""}">
+        <div class="ag-date num">${x.semaine ? `<span class="sub">semaine du</span>` : x.borne ? `<span class="sub">au plus tard</span>` : ""}${dfr(x.date)}</div>
+        <div class="ag-co">${x.p ? `<button class="linkish strong" data-fiche="${esc(x.p.ticker)}">${esc(x.p.nom)}</button>` : `<b>${esc(x.nom)}</b>`}<span class="tk">${esc(x.p ? x.p.ticker : x.ticker)}</span></div>
+        <div class="ag-act">${esc(x.action)}<span class="sub">${esc(x.note)}</span></div>
+        <div class="ag-st ${x.retard ? "neg" : ""}">${esc(x.statut)}</div>
+      </div>`).join("")}</div>
+    </div>`;
+    })()}
 
     ${closes.length ? `<div>
       <div class="sec-head"><h2>Positions clôturées</h2><p>Performance entre l'exécution et la sortie</p></div>
