@@ -502,6 +502,31 @@ function regles(p) {
   ];
 }
 const mk = p => (D.marche.positions || {})[p.ticker] || {};
+/* Ratios de risque à partir d'une série de valeurs (base quelconque).
+   par : nombre de périodes par an (12 en mensuel, 252 en quotidien) ; rf : taux sans risque annuel en %. */
+function ratiosRisque(vals, par, rf = 2, bench = null) {
+  const r = []; for (let i = 1; i < vals.length; i++) if (vals[i] != null && vals[i - 1]) r.push(vals[i] / vals[i - 1] - 1);
+  if (r.length < 2) return null;
+  const ans = r.length / par, rfp = rf / 100 / par;
+  const cagr = Math.pow(vals[vals.length - 1] / vals[0], 1 / ans) - 1;
+  const moy = r.reduce((a, b) => a + b, 0) / r.length;
+  const vol = Math.sqrt(r.reduce((a, b) => a + (b - moy) ** 2, 0) / (r.length - 1) * par);
+  const dsd = Math.sqrt(r.reduce((a, b) => a + Math.min(0, b - rfp) ** 2, 0) / r.length * par);
+  let pic = vals[0], dd = 0; vals.forEach(v => { if (v == null) return; pic = Math.max(pic, v); dd = Math.min(dd, v / pic - 1); });
+  const out = { cagr: cagr * 100, vol: vol * 100, dd: dd * 100,
+    sharpe: vol ? (cagr - rf / 100) / vol : null, sortino: dsd ? (cagr - rf / 100) / dsd : null, calmar: dd ? cagr / -dd : null };
+  if (bench && bench.length === vals.length) {
+    const rb = []; for (let i = 1; i < bench.length; i++) rb.push(bench[i] / bench[i - 1] - 1);
+    const cap = test => {
+      const idx = rb.map((x, i) => test(x) ? i : -1).filter(i => i >= 0 && r[i] != null);
+      if (!idx.length) return null;
+      const g = a => Math.pow(idx.reduce((p, i) => p * (1 + a[i]), 1), 1 / idx.length) - 1;
+      return g(r) / g(rb) * 100;
+    };
+    out.captureHausse = cap(x => x > 0); out.captureBaisse = cap(x => x < 0);
+  }
+  return out;
+}
 /* Dates ISO (AAAA-MM-JJ) en heure locale */
 const isoJ = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 const dIso = iso => { const [y, m, d] = iso.split("-").map(Number); return new Date(y, m - 1, d); };
@@ -693,6 +718,20 @@ function renderPortefeuille() {
         <div class="legend"><span><i></i>Portefeuille modèle</span><span><i class="b"></i>${esc(s.benchmark_nom)}</span></div>
         <div class="chart" id="ch-vl"></div>
       </div>
+      ${(() => {
+        const rf = (D.backtest && D.backtest.metriques && D.backtest.metriques.taux_sans_risque_pct) ?? 2;
+        const jours = c.dates && c.dates.length ? ecartJours(c.dates[0], c.dates[c.dates.length - 1]) : 0;
+        if (jours < 365) return `<p class="rule-note">Ratios de risque (Sharpe, Sortino, Calmar, taux de capture) : publiés à partir de douze mois de suivi, soit le ${dfr(plusMois(s.date_lancement, 12))}. Sur une période plus courte, ils mesurent surtout du bruit.</p>`;
+        const rp = ratiosRisque(c.portefeuille, 252, rf, c.benchmark && c.benchmark.length === c.portefeuille.length ? c.benchmark : null);
+        const rb = c.benchmark && c.benchmark.length ? ratiosRisque(c.benchmark, 252, rf) : null;
+        if (!rp) return "";
+        const L = [["Volatilité annualisée", rp.vol, rb && rb.vol, v => fmt(v, 1) + " %"], ["Sharpe", rp.sharpe, rb && rb.sharpe, v => fmt(v, 2)],
+          ["Sortino", rp.sortino, rb && rb.sortino, v => fmt(v, 2)], ["Drawdown maximal", rp.dd, rb && rb.dd, v => pct(v, 1, false)],
+          ["Calmar", rp.calmar, rb && rb.calmar, v => fmt(v, 2)], ["Capture à la hausse", rp.captureHausse, null, v => fmt(v, 0) + " %"], ["Capture à la baisse", rp.captureBaisse, null, v => fmt(v, 0) + " %"]];
+        return `<div class="table-scroll" style="margin-top:14px"><table><thead><tr><th>Ratios de risque depuis le lancement</th><th class="n">Portefeuille</th><th class="n">${esc(s.benchmark_nom)}</th></tr></thead>
+          <tbody>${L.map(([k, a, b2, f]) => `<tr><td>${k}</td><td class="n num">${a == null ? "—" : f(a)}</td><td class="n num muted">${b2 == null ? "" : f(b2)}</td></tr>`).join("")}</tbody></table></div>
+          <p class="rule-note">Taux sans risque de ${fmt(rf, 1)} %, rendements quotidiens.</p>`;
+      })()}
     </div>
 
     <div>
@@ -877,12 +916,19 @@ function renderBacktest() {
   const nS = esc(b.nom_strategie || "Stratégie"), nB = esc(b.nom_benchmark || "Benchmark");
   const cv = b.couverture;
   const comp = b.comparaisons || [];
+  const rf = b.metriques.taux_sans_risque_pct ?? 2, cb = b.courbe || {};
+  const rS = cb.strategie ? ratiosRisque(cb.strategie, 12, rf, cb.benchmark) : null, rB = cb.benchmark ? ratiosRisque(cb.benchmark, 12, rf) : null;
+  const calmar = m => m && m.cagr_pct != null && m.drawdown_max_pct ? m.cagr_pct / Math.abs(m.drawdown_max_pct) : null;
   const lignes = [
     ["Rendement annualisé (CAGR)", ms.cagr_pct, mb.cagr_pct, v => pct(v, 1)],
     ["Performance cumulée", ms.perf_totale_pct, mb.perf_totale_pct, v => pct(v, 0)],
     ["Volatilité annualisée", ms.volatilite_pct, mb.volatilite_pct, v => fmt(v, 1) + " %"],
     [`Ratio de Sharpe (taux sans risque ${fmt(b.metriques.taux_sans_risque_pct, 1)} %)`, ms.sharpe, mb.sharpe, v => fmt(v, 2)],
+    ["Ratio de Sortino (rendements mensuels)", rS && rS.sortino, rB && rB.sortino, v => v == null ? "" : fmt(v, 2)],
     ["Drawdown maximal", ms.drawdown_max_pct, mb.drawdown_max_pct, v => pct(v, 1, false)],
+    ["Ratio de Calmar (CAGR ÷ drawdown max.)", calmar(ms), calmar(mb), v => v == null ? "" : fmt(v, 2)],
+    ["Capture à la hausse (contre l'univers)", rS && rS.captureHausse, null, v => v == null ? "" : fmt(v, 0) + " %"],
+    ["Capture à la baisse (contre l'univers)", rS && rS.captureBaisse, null, v => v == null ? "" : fmt(v, 0) + " %"],
     ["Tracking error", ms.tracking_error_pct, null, v => v == null ? "" : fmt(v, 1) + " %"],
     ["Ratio d'information", ms.ratio_information, null, v => v == null ? "" : fmt(v, 2)],
     ["Périodes de surperformance", ms.mois_surperformance_pct, null, v => v == null ? "" : fmt(v, 0) + " %"],
@@ -896,6 +942,7 @@ function renderBacktest() {
           <thead><tr><th></th><th class="n">${nS}</th><th class="n">${nB}</th></tr></thead>
           <tbody>${lignes.map(([k, a, c, f]) => `<tr><td>${esc(k)}</td><td class="n">${f(a)}</td><td class="n muted">${c == null ? "" : f(c)}</td></tr>`).join("")}</tbody>
         </table></div>
+        ${rS && rS.captureHausse != null ? `<p class="rule-note">Les taux de capture comparent le rendement moyen de la stratégie à celui de l'univers, sur les seuls mois de hausse (${fmt(rS.captureHausse, 0)} %) puis de baisse (${fmt(rS.captureBaisse, 0)} %) de l'univers. Une stratégie défensive vise une capture à la baisse nettement inférieure à 100 %. ${rS.captureBaisse > 90 ? "Ici, elle en est proche : sans filtre de valorisation, la qualité seule n'amortit pas les baisses." : ""}</p>` : ""}
       </div>
       <div>
         <div class="sec-head"><h2>Règles de simulation</h2></div>
@@ -910,9 +957,9 @@ function renderBacktest() {
     ${comp.length ? `<div>
       <div class="sec-head"><h2>Comparaisons</h2><p>Même période, mêmes frais</p></div>
       <div class="table-scroll"><table>
-        <thead><tr><th></th><th class="n">CAGR</th><th class="n">Volatilité</th><th class="n">Sharpe</th><th class="n">Drawdown max.</th></tr></thead>
+        <thead><tr><th></th><th class="n">CAGR</th><th class="n">Volatilité</th><th class="n">Sharpe</th><th class="n">Drawdown max.</th><th class="n">Calmar</th></tr></thead>
         <tbody>${comp.map(c => `<tr><td>${c.role === "principal" ? "<b>" + esc(c.nom) + "</b>" : esc(c.nom)}${c.role === "variante" ? '<span class="sub">variante</span>' : ""}</td>
-          <td class="n num">${pct(c.cagr_pct, 1)}</td><td class="n num">${fmt(c.volatilite_pct, 1)} %</td><td class="n num">${fmt(c.sharpe, 2)}</td><td class="n num">${pct(c.drawdown_max_pct, 1, false)}</td></tr>`).join("")}</tbody>
+          <td class="n num">${pct(c.cagr_pct, 1)}</td><td class="n num">${fmt(c.volatilite_pct, 1)} %</td><td class="n num">${fmt(c.sharpe, 2)}</td><td class="n num">${pct(c.drawdown_max_pct, 1, false)}</td><td class="n num">${calmar(c) == null ? "—" : fmt(calmar(c), 2)}</td></tr>`).join("")}</tbody>
       </table></div>
     </div>` : ""}
     ${cv ? `<div class="kpis">
