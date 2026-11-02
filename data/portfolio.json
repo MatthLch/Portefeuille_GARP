@@ -68,7 +68,44 @@
         "La croissance du chiffre d'affaires devient négative pendant deux exercices",
         "Le pilier management passe sous 3, par exemple en cas d'acquisition destructrice de valeur"
       ],
-      "statut": "ouverte"
+      "statut": "ouverte",
+      "date_sortie": "2026-11-02"
+    },
+    {
+      "ticker": "AUTO.L",
+      "nom": "Autotrader",
+      "pays": "GB",
+      "secteur": "Plateforme d'annonces automobiles",
+      "archetype": "Franchise asset-light",
+      "devise": "GBX",
+      "date_entree": "2026-11-02",
+      "cours_entree": 546.4,
+      "poids_cible": 1.5,
+      "cours_dcf": 538.4,
+      "rendement_implicite_pct": 11.4,
+      "prix_entree_max": 883,
+      "valeur_intrinseque": 810,
+      "methode_valo": "Reverse DCF : rendement implicite de 11,4 % au cours de 538,4 p, contre 8 % exigés pour un Gem de 18,0/20. FCF normalisé de 393 M$, croissance de 8,3 % sur 5 ans (croissance du CA sur 10 ans) puis convergence vers 2 %.",
+      "gem_moat": 4.33,
+      "gem_management": 4.67,
+      "gem_reinvestissement": 4.1,
+      "gem_transparence": 4.93,
+      "vetos_ok": true,
+      "phase": "P",
+      "these": "Première plateforme d'annonces automobiles du Royaume-Uni. Les professionnels paient un abonnement pour accéder à l'audience, et l'effet de réseau entre acheteurs et vendeurs donne à la société un pouvoir de prix rare : marge opérationnelle de 65 % en moyenne sur dix ans, ROIC très élevé, peu de capital à réinvestir. Au cours de 538 p, le marché ne price aucune croissance, alors que le chiffre d'affaires progresse de 8 % par an depuis dix ans.",
+      "catalyseurs": [
+        "Hausse du revenu par professionnel, portée par les évolutions annuelles de prix et de produits",
+        "Développement des services de transaction en ligne, au-delà de l'annonce",
+        "Rachats d'actions à un cours inférieur à la valeur par action au taux de référence"
+      ],
+      "invalidation": [
+        "Le nombre de professionnels clients recule pendant deux exercices consécutifs",
+        "La marge opérationnelle reste sous 55 % pendant deux exercices",
+        "La plateforme perd sa première place en audience au Royaume-Uni",
+        "Un pilier Gem passe sous 3"
+      ],
+      "statut": "ouverte",
+      "date_sortie": "2026-11-02"
     }
   ]
 }
