@@ -19,16 +19,16 @@
       "type": "Écarté",
       "ticker": "LULU",
       "titre": "Lululemon : achat bloqué par la phase B",
-      "texte": "Score Gem 16,7/20, aucun veto. Le rendement implicite ressort à 21,3 %, très au-dessus des 9 % exigés. Mais le titre est en phase B, confirmée sur deux relevés : cours 30 % sous la moyenne mobile 200 jours, qui est elle-même en baisse. Aucun achat n'est donc possible. Un rendement implicite aussi élevé indique surtout que le marché doute de la croissance passée : je relirai la thèse (concurrence, marché nord-américain) avant toute entrée. Le dossier reste en liste de suivi et pourra entrer dans la file d'attente à la sortie de la phase B.",
-      "etape_blocage": "Phase B"
+      "etape_blocage": "Phase B",
+      "texte": "Score Gem 16,7/20, aucun veto. Le rendement implicite ressort à 21,3 %, très au-dessus des 9 % exigés. Mais le titre est en phase B, confirmée sur deux relevés : cours 30 % sous la moyenne mobile 200 jours, qui est elle-même en baisse. Aucun achat n'est donc possible. Un rendement implicite aussi élevé indique surtout que le marché doute de la croissance passée : je relirai la thèse (concurrence, marché nord-américain) avant toute entrée. Le dossier reste en liste de suivi et pourra entrer dans la file d'attente à la sortie de la phase B."
     },
     {
       "date": "2026-10-22",
       "type": "Écarté",
       "ticker": "MC.PA",
       "titre": "LVMH : achat bloqué par la phase B",
-      "texte": "Score Gem 16,8/20, aucun veto. Le rendement implicite ressort à 9,9 % pour 9 % exigés, une marge faible de 0,9 point. Le titre est en phase B, confirmée sur deux relevés : cours 17 % sous la moyenne mobile 200 jours, elle-même en baisse. Aucun achat n'est donc possible. Le dossier reste en liste de suivi. À la sortie de la phase B, je referai le reverse DCF avant toute entrée dans la file d'attente, car la marge de rendement est trop étroite pour supporter une remontée du cours.",
-      "etape_blocage": "Phase B"
+      "etape_blocage": "Phase B",
+      "texte": "Score Gem 16,8/20, aucun veto. Le rendement implicite ressort à 9,9 % pour 9 % exigés, une marge faible de 0,9 point. Le titre est en phase B, confirmée sur deux relevés : cours 17 % sous la moyenne mobile 200 jours, elle-même en baisse. Aucun achat n'est donc possible. Le dossier reste en liste de suivi. À la sortie de la phase B, je referai le reverse DCF avant toute entrée dans la file d'attente, car la marge de rendement est trop étroite pour supporter une remontée du cours."
     },
     {
       "date": "2026-10-22",
@@ -42,6 +42,13 @@
       "ticker": "EVO.ST",
       "titre": "Evolution",
       "texte": "Premier dossier de la file d'attente publiée le 22 octobre. Issu du screener (verdict PASSE, pré-score 17,1). Gates : ROIC ajusté du goodwill de 44 %, dérive de marge de 0,19, conversion FCF / résultat net de 116 %. Trésorerie nette. Aucun veto. Score Gem de 16,8/20 (piliers 4,2 · 3,3 · 4,3 · 5,0), soit un rendement exigé de 9 %. Le pilier management est le plus faible : le ROIC a reculé de 18 points entre la moyenne sur dix ans et celle sur cinq ans, sous l'effet du goodwill des acquisitions. Reverse DCF sur un FCF normalisé de 1 295 M$ : rendement implicite de 15,3 % au cours de 890 SEK, prix d'entrée maximal de 1 751 SEK. Le cours se situe sous la valeur à croissance nulle : le marché anticipe un recul de l'activité, alors que le chiffre d'affaires a progressé de 7 % par an sur trois ans. L'écart s'explique par le risque réglementaire, que je surveille en priorité. Phase P (pause) : tranche réduite de 1,5 % à la clôture du jour. Le solde de 3 % sera exécuté au passage confirmé en phase A, et au plus tard le 26 janvier 2027."
+    },
+    {
+      "date": "2026-11-02",
+      "type": "Entrée",
+      "ticker": "AUTO.L",
+      "titre": "Autotrader",
+      "texte": "Pourquoi ce dossier : Première plateforme d'annonces automobiles du Royaume-Uni : l'effet de réseau entre acheteurs et professionnels soutient une marge opérationnelle de 65 % sur dix ans. Le marché ne price aucune croissance, alors que le chiffre d'affaires progresse de 8 % par an depuis dix ans.\n\nDécision : Rang 2 de la file publiée le 22 octobre. Rendement implicite de 11,4 % à la clôture du 30 octobre (538,4 p), pour 8 % exigés. Phase P confirmée sur les relevés des 23 et 30 octobre : tranche réduite de 1,5 % à la clôture du jour, solde au passage en phase A et au plus tard le 2 février 2027.\n\nPoint de vigilance : La capacité à continuer d'augmenter le revenu par professionnel sans provoquer de départs vers les plateformes concurrentes."
     }
   ]
 }
