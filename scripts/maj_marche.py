@@ -63,6 +63,39 @@ def telecharger(tickers: list[str], debut: str) -> pd.DataFrame:
     return closes
 
 
+# Fuseau et heure de clôture (locale) par place, d'après le suffixe Yahoo.
+PLACES = {
+    ".T": ("Asia/Tokyo", "15:30"), ".L": ("Europe/London", "16:35"), ".ST": ("Europe/Stockholm", "17:30"),
+    ".CO": ("Europe/Copenhagen", "17:00"), ".OL": ("Europe/Oslo", "16:25"), ".HE": ("Europe/Helsinki", "18:30"),
+    ".SW": ("Europe/Zurich", "17:30"), ".TO": ("America/Toronto", "16:00"), "=X": ("Europe/London", "23:59"),
+}
+EURONEXT_XETRA = ("Europe/Paris", "17:35")  # .PA, .AS, .DE, .MI, .MC, .BR, .LS, .IR
+US = ("America/New_York", "16:00")
+
+
+def place(ticker: str) -> tuple[str, str]:
+    for suf, v in PLACES.items():
+        if ticker.endswith(suf):
+            return v
+    return EURONEXT_XETRA if "." in ticker else US
+
+
+def sans_seance_en_cours(closes: pd.DataFrame) -> pd.DataFrame:
+    """Efface la ligne du jour pour les places dont la séance n'est pas encore close :
+    sinon un cours intrajournalier serait pris pour une clôture."""
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+    closes = closes.copy()
+    for t in closes.columns:
+        tz, h = place(t)
+        maintenant = datetime.now(ZoneInfo(tz))
+        jour = pd.Timestamp(maintenant.date())
+        hh, mm = map(int, h.split(":"))
+        if jour in closes.index and (maintenant.hour, maintenant.minute) < (hh, mm + 20 if mm + 20 < 60 else 59):
+            closes.loc[jour, t] = np.nan
+    return closes.dropna(how="all")
+
+
 def synthetique(tickers: list[str], debut: str, ancrages: dict[str, tuple[str, float]],
                 base: str) -> pd.DataFrame:
     """Marche aléatoire déterministe, recalée pour passer par le cours d'entrée saisi."""
@@ -299,13 +332,17 @@ def main() -> None:
         ancrages = {p["ticker"]: (p["date_entree"], float(p["cours_entree"])) for p in positions}
         closes = synthetique(tickers, debut, ancrages, base)
     else:
-        closes = telecharger(tickers, debut)
+        closes = sans_seance_en_cours(telecharger(tickers, debut))
         # Yahoo renvoie parfois une colonne vide lors d'un téléchargement groupé : on retente seul.
-        vides = [t for t in tickers if t not in closes or closes[t].isna().all()]
+        dernier = closes.index.max()
+        retard = lambda t: closes[t].last_valid_index() is not None and \
+            len(pd.bdate_range(closes[t].last_valid_index(), dernier)) > 2
+        vides = [t for t in tickers if t not in closes or closes[t].isna().all() or retard(t)]
         for t in vides:
             try:
-                c1 = telecharger([t], debut)
-                if t in c1 and c1[t].notna().any():
+                c1 = sans_seance_en_cours(telecharger([t], debut))
+                if t in c1 and c1[t].notna().any() and (t not in closes or closes[t].last_valid_index() is None
+                                                        or c1[t].last_valid_index() >= closes[t].last_valid_index()):
                     closes = closes.drop(columns=[t], errors="ignore").join(c1[[t]], how="outer")
                     print(f"{t} : cours récupérés au second essai.")
                 else:

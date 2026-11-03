@@ -4,6 +4,9 @@ on:
   schedule:
     # Du lundi au vendredi à 22:17 UTC, après la clôture de Wall Street.
     - cron: "17 22 * * 1-5"
+    # Du mardi au samedi à 07:17 UTC : rattrape les clôtures publiées tardivement par Yahoo
+    # et intègre celle de Tokyo, avant l'ouverture des marchés européens.
+    - cron: "17 7 * * 2-6"
   # Recalcul immédiat dès qu'une position ou un réglage change via l'admin.
   push:
     branches: [main]
