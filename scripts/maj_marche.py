@@ -96,6 +96,37 @@ def sans_seance_en_cours(closes: pd.DataFrame) -> pd.DataFrame:
     return closes.dropna(how="all")
 
 
+def completer_dernieres_clotures(closes: pd.DataFrame) -> pd.DataFrame:
+    """Yahoo laisse parfois vide la clôture de la dernière séance dans l'historique, alors que
+    le dernier cours de la séance est connu. On reprend alors ce dernier cours, uniquement si
+    la séance correspondante est terminée et que la case est vide."""
+    import requests
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+    closes = closes.copy()
+    for t in closes.columns:
+        try:
+            r = requests.get(f"https://query2.finance.yahoo.com/v8/finance/chart/{t}",
+                             params={"range": "5d", "interval": "1d"},
+                             headers={"User-Agent": "Mozilla/5.0"}, timeout=15)
+            meta = r.json()["chart"]["result"][0]["meta"]
+            prix, quand = meta.get("regularMarketPrice"), meta.get("regularMarketTime")
+            if prix is None or quand is None:
+                continue
+            tz, h = place(t)
+            moment = datetime.fromtimestamp(quand, ZoneInfo(tz))
+            maintenant = datetime.now(ZoneInfo(tz))
+            hh, mm = map(int, h.split(":"))
+            fini = moment.date() < maintenant.date() or (maintenant.hour, maintenant.minute) >= (hh, min(mm + 20, 59))
+            jour = pd.Timestamp(moment.date())
+            if fini and (jour not in closes.index or pd.isna(closes.loc[jour, t])):
+                closes.loc[jour, t] = float(prix)
+                print(f"{t} : clôture du {jour.date()} absente de l'historique, reprise du dernier cours ({prix}).")
+        except Exception as e:  # noqa: BLE001
+            print(f"{t} : dernier cours indisponible ({e}).")
+    return closes.sort_index()
+
+
 def synthetique(tickers: list[str], debut: str, ancrages: dict[str, tuple[str, float]],
                 base: str) -> pd.DataFrame:
     """Marche aléatoire déterministe, recalée pour passer par le cours d'entrée saisi."""
@@ -332,7 +363,7 @@ def main() -> None:
         ancrages = {p["ticker"]: (p["date_entree"], float(p["cours_entree"])) for p in positions}
         closes = synthetique(tickers, debut, ancrages, base)
     else:
-        closes = sans_seance_en_cours(telecharger(tickers, debut))
+        closes = sans_seance_en_cours(completer_dernieres_clotures(telecharger(tickers, debut)))
         # Yahoo renvoie parfois une colonne vide lors d'un téléchargement groupé : on retente seul.
         dernier = closes.index.max()
         retard = lambda t: closes[t].last_valid_index() is not None and \
