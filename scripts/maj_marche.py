@@ -2,7 +2,9 @@
 """
 Met à jour data/marche.json à partir de data/site.json et data/portfolio.json.
 
-- Télécharge les cours de clôture ajustés (dividendes réinvestis) via yfinance.
+- Télécharge les cours de clôture bruts et les dividendes via yfinance. Les dividendes
+  sont crédités en cash à leur date de détachement (montant brut, sans retenue à la source),
+  de sorte que les cours d'exécution et les PRU publiés ne changent jamais après coup.
 - Convertit chaque ligne dans la devise du portefeuille (EUR par défaut).
 - Recalcule la valeur liquidative jour par jour : chaque ligne est exécutée au
   cours de clôture RÉEL du jour d'exécution (pas au cours saisi à la main),
@@ -51,15 +53,39 @@ def ticker_fx(devise: str, base: str) -> str:
 # --------------------------------------------------------------------------- #
 # Sources de cours
 # --------------------------------------------------------------------------- #
+def _colonne(df: pd.DataFrame, champ: str, tickers: list[str]) -> pd.DataFrame:
+    if champ not in df.columns.get_level_values(0):
+        return pd.DataFrame(index=df.index)
+    out = df[champ]
+    if isinstance(out, pd.Series):
+        out = out.to_frame(tickers[0])
+    out = out.copy()
+    out.index = pd.to_datetime(out.index).tz_localize(None).normalize()
+    return out
+
+
+# Dividendes par action (en devise de cotation) indexés par date de détachement.
+# Rempli par telecharger() ; lu par calculer().
+DIVIDENDES = pd.DataFrame()
+
+
 def telecharger(tickers: list[str], debut: str) -> pd.DataFrame:
+    """Cours de clôture BRUTS (non ajustés des dividendes) + dividendes détachés.
+
+    Les cours ajustés de Yahoo sont recalculés rétroactivement à chaque détachement :
+    les cours d'exécution et les PRU publiés changeraient alors tout seuls et ne
+    correspondraient plus au journal. On garde donc les cours réels et on crédite
+    les dividendes en cash à leur date de détachement."""
+    global DIVIDENDES
     import yfinance as yf
 
-    df = yf.download(tickers, start=debut, auto_adjust=True, progress=False,
+    df = yf.download(tickers, start=debut, auto_adjust=False, actions=True, progress=False,
                      threads=True, group_by="column")
-    closes = df["Close"]
-    if isinstance(closes, pd.Series):
-        closes = closes.to_frame(tickers[0])
-    closes.index = pd.to_datetime(closes.index).tz_localize(None).normalize()
+    closes = _colonne(df, "Close", tickers)
+    divs = _colonne(df, "Dividends", tickers).fillna(0.0)
+    divs = divs.loc[:, (divs != 0).any()] if not divs.empty else divs
+    DIVIDENDES = divs if DIVIDENDES.empty else \
+        DIVIDENDES.drop(columns=divs.columns, errors="ignore").join(divs, how="outer").fillna(0.0)
     return closes
 
 
@@ -159,8 +185,10 @@ def premier_jour(index: pd.DatetimeIndex, d: str) -> pd.Timestamp | None:
     return index[i] if i < len(index) else None
 
 
-def calculer(site: dict, portefeuille: dict, closes: pd.DataFrame) -> dict:
+def calculer(site: dict, portefeuille: dict, closes: pd.DataFrame,
+             dividendes: pd.DataFrame | None = None) -> dict:
     base = site.get("devise_portefeuille", "EUR")
+    dividendes = DIVIDENDES if dividendes is None else dividendes
     capital = float(site["capital_initial"])
     frais = float(site.get("frais_transaction_pct", 0.1)) / 100
     bench = site["benchmark_ticker"]
@@ -175,11 +203,9 @@ def calculer(site: dict, portefeuille: dict, closes: pd.DataFrame) -> dict:
     closes = closes.loc[closes.index.isin(jours)]
     idx = closes.index
 
-    def prix_base(p: dict) -> pd.Series | None:
-        t = p["ticker"]
-        if t not in closes or closes[t].isna().all():
-            return None
-        s = closes[t] / DIVISEUR.get(p["devise"], 1.0)
+    def vers_base(p: dict, s: pd.Series) -> pd.Series | None:
+        """Convertit une série en devise de cotation vers la devise du portefeuille."""
+        s = s / DIVISEUR.get(p["devise"], 1.0)
         dev = devise_reelle(p["devise"])
         if dev != base:
             fx = ticker_fx(dev, base)
@@ -187,6 +213,12 @@ def calculer(site: dict, portefeuille: dict, closes: pd.DataFrame) -> dict:
                 return None
             s = s / closes[fx]
         return s
+
+    def prix_base(p: dict) -> pd.Series | None:
+        t = p["ticker"]
+        if t not in closes or closes[t].isna().all():
+            return None
+        return vers_base(p, closes[t])
 
     positions = [p for p in portefeuille.get("positions", []) if p.get("ticker")]
     # Événements : achat initial, renforcements, allègements, sortie totale.
@@ -222,12 +254,37 @@ def calculer(site: dict, portefeuille: dict, closes: pd.DataFrame) -> dict:
                 evenements.append((js, 0, "vente", p, 100.0, p.get("cours_sortie"), "Sortie"))
     evenements.sort(key=lambda e: (e[0], e[1]))
 
+    # Dividendes par action, convertis dans la devise du portefeuille au change du jour de détachement.
+    div_base: dict[str, pd.Series] = {}
+    for p in positions:
+        t = p["ticker"]
+        if t in series and t in dividendes.columns:
+            d = dividendes[t].reindex(idx).fillna(0.0)
+            # Garde-fou : un dividende supérieur à 15 % du cours trahit presque toujours une erreur
+            # d'unité de Yahoo (livres au lieu de pence, par exemple). On l'ignore et on le signale.
+            ratio = d / closes[t].replace(0, np.nan)
+            for jour_div in d.index[(ratio > 0.15).fillna(False)]:
+                avertissements.append(f"{t} : dividende du {jour_div.date()} ({d.loc[jour_div]:g}) supérieur à 15 % "
+                                      f"du cours, ignoré par précaution (erreur d'unité probable).")
+                d.loc[jour_div] = 0.0
+            if (d != 0).any():
+                div_base[t] = vers_base(p, d).fillna(0.0)
+    total_dividendes = 0.0
+
     cash = capital
     titres: dict[str, float] = {}
     infos: dict[str, dict] = {}
     vl = pd.Series(index=idx, dtype=float)
     k = 0
     for jour in idx:
+        # Le dividende revient aux titres détenus à la veille du détachement : crédit avant les ordres du jour.
+        for t, n in titres.items():
+            if t in div_base:
+                montant_div = n * float(div_base[t].loc[jour])
+                if montant_div:
+                    cash += montant_div
+                    total_dividendes += montant_div
+                    infos[t]["dividendes"] = infos[t].get("dividendes", 0.0) + montant_div
         while k < len(evenements) and evenements[k][0] == jour:
             _, _, typ, p, qte, saisi, libelle = evenements[k]
             t = p["ticker"]
@@ -291,7 +348,7 @@ def calculer(site: dict, portefeuille: dict, closes: pd.DataFrame) -> dict:
             achats_loc = [m for m in inf["mouvements"] if m["type"] in ("Entrée", "Renforcement")]
             pru = sum(m["cours"] * m["poids_pct"] for m in achats_loc) / max(sum(m["poids_pct"] for m in achats_loc), 1e-9)
         fin_loc = cours_actuel if ouverte else inf.get("cours_sortie_marche", pru)
-        gain = valeur_ligne + inf["ventes"] - inf["achats"]
+        gain = valeur_ligne + inf["ventes"] + inf.get("dividendes", 0.0) - inf["achats"]
         sortie_lignes[t] = {
             "jour_execution": inf["jour_execution"],
             "cours_execution": inf["cours_execution"],
@@ -307,6 +364,7 @@ def calculer(site: dict, portefeuille: dict, closes: pd.DataFrame) -> dict:
             "contribution_pct": round(gain / capital * 100, 2),
             "investi_pct": round(inf["achats"] / capital * 100, 2),
             "valeur": round(valeur_ligne, 2),
+            "dividendes": round(inf.get("dividendes", 0.0), 2),
             "poids_actuel_pct": round(valeur_ligne / valeur * 100, 2) if ouverte else 0.0,
         }
 
@@ -336,6 +394,7 @@ def calculer(site: dict, portefeuille: dict, closes: pd.DataFrame) -> dict:
             "volatilite_pct": round(vol * 100, 2) if vol is not None else None,
             "drawdown_max_pct": round(dd * 100, 2),
             "cash_pct": round(cash / valeur * 100, 2),
+            "dividendes_encaisses": round(total_dividendes, 2),
             "nb_lignes": len(titres),
             "jours": nb_jours,
         },

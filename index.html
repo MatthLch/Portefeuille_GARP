@@ -667,7 +667,7 @@ function renderPortefeuille() {
       <td class="c-co"><div class="co"><b>${esc(p.nom)}</b><small><span class="tk">${esc(p.ticker)}</span> · ${esc(p.pays)} · ${esc(p.secteur)}</small></div></td>
       <td class="n" data-label="Exécution">${dfr(m.jour_execution || p.date_entree)}<span class="sub num">PRU ${prix(m.pru ?? m.cours_execution ?? p.cours_entree, p.devise)}</span>${(m.nb_mouvements || 1) > 1 ? `<span class="sub">${m.nb_mouvements} tranches</span>` : ""}</td>
       <td class="n" data-label="${p.statut === "cloturee" ? "Sortie" : "Cours"}">${p.statut === "cloturee" ? `${dfr(m.jour_sortie || p.date_sortie)}<span class="sub num">${prix(m.cours_sortie_marche ?? p.cours_sortie, p.devise)}</span>` : `<span class="num">${prix(m.cours_actuel, p.devise)}</span>${m.date_cours ? `<span class="sub num">clôture ${dfr(m.date_cours).slice(0, 5)}</span>` : ""}`}</td>
-      <td class="n" data-label="Performance"><span class="num ${cls(m.perf_locale_pct)}">${pct(m.perf_locale_pct)}</span><span class="sub num">${pct(m.perf_base_pct)} en ${esc(s.devise_portefeuille)}</span></td>
+      <td class="n" data-label="Performance"><span class="num ${cls(m.perf_locale_pct)}">${pct(m.perf_locale_pct)}</span><span class="sub num">${pct(m.perf_base_pct)} en ${esc(s.devise_portefeuille)}${m.dividendes > 0 ? ", div. inclus" : ""}</span></td>
       ${p.statut === "cloturee" ? `<td class="n num ${cls(m.contribution_pct)}" data-label="Contribution">${pct(m.contribution_pct, 2)}</td>` : `<td class="n num" data-label="Poids">${fmt(m.poids_actuel_pct, 1)} %</td>`}
       <td class="n num" data-label="Rdt implicite">${rdtImplicite(p) == null ? "—" : fmt(rdtImplicite(p), 1) + " %"}<span class="sub">exigé ${rdtExige(gemTotal(p)) ?? "—"} %</span></td>
       <td class="n" data-label="Gem /20" style="white-space:nowrap">${gemMini(p)}<span class="num">${fmtG(gemTotal(p))}</span></td>
@@ -688,7 +688,7 @@ function renderPortefeuille() {
     </div>
 
     <div>
-      <div class="sec-head"><h2>Performance comparée</h2><p>Base 100 au ${dfr(s.date_lancement)}, dividendes réinvestis, frais de ${fmt(s.frais_transaction_pct, 2)} % inclus</p></div>
+      <div class="sec-head"><h2>Performance comparée</h2><p>Base 100 au ${dfr(s.date_lancement)}, dividendes bruts encaissés en liquidités, frais de ${fmt(s.frais_transaction_pct, 2)} % inclus</p></div>
       <div class="chart-box">
         <div class="legend"><span><i></i>Portefeuille modèle</span><span><i class="b"></i>${esc(s.benchmark_nom)}</span></div>
         <div class="chart" id="ch-vl"></div>
@@ -755,7 +755,7 @@ function ouvrirFiche(ticker, pousser = true) {
     <div class="facts">
       <div class="fact"><span class="k">${mvts.length > 1 ? "Prix de revient" : "Exécution"}</span><span class="v">${prix(pru, p.devise)}</span><span class="k">${mvts.length > 1 ? mvts.length + " tranches depuis le " : ""}${dfr(m.jour_execution || p.date_entree)}</span></div>
       <div class="fact"><span class="k">${p.statut === "cloturee" ? "Sortie" : "Cours actuel"}</span><span class="v">${prix(p.statut === "cloturee" ? (m.cours_sortie_marche ?? p.cours_sortie) : m.cours_actuel, p.devise)}</span><span class="k">${dfr(p.statut === "cloturee" ? (m.jour_sortie || p.date_sortie) : (m.date_cours || D.marche.maj))}</span></div>
-      <div class="fact"><span class="k">Performance</span><span class="v ${cls(m.perf_locale_pct)}">${pct(m.perf_locale_pct)}</span><span class="k">${pct(m.perf_base_pct)} en ${esc(s.devise_portefeuille)}</span></div>
+      <div class="fact"><span class="k">Performance</span><span class="v ${cls(m.perf_locale_pct)}">${pct(m.perf_locale_pct)}</span><span class="k">${pct(m.perf_base_pct)} en ${esc(s.devise_portefeuille)}${m.dividendes > 0 ? `, dont ${fmt(m.dividendes, 0)} ${esc(s.devise_portefeuille)} de dividendes` : ""}</span></div>
       <div class="fact"><span class="k">Rendement implicite</span><span class="v">${impl == null ? "—" : fmt(impl, 1) + " %"}</span><span class="k">au cours de ${prix(+p.cours_dcf || exec, p.devise)}</span></div>
       <div class="fact"><span class="k">Rendement exigé</span><span class="v">${exig == null ? "—" : exig + " %"}</span><span class="k">pour un Gem de ${fmtG(g)}/20</span></div>
       <div class="fact"><span class="k">${p.statut === "cloturee" ? "Contribution" : "Poids actuel"}</span><span class="v">${p.statut === "cloturee" ? pct(m.contribution_pct, 2) : fmt(m.poids_actuel_pct, 1) + " %"}</span></div>
