@@ -9,6 +9,7 @@
   "volatilite_pct": 0.59,
   "drawdown_max_pct": -0.07,
   "cash_pct": 94.67,
+  "dividendes_encaisses": 0.0,
   "nb_lignes": 3,
   "jours": 13
  },
@@ -33,6 +34,7 @@
    "contribution_pct": 0.05,
    "investi_pct": 2.25,
    "valeur": 2298.03,
+   "dividendes": 0.0,
    "poids_actuel_pct": 2.3
   },
   "EVO.ST": {
@@ -55,6 +57,7 @@
    "contribution_pct": 0.05,
    "investi_pct": 1.5,
    "valeur": 1545.52,
+   "dividendes": 0.0,
    "poids_actuel_pct": 1.54
   },
   "AUTO.L": {
@@ -77,6 +80,7 @@
    "contribution_pct": -0.01,
    "investi_pct": 1.5,
    "valeur": 1491.54,
+   "dividendes": 0.0,
    "poids_actuel_pct": 1.49
   }
  },
