@@ -167,6 +167,8 @@ def calculer(site: dict, portefeuille: dict, closes: pd.DataFrame) -> dict:
     lancement = pd.Timestamp(site["date_lancement"])
     avertissements: list[str] = []
 
+    # Date de la dernière vraie cotation de chaque titre, avant tout report du cours précédent.
+    derniere_cotation = {t: closes[t].last_valid_index() for t in closes.columns}
     jours = pd.bdate_range(min(lancement, closes.index.min()), closes.index.max())
     closes = closes.reindex(closes.index.union(jours)).sort_index().ffill()
     closes = closes.loc[closes.index >= lancement]
@@ -299,6 +301,7 @@ def calculer(site: dict, portefeuille: dict, closes: pd.DataFrame) -> dict:
             **({"cours_sortie_marche": inf["cours_sortie_marche"], "jour_sortie": inf["jour_sortie"]}
                if not ouverte and "jour_sortie" in inf else {}),
             "cours_actuel": round(cours_actuel, 4),
+            "date_cours": derniere_cotation[t].strftime("%Y-%m-%d") if derniere_cotation.get(t) is not None else None,
             "perf_locale_pct": round((fin_loc / pru - 1) * 100, 2) if pru else None,
             "perf_base_pct": round(gain / inf["achats"] * 100, 2) if inf["achats"] else None,
             "contribution_pct": round(gain / capital * 100, 2),
