@@ -49,6 +49,14 @@
       "ticker": "AUTO.L",
       "titre": "Autotrader",
       "texte": "Pourquoi ce dossier : Première plateforme d'annonces automobiles du Royaume-Uni : l'effet de réseau entre acheteurs et professionnels soutient une marge opérationnelle de 65 % sur dix ans. Le marché ne price aucune croissance, alors que le chiffre d'affaires progresse de 8 % par an depuis dix ans.\n\nDécision : Rang 2 de la file publiée le 22 octobre. Rendement implicite de 11,4 % à la clôture du 30 octobre (538,4 p), pour 8 % exigés. Phase P confirmée sur les relevés des 23 et 30 octobre : tranche réduite de 1,5 % à la clôture du jour, solde au passage en phase A et au plus tard le 2 février 2027.\n\nPoint de vigilance : La capacité à continuer d'augmenter le revenu par professionnel sans provoquer de départs vers les plateformes concurrentes."
+    },
+    {
+      "date": "2026-11-04",
+      "type": "Écarté",
+      "ticker": "BKNG",
+      "titre": "Booking : achat bloqué par la phase B",
+      "etape_blocage": "Phase B",
+      "texte": "Quatrième dossier de la file d’attente publiée le 22 octobre. Score Gem de 15,5/20, aucun veto ; rendement implicite de 13,0 % pour 10 % exigés, soit 3 points d’écart. Le titre est passé de la phase P à la phase B, confirmée sur les relevés du 23/10 et du 30/10 : cours -15,9% sous la moyenne mobile 200 jours, elle-même en baisse. Aucun achat n’est possible tant que cette phase dure. Le dossier garde son rang dans la file : à son tour, s’il est toujours en phase B, il est reporté et le dossier suivant passe. À la sortie de la phase B, le reverse DCF sera refait si le cours a bougé de plus de 10 % depuis le calcul."
     }
   ]
 }
