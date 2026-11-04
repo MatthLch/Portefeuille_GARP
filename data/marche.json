@@ -27,6 +27,7 @@
     }
    ],
    "cours_actuel": 1142.0,
+   "date_cours": "2026-11-04",
    "perf_locale_pct": 1.69,
    "perf_base_pct": 2.13,
    "contribution_pct": 0.05,
@@ -48,6 +49,7 @@
     }
    ],
    "cours_actuel": 849.0,
+   "date_cours": "2026-11-03",
    "perf_locale_pct": 1.43,
    "perf_base_pct": 3.03,
    "contribution_pct": 0.05,
@@ -69,6 +71,7 @@
     }
    ],
    "cours_actuel": 544.6,
+   "date_cours": "2026-11-03",
    "perf_locale_pct": -0.33,
    "perf_base_pct": -0.56,
    "contribution_pct": -0.01,
