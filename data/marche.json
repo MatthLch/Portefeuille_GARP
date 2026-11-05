@@ -5,7 +5,7 @@
  "synthese": {
   "valeur": 100302.53,
   "perf_pct": 0.3,
-  "perf_benchmark_pct": -0.76,
+  "perf_benchmark_pct": 0.45,
   "volatilite_pct": 1.06,
   "drawdown_max_pct": -0.07,
   "cash_pct": 94.46,
@@ -121,8 +121,8 @@
    99.815,
    100.008,
    99.238,
-   99.238,
-   99.238
+   100.454,
+   100.454
   ]
  },
  "avertissements": []
