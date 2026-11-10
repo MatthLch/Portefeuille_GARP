@@ -106,6 +106,40 @@
       ],
       "statut": "ouverte",
       "date_sortie": "2026-11-02"
+    },
+    {
+      "ticker": "FHI",
+      "nom": "Federated Hermes",
+      "pays": "US",
+      "secteur": "Gestion d'actifs",
+      "archetype": "Franchise asset-light",
+      "devise": "USD",
+      "date_entree": "2026-11-10",
+      "poids_cible": 1.5,
+      "cours_dcf": 64.95,
+      "rendement_implicite_pct": 11.3,
+      "prix_entree_max": 87.62,
+      "valeur_intrinseque": 94.62,
+      "methode_valo": "\tReverse DCF recalculé au cours de 64,95 $ (écart de plus de 10 % avec le calcul initial) : rendement implicite de 11,3 %, contre 9 % exigés pour un Gem de 17,1/20. FCF normalisé de 333 M$, croissance de 6,4 % sur 5 ans (CA sur 10 ans) puis convergence vers 2 %.",
+      "gem_moat": 3.83,
+      "gem_management": 4.5,
+      "gem_reinvestissement": 4.43,
+      "gem_transparence": 4.33,
+      "vetos_ok": true,
+      "phase": "P",
+      "these": "Gestionnaire d'actifs américain, rémunéré par des commissions sur les encours, sans engager son bilan. La gestion monétaire, son premier métier, assure une base d'encours stable et peu sensible aux marchés actions. Le modèle ne consomme quasiment pas de capital : ROIC d'environ 23 % sur dix ans, trésorerie nette, conversion du résultat en cash proche de 90 %. Le flux est rendu aux actionnaires (rachats réduisant le nombre d'actions d'environ 5 % par an sur cinq ans). Au cours de 64,95 $, le marché ne price aucune croissance des encours.",
+      "catalyseurs": [
+        "Encours monétaires durablement élevés, soutenus par la préférence des investisseurs pour la liquidité rémunérée",
+        "Poursuite des rachats d'actions à un cours inférieur à la valeur par action au taux de référence",
+        "Diversification vers la gestion alternative et privée, qui génère des commissions plus élevées"
+      ],
+      "invalidation": [
+        "Les encours totaux reculent de plus de 15 % sur un exercice, hors effet de marché",
+        "La marge opérationnelle reste sous 22 % pendant deux exercices",
+        "Une acquisition significative fait passer la société en dette nette supérieure à 1,5x l'EBITDA",
+        "Le pilier moat passe sous 3, par exemple en cas de compression durable des commissions sur la gestion monétaire"
+      ],
+      "statut": "ouverte"
     }
   ]
 }
