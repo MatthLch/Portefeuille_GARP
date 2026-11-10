@@ -39,7 +39,7 @@ content:
             type: date
             options:
               format: yyyy-MM-dd
-          - { name: cours_entree, label: "Cours de la première tranche (clôture du jour d'exécution, en devise de cotation)", type: number }
+          - { name: cours_entree, label: "Cours de la première tranche (facultatif, sert de contrôle). Laisser vide si tu saisis avant la clôture : le site prend la clôture réelle du jour d'exécution", type: number }
           - { name: poids_cible, label: "Première tranche (% du capital : 2,25 en phase A, 1,5 en phase P ou C)", type: number }
           - { name: cours_dcf, label: "Cours auquel le reverse DCF a été calculé", type: number }
           - { name: rendement_implicite_pct, label: "Rendement implicite à ce cours (%)", type: number }
@@ -75,7 +75,7 @@ content:
                 options:
                   values: [Renforcement, Allègement]
               - { name: poids_pct, label: "Renforcement : % du capital ajouté. Allègement : % de la ligne vendu (50 = moitié)", type: number }
-              - { name: cours, label: "Cours de clôture du jour (contrôle, facultatif)", type: number }
+              - { name: cours, label: "Cours du jour (facultatif, contrôle). Laisser vide si saisi avant la clôture", type: number }
               - { name: motif, label: Motif, type: text }
           - { name: these, label: Thèse (5 lignes environ), type: text }
           - { name: catalyseurs, label: Catalyseurs, type: string, list: true }
