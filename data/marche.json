@@ -1,17 +1,17 @@
 {
  "exemple": false,
- "maj": "2026-11-06",
+ "maj": "2026-11-09",
  "devise": "EUR",
  "synthese": {
-  "valeur": 100129.88,
-  "perf_pct": 0.13,
-  "perf_benchmark_pct": -2.01,
-  "volatilite_pct": 1.25,
+  "valeur": 100188.93,
+  "perf_pct": 0.19,
+  "perf_benchmark_pct": -1.09,
+  "volatilite_pct": 1.21,
   "drawdown_max_pct": -0.15,
-  "cash_pct": 94.63,
+  "cash_pct": 94.57,
   "dividendes_encaisses": 0.0,
   "nb_lignes": 3,
-  "jours": 15
+  "jours": 18
  },
  "positions": {
   "2124.T": {
@@ -27,15 +27,15 @@
      "poids_pct": 2.25
     }
    ],
-   "cours_actuel": 1156.0,
-   "date_cours": "2026-11-06",
-   "perf_locale_pct": 2.94,
-   "perf_base_pct": 3.32,
-   "contribution_pct": 0.07,
+   "cours_actuel": 1183.0,
+   "date_cours": "2026-11-09",
+   "perf_locale_pct": 5.34,
+   "perf_base_pct": 5.96,
+   "contribution_pct": 0.13,
    "investi_pct": 2.25,
-   "valeur": 2324.74,
+   "valeur": 2384.07,
    "dividendes": 0.0,
-   "poids_actuel_pct": 2.32
+   "poids_actuel_pct": 2.38
   },
   "EVO.ST": {
    "jour_execution": "2026-10-26",
@@ -50,15 +50,15 @@
      "poids_pct": 1.5
     }
    ],
-   "cours_actuel": 847.6,
-   "date_cours": "2026-11-06",
-   "perf_locale_pct": 1.27,
-   "perf_base_pct": 2.24,
+   "cours_actuel": 845.0,
+   "date_cours": "2026-11-09",
+   "perf_locale_pct": 0.96,
+   "perf_base_pct": 1.82,
    "contribution_pct": 0.03,
    "investi_pct": 1.5,
-   "valeur": 1533.66,
+   "valeur": 1527.27,
    "dividendes": 0.0,
-   "poids_actuel_pct": 1.53
+   "poids_actuel_pct": 1.52
   },
   "AUTO.L": {
    "jour_execution": "2026-11-02",
@@ -73,13 +73,13 @@
      "poids_pct": 1.5
     }
    ],
-   "cours_actuel": 555.4,
-   "date_cours": "2026-11-06",
-   "perf_locale_pct": 1.65,
-   "perf_base_pct": 1.43,
-   "contribution_pct": 0.02,
+   "cours_actuel": 557.6,
+   "date_cours": "2026-11-09",
+   "perf_locale_pct": 2.05,
+   "perf_base_pct": 1.84,
+   "contribution_pct": 0.03,
    "investi_pct": 1.5,
-   "valeur": 1521.48,
+   "valeur": 1527.58,
    "dividendes": 0.0,
    "poids_actuel_pct": 1.52
   }
@@ -97,7 +97,8 @@
    "2026-11-03",
    "2026-11-04",
    "2026-11-05",
-   "2026-11-06"
+   "2026-11-06",
+   "2026-11-09"
   ],
   "portefeuille": [
    99.998,
@@ -111,7 +112,8 @@
    100.009,
    100.154,
    100.277,
-   100.13
+   100.13,
+   100.189
   ],
   "benchmark": [
    100.0,
@@ -125,7 +127,8 @@
    99.238,
    100.454,
    98.099,
-   97.991
+   97.991,
+   98.907
   ]
  },
  "avertissements": []
