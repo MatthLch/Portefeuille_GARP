@@ -57,6 +57,13 @@
       "titre": "Booking : achat bloqué par la phase B",
       "etape_blocage": "Phase B",
       "texte": "Quatrième dossier de la file d’attente publiée le 22 octobre. Score Gem de 15,5/20, aucun veto ; rendement implicite de 13,0 % au cours de 171,32$, pour 10 % exigés. Le titre est passé de la phase P à la phase B, confirmée sur les relevés du 23/10 et du 30/10 : cours -15,9% sous la moyenne mobile 200 jours, elle-même en baisse. Aucun achat n’est possible tant que cette phase dure. Le dossier garde son rang dans la file : à son tour, s’il est toujours en phase B, il est reporté et le dossier suivant passe. À la sortie de la phase B, le reverse DCF sera refait si le cours a bougé de plus de 10 % depuis le calcul."
+    },
+    {
+      "date": "2026-11-10",
+      "type": "Entrée",
+      "ticker": "FHI",
+      "titre": "Federated Hermes",
+      "texte": "Pourquoi ce dossier. Gestionnaire d'actifs rémunéré à la commission, sans risque de bilan : la gestion monétaire stabilise les encours, et le modèle restitue l'essentiel de son cash aux actionnaires (nombre d'actions en baisse de 5 % par an sur cinq ans). Le marché ne price aucune croissance.\n\nDécision. Rang 3 de la file publiée le 22 octobre. Le cours ayant progressé de plus de 10 % depuis le calcul initial, le reverse DCF a été refait à la clôture du 9 novembre (64,95 $) : rendement implicite de 11,3 % pour 9 % exigés. Phase P au relevé du 6 novembre : tranche réduite de 1,5 % à la clôture du jour, solde au passage en phase A et au plus tard le 10 février 2027.\n\nPoint de vigilance. La sensibilité des commissions monétaires à une baisse des taux, et les sorties de la gestion active actions."
     }
   ]
 }
