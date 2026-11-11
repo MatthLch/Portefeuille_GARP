@@ -3,10 +3,10 @@
  "maj": "2026-11-10",
  "devise": "EUR",
  "synthese": {
-  "valeur": 100145.11,
-  "perf_pct": 0.15,
-  "perf_benchmark_pct": -1.09,
-  "volatilite_pct": 1.19,
+  "valeur": 100155.1,
+  "perf_pct": 0.16,
+  "perf_benchmark_pct": -0.95,
+  "volatilite_pct": 1.18,
   "drawdown_max_pct": -0.15,
   "cash_pct": 93.11,
   "dividendes_encaisses": 0.0,
@@ -30,12 +30,12 @@
    "cours_actuel": 1162.0,
    "date_cours": "2026-11-10",
    "perf_locale_pct": 3.47,
-   "perf_base_pct": 4.08,
-   "contribution_pct": 0.09,
+   "perf_base_pct": 3.58,
+   "contribution_pct": 0.08,
    "investi_pct": 2.25,
-   "valeur": 2341.75,
+   "valeur": 2330.56,
    "dividendes": 0.0,
-   "poids_actuel_pct": 2.34
+   "poids_actuel_pct": 2.33
   },
   "EVO.ST": {
    "jour_execution": "2026-10-26",
@@ -50,15 +50,15 @@
      "poids_pct": 1.5
     }
    ],
-   "cours_actuel": 845.0,
-   "date_cours": "2026-11-09",
-   "perf_locale_pct": 0.96,
-   "perf_base_pct": 1.82,
-   "contribution_pct": 0.03,
+   "cours_actuel": 855.0,
+   "date_cours": "2026-11-10",
+   "perf_locale_pct": 2.15,
+   "perf_base_pct": 3.29,
+   "contribution_pct": 0.05,
    "investi_pct": 1.5,
-   "valeur": 1527.27,
+   "valeur": 1549.38,
    "dividendes": 0.0,
-   "poids_actuel_pct": 1.53
+   "poids_actuel_pct": 1.55
   },
   "AUTO.L": {
    "jour_execution": "2026-11-02",
@@ -74,30 +74,30 @@
     }
    ],
    "cours_actuel": 557.6,
-   "date_cours": "2026-11-09",
+   "date_cours": "2026-11-10",
    "perf_locale_pct": 2.05,
-   "perf_base_pct": 1.84,
+   "perf_base_pct": 1.78,
    "contribution_pct": 0.03,
    "investi_pct": 1.5,
-   "valeur": 1527.58,
+   "valeur": 1526.65,
    "dividendes": 0.0,
-   "poids_actuel_pct": 1.53
+   "poids_actuel_pct": 1.52
   },
   "FHI": {
    "jour_execution": "2026-11-10",
-   "cours_execution": 64.95,
-   "pru": 64.95,
+   "cours_execution": 65.53,
+   "pru": 65.53,
    "nb_mouvements": 1,
    "mouvements": [
     {
      "date": "2026-11-10",
      "type": "Entrée",
-     "cours": 64.95,
+     "cours": 65.53,
      "poids_pct": 1.5
     }
    ],
-   "cours_actuel": 64.95,
-   "date_cours": "2026-11-09",
+   "cours_actuel": 65.53,
+   "date_cours": "2026-11-10",
    "perf_locale_pct": 0.0,
    "perf_base_pct": -0.1,
    "contribution_pct": -0.0,
@@ -138,7 +138,7 @@
    100.277,
    100.13,
    100.189,
-   100.145
+   100.155
   ],
   "benchmark": [
    100.0,
@@ -154,7 +154,7 @@
    98.099,
    97.991,
    98.907,
-   98.907
+   99.046
   ]
  },
  "avertissements": []
