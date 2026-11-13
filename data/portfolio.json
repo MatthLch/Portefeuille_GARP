@@ -21,6 +21,14 @@
       "gem_transparence": 5,
       "vetos_ok": true,
       "phase": "A",
+      "mouvements": [
+        {
+          "date": "2026-11-16",
+          "type": "Renforcement",
+          "poids_pct": 2.25,
+          "motif": "Seconde moitié de la ligne pleine, prévue le 12/11, exécutée à la première séance suivant la saisie de l’ordre"
+        }
+      ],
       "these": "Cabinet de recrutement de cadres et de profils bilingues, spécialiste des entreprises étrangères implantées au Japon. Un même consultant y suit le client et le candidat. Le modèle, sans actifs et en trésorerie nette, affiche une marge opérationnelle de 26 % en moyenne sur dix ans, exceptionnelle pour le secteur, avec un ROIC proche de 95 %.",
       "catalyseurs": [
         "La mobilité des cadres en milieu de carrière progresse au Japon.",
@@ -139,7 +147,8 @@
         "Une acquisition significative fait passer la société en dette nette supérieure à 1,5x l'EBITDA",
         "Le pilier moat passe sous 3, par exemple en cas de compression durable des commissions sur la gestion monétaire"
       ],
-      "statut": "ouverte"
+      "statut": "ouverte",
+      "date_sortie": "2026-11-13"
     }
   ]
 }
