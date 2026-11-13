@@ -64,6 +64,13 @@
       "ticker": "FHI",
       "titre": "Federated Hermes",
       "texte": "Pourquoi ce dossier. Gestionnaire d'actifs rémunéré à la commission, sans risque de bilan : la gestion monétaire stabilise les encours, et le modèle restitue l'essentiel de son cash aux actionnaires (nombre d'actions en baisse de 5 % par an sur cinq ans). Le marché ne price aucune croissance.\n\nDécision. Rang 3 de la file publiée le 22 octobre. Le cours ayant progressé de plus de 10 % depuis le calcul initial, le reverse DCF a été refait à la clôture du 9 novembre (64,95 $) : rendement implicite de 11,3 % pour 9 % exigés. Phase P au relevé du 6 novembre : tranche réduite de 1,5 % à la clôture du jour, solde au passage en phase A et au plus tard le 10 février 2027.\n\nPoint de vigilance. La sensibilité des commissions monétaires à une baisse des taux, et les sorties de la gestion active actions."
+    },
+    {
+      "date": "2026-11-13",
+      "type": "Renforcement",
+      "ticker": "2124.T",
+      "titre": "Seconde tranche sur JAC Recruitment",
+      "texte": "Seconde moitié de la ligne pleine (2,25 %), fixée au 12 novembre lors de l’entrée du 22 octobre en phase A. L’ordre n’a pas été passé à cette date : il est passé ce jour, après la clôture de Tokyo, et s’exécute donc à la clôture de la séance du lundi 16 novembre. Le retard n’a aucun lien avec l’évolution du cours, qui n’entre pas dans la décision. La ligne atteint ainsi 4,5 % du capital."
     }
   ]
 }
