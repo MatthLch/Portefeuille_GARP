@@ -81,6 +81,7 @@
     },
     {
       "date": "2026-11-16",
+      "type": "Renforcement",
       "ticker": "FHI",
       "titre": "Federated Hermes complété à la ligne pleine",
       "texte": "Passage en phase A confirmé sur les relevés des 6 et 13 novembre, une semaine après l'entrée en tranche réduite. Le solde de 3 % est exécuté à la clôture du jour, ce qui porte la ligne à 4,5 %. Clôture du 13 novembre à 63,76 $, à moins de 10 % du cours du reverse DCF (64,95 $) : le rendement implicite de 11,3 % pour 9 % exigés reste valable."
