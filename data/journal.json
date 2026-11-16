@@ -78,6 +78,12 @@
       "ticker": "EVO.ST",
       "titre": "Evolution complété à la ligne pleine",
       "texte": "Passage en phase A confirmé sur les relevés des 6 et 13 novembre. Comme prévu lors de l'entrée du 26 octobre en tranche réduite, le solde de 3 % est exécuté à la clôture du jour, ce qui porte la ligne à 4,5 %. Le cours de clôture du 13 novembre (871 SEK) reste à moins de 10 % du cours du reverse DCF (890 SEK) : le rendement implicite de 15,3 % pour 9 % exigés reste valable."
+    },
+    {
+      "date": "2026-11-16",
+      "ticker": "FHI",
+      "titre": "Federated Hermes complété à la ligne pleine",
+      "texte": "Passage en phase A confirmé sur les relevés des 6 et 13 novembre, une semaine après l'entrée en tranche réduite. Le solde de 3 % est exécuté à la clôture du jour, ce qui porte la ligne à 4,5 %. Clôture du 13 novembre à 63,76 $, à moins de 10 % du cours du reverse DCF (64,95 $) : le rendement implicite de 11,3 % pour 9 % exigés reste valable."
     }
   ]
 }
