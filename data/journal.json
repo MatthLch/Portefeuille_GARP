@@ -100,6 +100,13 @@
       "titre": "Booking reporté : toujours en phase B",
       "etape_blocage": "Phase B",
       "texte": "Rang 4 de la file, en phase B confirmée au relevé du 13 novembre. Conformément à la règle de la file, le dossier est reporté et le dossier suivant passe. Il garde son rang et sera réexaminé la semaine prochaine."
+    },
+    {
+      "date": "2026-11-16",
+      "type": "Entrée",
+      "ticker": "RMV.L",
+      "titre": "Entrée sur Rightmove",
+      "texte": "Première plateforme d'annonces immobilières du Royaume-Uni : l'effet de réseau entre acheteurs et agences soutient une marge opérationnelle de 71 % sur dix ans, sans capital à investir.\n\nDécision. Rang 6 de la file publiée le 22 octobre, Booking (rang 4) étant reporté en phase B et ATOSS (rang 5) écarté pour liquidité. Le cours ayant progressé de 17 % depuis le calcul initial, le reverse DCF a été refait à la clôture du 13 novembre (582,2 p) : rendement implicite de 9,4 % pour 9 % exigés, une marge faible. Phase A confirmée sur les relevés des 6 et 13 novembre : première moitié de la ligne pleine (2,25 %) à la clôture du jour, seconde moitié fixée au 7 décembre 2026, quel que soit le cours.\n\nPoint de vigilance. La marge de rendement est étroite : à ce prix, le marché anticipe déjà l'essentiel de la croissance réalisée. Toute contestation des hausses de prix par les agences pèserait directement sur la thèse."
     }
   ]
 }
