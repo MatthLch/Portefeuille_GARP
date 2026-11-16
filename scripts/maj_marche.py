@@ -197,6 +197,9 @@ def calculer(site: dict, portefeuille: dict, closes: pd.DataFrame,
 
     # Date de la dernière vraie cotation de chaque titre, avant tout report du cours précédent.
     derniere_cotation = {t: closes[t].last_valid_index() for t in closes.columns}
+    # Jours où chaque titre a réellement coté : un ordre ne s'exécute qu'à une vraie clôture,
+    # jamais à un cours reporté de la veille (séance pas encore close, jour férié local).
+    jours_cotes = {t: closes[t].dropna().index for t in closes.columns}
     jours = pd.bdate_range(min(lancement, closes.index.min()), closes.index.max())
     closes = closes.reindex(closes.index.union(jours)).sort_index().ffill()
     closes = closes.loc[closes.index >= lancement]
@@ -232,24 +235,25 @@ def calculer(site: dict, portefeuille: dict, closes: pd.DataFrame,
             avertissements.append(f"Pas de cours pour {t} : ligne ignorée.")
             continue
         series[t] = s
-        j = premier_jour(idx, p["date_entree"])
+        jc = jours_cotes.get(t, idx)
+        j = premier_jour(jc[jc.isin(idx)], p["date_entree"])
         if j is None:
-            avertissements.append(f"{t} : date d'entrée postérieure aux dernières données.")
+            avertissements.append(f"{t} : entrée en attente de la clôture du {p['date_entree']}.")
             continue
         evenements.append((j, 1, "achat", p, float(p.get("poids_cible") or 4.5), p.get("cours_entree"), "Entrée"))
         for m in p.get("mouvements") or []:
             if not m.get("date"):
                 continue
-            jm = premier_jour(idx, m["date"])
+            jm = premier_jour(jc[jc.isin(idx)], m["date"])
             if jm is None:
-                avertissements.append(f"{t} : mouvement du {m['date']} postérieur aux dernières données.")
+                avertissements.append(f"{t} : mouvement du {m['date']} en attente de la clôture.")
                 continue
             if m.get("type") == "Renforcement":
                 evenements.append((jm, 1, "achat", p, float(m.get("poids_pct") or 0), m.get("cours"), "Renforcement"))
             elif m.get("type") == "Allègement":
                 evenements.append((jm, 0, "vente", p, float(m.get("poids_pct") or 0), m.get("cours"), "Allègement"))
         if p.get("statut") == "cloturee" and p.get("date_sortie"):
-            js = premier_jour(idx, p["date_sortie"])
+            js = premier_jour(jc[jc.isin(idx)], p["date_sortie"])
             if js is not None:
                 evenements.append((js, 0, "vente", p, 100.0, p.get("cours_sortie"), "Sortie"))
     evenements.sort(key=lambda e: (e[0], e[1]))
