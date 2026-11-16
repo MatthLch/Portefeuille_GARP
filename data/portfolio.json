@@ -143,6 +143,14 @@
       "gem_transparence": 4.33,
       "vetos_ok": true,
       "phase": "P",
+      "mouvements": [
+        {
+          "date": "2026-11-16",
+          "type": "Renforcement",
+          "poids_pct": 3,
+          "motif": "Solde de la ligne pleine au passage confirmé en phase A"
+        }
+      ],
       "these": "Gestionnaire d'actifs américain, rémunéré par des commissions sur les encours, sans engager son bilan. La gestion monétaire, son premier métier, assure une base d'encours stable et peu sensible aux marchés actions. Le modèle ne consomme quasiment pas de capital : ROIC d'environ 23 % sur dix ans, trésorerie nette, conversion du résultat en cash proche de 90 %. Le flux est rendu aux actionnaires (rachats réduisant le nombre d'actions d'environ 5 % par an sur cinq ans). Au cours de 64,95 $, le marché ne price aucune croissance des encours.",
       "catalyseurs": [
         "Encours monétaires durablement élevés, soutenus par la préférence des investisseurs pour la liquidité rémunérée",
