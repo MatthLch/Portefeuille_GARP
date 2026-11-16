@@ -64,6 +64,14 @@
       "gem_transparence": 5,
       "vetos_ok": true,
       "phase": "P",
+      "mouvements": [
+        {
+          "date": "2026-11-16",
+          "type": "Renforcement",
+          "poids_pct": 3,
+          "motif": "Solde de la ligne pleine au passage confirmé en phase A"
+        }
+      ],
       "these": "Evolution conçoit et opère des studios de casino en direct, dont les tables filmées sont distribuées aux opérateurs de jeux en ligne contre une commission sur leurs revenus. La taille de ses studios et son catalogue de jeux lui donnent une avance d'échelle que les concurrents peinent à rattraper : marge opérationnelle supérieure à 50 % en moyenne sur dix ans, conversion FCF / résultat net de 116 % et trésorerie nette. Au cours de 890 SEK, le marché ne price aucune croissance : le titre vaut moins que la valeur obtenue avec une croissance nulle (environ 990 SEK). Le rendement implicite ressort à 15,3 %, soit 6,3 points au-dessus des 9 % exigés.",
       "catalyseurs": [
         "Régulation progressive du jeu en ligne dans de nouveaux marchés (États-Unis, Amérique latine), qui ouvre de nouveaux clients aux fournisseurs agréés",
