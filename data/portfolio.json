@@ -165,6 +165,39 @@
       ],
       "statut": "ouverte",
       "date_sortie": "2026-11-13"
+    },
+    {
+      "ticker": "RMV.L",
+      "nom": "Rightmove",
+      "pays": "GB",
+      "secteur": "Plateforme d'annonces immobilières",
+      "archetype": "Franchise asset-light",
+      "devise": "GBX",
+      "date_entree": "2026-11-16",
+      "poids_cible": 2.25,
+      "cours_dcf": 582.2,
+      "rendement_implicite_pct": 9.4,
+      "prix_entree_max": 613.9,
+      "valeur_intrinseque": 663.4,
+      "methode_valo": "Reverse DCF recalculé au cours de 582,2 p (écart de plus de 10 % avec le calcul initial) : rendement implicite de 9,4 %, contre 9 % exigés pour un Gem de 16,1/20. FCF normalisé de 302 M$, croissance de 7,8 % sur 5 ans (CA sur 10 ans) puis convergence vers 2 %.",
+      "gem_moat": 4,
+      "gem_management": 4,
+      "gem_reinvestissement": 4.1,
+      "gem_transparence": 4,
+      "vetos_ok": true,
+      "phase": "A",
+      "these": "Première plateforme d'annonces immobilières du Royaume-Uni. Les agences paient un abonnement pour figurer là où se trouvent les acheteurs, et l'effet de réseau confère un pouvoir de prix exceptionnel : marge opérationnelle de 71 % en moyenne sur dix ans, quasiment aucun capital investi, cash restitué par rachats d'actions (nombre d'actions en baisse de 2,8 % par an sur cinq ans). Au cours actuel, le marché anticipe environ 5 % de croissance annuelle, contre 8 % réalisés sur dix ans.",
+      "catalyseurs": [
+        "Hausse du revenu moyen par agence, portée par les produits et les évolutions de prix annuelles",
+        "Nouveaux revenus hors abonnement des agences : crédit immobilier et location",
+        "Poursuite des rachats d'actions"
+      ],
+      "invalidation": [
+        "Le nombre d'agences clientes recule pendant deux exercices consécutifs",
+        "La marge opérationnelle reste sous 60 % pendant deux exercices",
+        "La plateforme perd sa première place en audience au Royaume-Uni"
+      ],
+      "statut": "ouverte"
     }
   ]
 }
