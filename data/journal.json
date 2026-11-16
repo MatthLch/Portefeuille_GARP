@@ -71,6 +71,13 @@
       "ticker": "2124.T",
       "titre": "Seconde tranche sur JAC Recruitment",
       "texte": "Seconde moitié de la ligne pleine (2,25 %), fixée au 12 novembre lors de l’entrée du 22 octobre en phase A. L’ordre n’a pas été passé à cette date : il est passé ce jour, après la clôture de Tokyo, et s’exécute donc à la clôture de la séance du lundi 16 novembre. Le retard n’a aucun lien avec l’évolution du cours, qui n’entre pas dans la décision. La ligne atteint ainsi 4,5 % du capital. "
+    },
+    {
+      "date": "2026-11-16",
+      "type": "Renforcement",
+      "ticker": "EVO.ST",
+      "titre": "Evolution complété à la ligne pleine",
+      "texte": "Passage en phase A confirmé sur les relevés des 6 et 13 novembre. Comme prévu lors de l'entrée du 26 octobre en tranche réduite, le solde de 3 % est exécuté à la clôture du jour, ce qui porte la ligne à 4,5 %. Le cours de clôture du 13 novembre (871 SEK) reste à moins de 10 % du cours du reverse DCF (890 SEK) : le rendement implicite de 15,3 % pour 9 % exigés reste valable."
     }
   ]
 }
