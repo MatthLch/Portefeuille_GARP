@@ -92,6 +92,14 @@
       "titre": "ATOSS : liquidité sous le seuil de l'univers",
       "etape_blocage": "Univers",
       "texte": "Cinquième dossier de la file d’attente (Gem 18,2/20, rendement implicite de 9,8 % pour 8 % exigés). La vérification de liquidité prévue avant toute entrée montre un volume moyen de 2,2 M€ par jour sur 20 séances (1,9 M€ sur trois mois), sous le seuil de 3 M€ fixé pour l’univers. Le dossier est écarté. Le contrôle aurait dû être fait dès la constitution de la file : il est désormais vérifié pour chaque dossier avant son entrée dans la file."
+    },
+    {
+      "date": "2026-11-16",
+      "type": "Écarté",
+      "ticker": "BKNG",
+      "titre": "Booking reporté : toujours en phase B",
+      "etape_blocage": "Phase B",
+      "texte": "Rang 4 de la file, en phase B confirmée au relevé du 13 novembre. Conformément à la règle de la file, le dossier est reporté et le dossier suivant passe. Il garde son rang et sera réexaminé la semaine prochaine."
     }
   ]
 }
