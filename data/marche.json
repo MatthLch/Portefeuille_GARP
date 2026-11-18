@@ -3,12 +3,12 @@
  "maj": "2026-11-17",
  "devise": "EUR",
  "synthese": {
-  "valeur": 99853.83,
-  "perf_pct": -0.15,
+  "valeur": 99761.87,
+  "perf_pct": -0.24,
   "perf_benchmark_pct": -2.12,
-  "volatilite_pct": 1.51,
-  "drawdown_max_pct": -0.42,
-  "cash_pct": 82.87,
+  "volatilite_pct": 1.75,
+  "drawdown_max_pct": -0.51,
+  "cash_pct": 82.95,
   "dividendes_encaisses": 0.0,
   "nb_lignes": 5,
   "jours": 26
@@ -36,12 +36,12 @@
    "cours_actuel": 1124.0,
    "date_cours": "2026-11-17",
    "perf_locale_pct": -0.35,
-   "perf_base_pct": -0.03,
-   "contribution_pct": -0.0,
+   "perf_base_pct": 0.38,
+   "contribution_pct": 0.02,
    "investi_pct": 4.5,
-   "valeur": 4498.79,
+   "valeur": 4517.28,
    "dividendes": 0.0,
-   "poids_actuel_pct": 4.51
+   "poids_actuel_pct": 4.53
   },
   "EVO.ST": {
    "jour_execution": "2026-10-26",
@@ -65,10 +65,10 @@
    "cours_actuel": 861.8,
    "date_cours": "2026-11-17",
    "perf_locale_pct": 0.13,
-   "perf_base_pct": 0.12,
-   "contribution_pct": 0.01,
+   "perf_base_pct": 0.09,
+   "contribution_pct": 0.0,
    "investi_pct": 4.5,
-   "valeur": 4505.27,
+   "valeur": 4504.13,
    "dividendes": 0.0,
    "poids_actuel_pct": 4.51
   },
@@ -91,9 +91,9 @@
    "perf_base_pct": 0.81,
    "contribution_pct": 0.01,
    "investi_pct": 1.5,
-   "valeur": 1512.11,
+   "valeur": 1512.18,
    "dividendes": 0.0,
-   "poids_actuel_pct": 1.51
+   "poids_actuel_pct": 1.52
   },
   "FHI": {
    "jour_execution": "2026-11-10",
@@ -114,15 +114,15 @@
      "poids_pct": 3.0
     }
    ],
-   "cours_actuel": 62.79,
-   "date_cours": "2026-11-16",
-   "perf_locale_pct": -1.41,
-   "perf_base_pct": -0.92,
-   "contribution_pct": -0.04,
+   "cours_actuel": 61.1,
+   "date_cours": "2026-11-17",
+   "perf_locale_pct": -4.06,
+   "perf_base_pct": -3.35,
+   "contribution_pct": -0.15,
    "investi_pct": 4.5,
-   "valeur": 4458.58,
+   "valeur": 4349.1,
    "dividendes": 0.0,
-   "poids_actuel_pct": 4.47
+   "poids_actuel_pct": 4.36
   },
   "RMV.L": {
    "jour_execution": "2026-11-16",
@@ -143,7 +143,7 @@
    "perf_base_pct": -5.37,
    "contribution_pct": -0.12,
    "investi_pct": 2.25,
-   "valeur": 2129.08,
+   "valeur": 2129.18,
    "dividendes": 0.0,
    "poids_actuel_pct": 2.13
   }
@@ -189,7 +189,7 @@
    100.123,
    100.217,
    100.108,
-   99.854
+   99.762
   ],
   "benchmark": [
    100.0,
