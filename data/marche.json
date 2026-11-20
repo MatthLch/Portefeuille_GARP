@@ -1,17 +1,17 @@
 {
  "exemple": false,
- "maj": "2026-11-19",
+ "maj": "2026-11-20",
  "devise": "EUR",
  "synthese": {
-  "valeur": 99691.7,
-  "perf_pct": -0.31,
+  "valeur": 99631.22,
+  "perf_pct": -0.37,
   "perf_benchmark_pct": -2.47,
-  "volatilite_pct": 1.67,
-  "drawdown_max_pct": -0.58,
-  "cash_pct": 83.01,
+  "volatilite_pct": 1.63,
+  "drawdown_max_pct": -0.64,
+  "cash_pct": 83.06,
   "dividendes_encaisses": 0.0,
   "nb_lignes": 5,
-  "jours": 28
+  "jours": 29
  },
  "positions": {
   "2124.T": {
@@ -33,15 +33,15 @@
      "poids_pct": 2.25
     }
    ],
-   "cours_actuel": 1138.0,
-   "date_cours": "2026-11-19",
-   "perf_locale_pct": 0.89,
-   "perf_base_pct": 1.97,
-   "contribution_pct": 0.09,
+   "cours_actuel": 1123.0,
+   "date_cours": "2026-11-20",
+   "perf_locale_pct": -0.44,
+   "perf_base_pct": 0.62,
+   "contribution_pct": 0.03,
    "investi_pct": 4.5,
-   "valeur": 4588.45,
+   "valeur": 4527.97,
    "dividendes": 0.0,
-   "poids_actuel_pct": 4.6
+   "poids_actuel_pct": 4.54
   },
   "EVO.ST": {
    "jour_execution": "2026-10-26",
@@ -122,7 +122,7 @@
    "investi_pct": 4.5,
    "valeur": 4221.06,
    "dividendes": 0.0,
-   "poids_actuel_pct": 4.23
+   "poids_actuel_pct": 4.24
   },
   "RMV.L": {
    "jour_execution": "2026-11-16",
@@ -170,7 +170,8 @@
    "2026-11-16",
    "2026-11-17",
    "2026-11-18",
-   "2026-11-19"
+   "2026-11-19",
+   "2026-11-20"
   ],
   "portefeuille": [
    99.998,
@@ -193,7 +194,8 @@
    100.108,
    99.762,
    99.743,
-   99.692
+   99.692,
+   99.631
   ],
   "benchmark": [
    100.0,
@@ -216,6 +218,7 @@
    100.038,
    97.884,
    97.814,
+   97.53,
    97.53
   ]
  },
