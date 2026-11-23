@@ -197,6 +197,41 @@
         "La marge opérationnelle reste sous 60 % pendant deux exercices",
         "La plateforme perd sa première place en audience au Royaume-Uni"
       ],
+      "statut": "ouverte",
+      "date_sortie": "2026-11-23"
+    },
+    {
+      "ticker": "3092.T",
+      "nom": "ZOZO",
+      "pays": "JP",
+      "secteur": "Plateforme de mode en ligne",
+      "archetype": "Franchise asset-light",
+      "devise": "JPY",
+      "date_entree": "2026-11-23",
+      "poids_cible": 1.5,
+      "cours_dcf": 1145.5,
+      "rendement_implicite_pct": 10.3,
+      "prix_entree_max": 1379,
+      "valeur_intrinseque": 1493,
+      "methode_valo": "Reverse DCF : rendement implicite de 10,3 % au cours de 1 145,5 JPY, contre 9 % exigés pour un Gem de 16,1/20. FCF normalisé de 308 M$, croissance de 12 % sur 5 ans (plafond ; CA sur 10 ans à 15,4 %) puis convergence vers 2 %.",
+      "gem_moat": 3.83,
+      "gem_management": 3.53,
+      "gem_reinvestissement": 4.67,
+      "gem_transparence": 4.07,
+      "vetos_ok": true,
+      "phase": "P",
+      "these": "Premier centre commercial de mode en ligne au Japon. ZOZO commercialise les collections de plusieurs milliers de marques et se rémunère par une commission sur les ventes : il ne porte pas de stock de marchandise, ce qui donne un ROIC ajusté proche de 47 % et une conversion du résultat en cash d'environ 100 %. Le chiffre d'affaires a progressé de 15 % par an sur dix ans, avec une marge opérationnelle moyenne de 29 %. Au cours actuel, le rendement implicite reste au-dessus du rendement exigé, même avec une croissance plafonnée à 12 %.",
+      "catalyseurs": [
+        "Hausse du taux de commission et des services aux marques (logistique, publicité)",
+        "Développement des outils de mesure et de recommandation, qui augmentent la conversion",
+        "Retour du cash aux actionnaires par dividende et rachats"
+      ],
+      "invalidation": [
+        "Le volume d'affaires recule pendant deux exercices consécutifs",
+        "La marge opérationnelle reste sous 25 % pendant deux exercices",
+        "Des marques importantes quittent la plateforme au profit de la vente en direct",
+        "Le pilier management passe sous 3, par exemple sur une décision défavorable aux minoritaires de l'actionnaire de contrôle"
+      ],
       "statut": "ouverte"
     }
   ]
