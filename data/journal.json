@@ -115,6 +115,14 @@
       "ticker": "MC.PA",
       "titre": "LVMH sort de la phase B et réintègre la file",
       "texte": "Passage en phase C confirmé sur les relevés des 6 et 13 novembre. Comme prévu le 22 octobre, le reverse DCF a été vérifié avant toute réintégration : la clôture du 20 novembre (381,95 €) reste à moins de 10 % du cours du calcul (406,45 €), et le rendement implicite de 9,9 % pour 9 % exigés reste valable. Avec un écart de 0,9 point, le dossier réintègre la file d’attente entre Zoetis (+1,2) et USS (+0,4). S’il est de nouveau en phase B à son tour, il sera reporté, conformément à la règle de la file."
+    },
+    {
+      "date": "2026-11-23",
+      "type": "Écarté",
+      "ticker": "BKNG",
+      "titre": "Booking reporté : toujours en phase B",
+      "etape_blocage": "Phase B",
+      "texte": "Rang 4 de la file, toujours en phase B au relevé du 20 novembre. Le dossier est de nouveau reporté et le suivant passe. Il garde son rang."
     }
   ]
 }
