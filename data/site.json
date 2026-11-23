@@ -54,10 +54,6 @@
       "nom": "Booking Holdings"
     },
     {
-      "ticker": "AOF.DE",
-      "nom": "ATOSS Software"
-    },
-    {
       "ticker": "RMV.L",
       "nom": "Rightmove"
     },
@@ -68,6 +64,10 @@
     {
       "ticker": "ZTS",
       "nom": "Zoetis"
+    },
+    {
+      "ticker": "MC.PA",
+      "nom": "LVMH"
     },
     {
       "ticker": "4732.T",
