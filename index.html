@@ -85,6 +85,18 @@ h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; }
 .vl-card .big { font: 500 2.25rem/1 var(--f-data); letter-spacing: -.02em; margin: 8px 0 6px; }
 .vl-card .vs { font-size: var(--s-sm); color: var(--muted); }
 .vl-card .vs b { font-weight: 500; font-family: var(--f-data); }
+.vl-card .vs-poche { margin-top: 4px; }
+.deux-lectures { margin-top: 14px; }
+.deux-lectures td .sub { display: block; max-width: 56ch; white-space: normal; }
+@media (max-width: 640px) {
+  .deux-lectures thead { display: none; }
+  .deux-lectures table, .deux-lectures tbody { display: block; }
+  .deux-lectures tr { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px 12px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+  .deux-lectures tr:last-child { border-bottom: 0; }
+  .deux-lectures td { display: grid; gap: 3px; padding: 0; border: 0; text-align: left; }
+  .deux-lectures td:first-child { grid-column: 1 / -1; }
+  .deux-lectures td[data-label]::before { content: attr(data-label); font: 600 10px/1.2 var(--f-ui); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+}
 .vl-card .asof { font-size: var(--s-xs); color: var(--muted); margin-top: 10px; }
 .tag-fictif {
   display: inline-flex; gap: 6px; align-items: center; border: 1px solid var(--line-strong);
@@ -677,6 +689,7 @@ function renderHeader() {
     <div class="big ${cls(sy.perf_pct)}">${pct(sy.perf_pct, 2)}</div>
     <div class="vs">${esc(s.benchmark_nom)} <b>${pct(sy.perf_benchmark_pct, 2)}</b></div>
     <div class="vs">Écart <b class="${cls(ecart)}">${ecart == null ? "—" : (ecart > 0 ? "+" : "") + fmt(ecart, 2) + " pt"}</b></div>
+    ${sy.poche_actions && sy.poche_actions.perf_indice_pct != null ? `<div class="vs vs-poche">Poche actions <b>${pct(sy.poche_actions.perf_pct, 2)}</b> · indice aux mêmes dates <b>${pct(sy.poche_actions.perf_indice_pct, 2)}</b></div>` : ""}
     <div class="asof">Cours au ${dfr(D.marche.maj)}, mis à jour automatiquement</div>`;
   const demo = [D.portfolio, D.journal, D.marche, D.backtest].some(x => x && x.exemple);
   if (demo) {
@@ -737,6 +750,18 @@ function renderPortefeuille() {
         <div class="legend"><span><i></i>Portefeuille modèle</span><span><i class="b"></i>${esc(s.benchmark_nom)}</span></div>
         <div class="chart" id="ch-vl"></div>
       </div>
+      ${(() => {
+        const pa = sy.poche_actions;
+        if (!pa || pa.perf_indice_pct == null) return "";
+        const e1 = sy.perf_benchmark_pct == null ? null : sy.perf_pct - sy.perf_benchmark_pct, e2 = pa.perf_pct - pa.perf_indice_pct;
+        const ec = e => e == null ? "—" : `<span class="${cls(e)}">${(e > 0 ? "+" : "") + fmt(e, 2)} pt</span>`;
+        return `<div class="table-scroll deux-lectures"><table>
+          <thead><tr><th>Deux lectures de la performance</th><th class="n">Portefeuille</th><th class="n">${esc(s.benchmark_nom)}</th><th class="n">Écart</th></tr></thead>
+          <tbody>
+            <tr><td>Portefeuille total<span class="sub">liquidités comprises : résultat de toutes les décisions, y compris le rythme d'investissement</span></td><td class="n num" data-label="Portefeuille">${pct(sy.perf_pct, 2)}</td><td class="n num muted" data-label="Indice">${pct(sy.perf_benchmark_pct, 2)}</td><td class="n num" data-label="Écart">${ec(e1)}</td></tr>
+            <tr><td>Poche actions<span class="sub">${fmt(pa.investi_pct, 1)} % du capital investi ; l'indice reçoit les mêmes montants, aux mêmes dates : l'écart ne mesure que la sélection</span></td><td class="n num" data-label="Poche actions">${pct(pa.perf_pct, 2)}</td><td class="n num muted" data-label="Indice, mêmes dates">${pct(pa.perf_indice_pct, 2)}</td><td class="n num" data-label="Écart">${ec(e2)}</td></tr>
+          </tbody></table></div>`;
+      })()}
     </div>
 
     <div>

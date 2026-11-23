@@ -275,6 +275,12 @@ def calculer(site: dict, portefeuille: dict, closes: pd.DataFrame,
                 div_base[t] = vers_base(p, d).fillna(0.0)
     total_dividendes = 0.0
 
+    # Poche « ombre » : les mêmes montants, aux mêmes dates et avec les mêmes frais, investis dans
+    # l'indice au lieu des titres. L'écart avec la poche actions ne mesure que la sélection.
+    bpx = closes[bench].ffill().bfill() if bench in closes and closes[bench].notna().any() else None
+    ombre: dict[str, float] = {}
+    ombre_ventes = 0.0
+
     cash = capital
     titres: dict[str, float] = {}
     infos: dict[str, dict] = {}
@@ -305,6 +311,8 @@ def calculer(site: dict, portefeuille: dict, closes: pd.DataFrame,
                 titres[t] = titres.get(t, 0.0) + n
                 cash -= montant
                 inf["achats"] += montant
+                if bpx is not None:
+                    ombre[t] = ombre.get(t, 0.0) + montant * (1 - frais) / float(bpx.loc[jour])
                 inf["cout_base"] += montant
                 inf["cout_local"] += n * loc
                 inf.setdefault("jour_execution", jour.strftime("%Y-%m-%d"))
@@ -322,6 +330,9 @@ def calculer(site: dict, portefeuille: dict, closes: pd.DataFrame,
                 produit = vendu * px * (1 - frais)
                 cash += produit
                 inf["ventes"] += produit
+                if bpx is not None and ombre.get(t):
+                    ombre_ventes += ombre[t] * f * float(bpx.loc[jour]) * (1 - frais)
+                    ombre[t] *= (1 - f)
                 inf["cout_base"] *= (1 - f)
                 inf["cout_local"] *= (1 - f)
                 titres[t] = detenu - vendu
@@ -387,6 +398,20 @@ def calculer(site: dict, portefeuille: dict, closes: pd.DataFrame,
     perf = valeur / capital - 1
     perf_b = float(b.iloc[-1] / b.iloc[0] - 1) if b is not None else None
 
+    # Poche actions : gain rapporté aux montants investis (cours, ventes et dividendes compris),
+    # comparé à la poche ombre investie dans l'indice aux mêmes dates.
+    achats_tot = sum(i["achats"] for i in infos.values())
+    ventes_tot = sum(i["ventes"] for i in infos.values())
+    valeur_lignes = sum(n * float(series[t].loc[dernier]) for t, n in titres.items())
+    poche = None
+    if achats_tot > 0:
+        gain = valeur_lignes + ventes_tot + total_dividendes - achats_tot
+        poche = {"investi_pct": round(achats_tot / capital * 100, 2),
+                 "perf_pct": round(gain / achats_tot * 100, 2)}
+        if bpx is not None:
+            gain_o = sum(ombre.values()) * float(bpx.loc[dernier]) + ombre_ventes - achats_tot
+            poche["perf_indice_pct"] = round(gain_o / achats_tot * 100, 2)
+
     return {
         "exemple": False,
         "maj": dernier.strftime("%Y-%m-%d"),
@@ -401,6 +426,7 @@ def calculer(site: dict, portefeuille: dict, closes: pd.DataFrame,
             "dividendes_encaisses": round(total_dividendes, 2),
             "nb_lignes": len(titres),
             "jours": nb_jours,
+            "poche_actions": poche,
         },
         "positions": sortie_lignes,
         "courbe": {
