@@ -123,6 +123,13 @@
       "titre": "Booking reporté : toujours en phase B",
       "etape_blocage": "Phase B",
       "texte": "Rang 4 de la file, toujours en phase B au relevé du 20 novembre. Le dossier est de nouveau reporté et le suivant passe. Il garde son rang."
+    },
+    {
+      "date": "2026-11-23",
+      "type": "Entrée",
+      "ticker": "3092.T",
+      "titre": "Entrée partielle sur ZOZO",
+      "texte": "Pourquoi ce dossier. Première plateforme de mode en ligne au Japon, rémunérée à la commission sans porter de stock : ROIC proche de 47 %, conversion du résultat en cash d'environ 100 %, croissance du chiffre d'affaires de 15 % par an sur dix ans.\n\nDécision. Rang 7 de la file publiée le 22 octobre, Booking étant reporté (phase B). Clôture du 20 novembre à 1 198,5 JPY, à moins de 10 % du cours du reverse DCF : rendement implicite de 10,3 % pour 9 % exigés. Phase P : tranche réduite de 1,5 %, exécutée à la clôture de Tokyo du 24 novembre (marché fermé le 23), solde au passage en phase A et au plus tard le 24 février 2027.\n\nPoint de vigilance. La gouvernance : le pilier management (3,5) est le plus faible du dossier, en raison de la présence d'un actionnaire de contrôle."
     }
   ]
 }
