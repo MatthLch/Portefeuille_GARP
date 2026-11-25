@@ -3,12 +3,12 @@
  "maj": "2026-11-24",
  "devise": "EUR",
  "synthese": {
-  "valeur": 99662.09,
-  "perf_pct": -0.34,
+  "valeur": 99716.27,
+  "perf_pct": -0.28,
   "perf_benchmark_pct": -4.12,
-  "volatilite_pct": 2.03,
+  "volatilite_pct": 2.09,
   "drawdown_max_pct": -0.91,
-  "cash_pct": 81.53,
+  "cash_pct": 81.48,
   "dividendes_encaisses": 0.0,
   "nb_lignes": 6,
   "jours": 33
@@ -36,12 +36,12 @@
    "cours_actuel": 1120.0,
    "date_cours": "2026-11-24",
    "perf_locale_pct": -0.71,
-   "perf_base_pct": 0.64,
-   "contribution_pct": 0.03,
+   "perf_base_pct": 1.18,
+   "contribution_pct": 0.05,
    "investi_pct": 4.5,
-   "valeur": 4528.64,
+   "valeur": 4552.93,
    "dividendes": 0.0,
-   "poids_actuel_pct": 4.54
+   "poids_actuel_pct": 4.57
   },
   "EVO.ST": {
    "jour_execution": "2026-10-26",
@@ -65,12 +65,12 @@
    "cours_actuel": 875.0,
    "date_cours": "2026-11-24",
    "perf_locale_pct": 1.67,
-   "perf_base_pct": 0.61,
+   "perf_base_pct": 0.72,
    "contribution_pct": 0.03,
    "investi_pct": 4.5,
-   "valeur": 4527.61,
+   "valeur": 4532.59,
    "dividendes": 0.0,
-   "poids_actuel_pct": 4.54
+   "poids_actuel_pct": 4.55
   },
   "AUTO.L": {
    "jour_execution": "2026-11-02",
@@ -88,10 +88,10 @@
    "cours_actuel": 550.4,
    "date_cours": "2026-11-24",
    "perf_locale_pct": 0.73,
-   "perf_base_pct": 0.11,
+   "perf_base_pct": 0.23,
    "contribution_pct": 0.0,
    "investi_pct": 1.5,
-   "valeur": 1501.58,
+   "valeur": 1503.45,
    "dividendes": 0.0,
    "poids_actuel_pct": 1.51
   },
@@ -114,15 +114,15 @@
      "poids_pct": 3.0
     }
    ],
-   "cours_actuel": 59.65,
-   "date_cours": "2026-11-23",
-   "perf_locale_pct": -6.34,
-   "perf_base_pct": -5.42,
-   "contribution_pct": -0.24,
+   "cours_actuel": 59.59,
+   "date_cours": "2026-11-24",
+   "perf_locale_pct": -6.43,
+   "perf_base_pct": -4.96,
+   "contribution_pct": -0.22,
    "investi_pct": 4.5,
-   "valeur": 4256.21,
+   "valeur": 4276.65,
    "dividendes": 0.0,
-   "poids_actuel_pct": 4.27
+   "poids_actuel_pct": 4.29
   },
   "RMV.L": {
    "jour_execution": "2026-11-16",
@@ -140,10 +140,10 @@
    "cours_actuel": 543.8,
    "date_cours": "2026-11-24",
    "perf_locale_pct": -6.18,
-   "perf_base_pct": -6.69,
+   "perf_base_pct": -6.57,
    "contribution_pct": -0.15,
    "investi_pct": 2.25,
-   "valeur": 2099.55,
+   "valeur": 2102.16,
    "dividendes": 0.0,
    "poids_actuel_pct": 2.11
   },
@@ -222,7 +222,7 @@
    99.692,
    99.365,
    99.515,
-   99.662
+   99.716
   ],
   "benchmark": [
    100.0,
